@@ -7,7 +7,7 @@ const nextConfig = {
           headers: [
             {
               key: "Cross-Origin-Embedder-Policy",
-              value: "unsafe-none",
+              value: "same-origin-allow-popups",
             },
           ],
         },

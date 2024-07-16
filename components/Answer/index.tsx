@@ -30,7 +30,7 @@ const Answer = ({ children, loading, time }: AnswerProps) => {
                 >
                     <Image
                         className="object-cover rounded-2xl"
-                        src="/images/avatar-chat.jpg"
+                        src="/images/avatar-chat.png"
                         fill
                         alt="Avatar"
                     />
