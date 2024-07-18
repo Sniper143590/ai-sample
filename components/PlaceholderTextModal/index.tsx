@@ -15,7 +15,7 @@ type PlaceholderTextModalProps = {
 };
 
 const PlaceholderTextModal = ({ visible, value, onChange, onClose, updatePlaceholderTextFunc, onCancel }: PlaceholderTextModalProps) => {
-    // const { updatePlaceholderTextFunc, onCancel } = useSidebar()
+    
     let copyButtonRef = useRef(null);
 
     const handlePlaceholderTextSaveButton = async () => {

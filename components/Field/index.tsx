@@ -41,7 +41,6 @@ const Field = ({
 
     return (
         <div className={`${className}`}>
-            <div className="">
                 {label && (
                     <div className="flex mb-2 base2 font-semibold">
                         {label}
@@ -96,7 +95,6 @@ const Field = ({
                 {/* <div className="mt-2 caption2 text-accent-1">
                 Email is incorrect
             </div> */}
-            </div>
         </div>
     );
 };

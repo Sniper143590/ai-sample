@@ -1,16 +1,14 @@
+import { PresetButton } from "@/constants/types";
 import { useChat } from "@/providers/ChatModuleProvider";
-import { useSidebar } from "@/providers/RightSidebarProvider";
 
 interface PrePromptButtonsProps {
-    handleButtonClick:(llm:string, promptContext:string, item?:{_id:number, text:string, prompt:string})=>void;
+    handleButtonClick:(item?:PresetButton)=>void;
 }
 
 const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
     const {prePrompts, setQuery} = useChat()
-    const {llm, promptContext} = useSidebar()
     const handleClick = (item:{_id:number, text:string, prompt:string}) =>{
-        // setQuery(item.text)
-        handleButtonClick(llm, promptContext, item)
+        handleButtonClick(item)
     }
     return (
         <div className="flex flex-col mb-3 px-20 w-full">

@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { useChat } from "@/providers/ChatModuleProvider";
 import { llms } from "@/constants/llms";
-import PromptContextModal from "@/components/PromptContextModal";
-import { useSidebar } from "@/providers/RightSidebarProvider";
 import Select from "../Select";
-import PresetButtonsModal from "../PresetButtonsModal";
-import PlaceholderTextModal from "../PlaceholderTextModal";
 
 
 type RightSidebarProps = {
@@ -14,8 +11,7 @@ type RightSidebarProps = {
 };
 
 const RightSidebar = ({ className, visible }: RightSidebarProps) => {
-    const { presetButtons, setPresetButtons, placeholderText, setPlaceholderText, updatePromptContextFunc, updatePresetButtonsFunc, updatePlaceholderTextFunc, onCancel} = useSidebar()
-    const { llm, setLlm, promptContext, setPromptContext } = useSidebar()
+    const { presetButtons, setPresetButtons, placeholderText, setPlaceholderText, llm, setLlm, role, setRole} = useChat()
     const [visiblePromptModal, setVisiblePromptModal] = useState<boolean>(false);
     const [visiblePresetButtonsModal, setVisiblePresetButtonsModal] = useState<boolean>(false);
     const [visiblePlaceholderTextModal, setVisiblePlaceholderTextModal] = useState<boolean>(false);
@@ -46,30 +42,6 @@ const RightSidebar = ({ className, visible }: RightSidebarProps) => {
                     <button className="btn-stroke-dark text-n-4 w-full" onClick={() => setVisiblePlaceholderTextModal(true)}> Placeholder text</button>
                 </div>
             </div>
-            <PromptContextModal
-                visible={visiblePromptModal}
-                value={promptContext}
-                onChange={setPromptContext}
-                onClose={() => setVisiblePromptModal(false)}
-                updatePromptContextFunc={updatePromptContextFunc}
-                onCancel={onCancel}
-            />
-            <PresetButtonsModal
-                visible={visiblePresetButtonsModal}
-                value={presetButtons}
-                onChange={setPresetButtons}
-                onClose={() => setVisiblePresetButtonsModal(false)}
-                updatePresetButtonsFunc={updatePresetButtonsFunc}
-                onCancel={onCancel}
-            />
-            <PlaceholderTextModal
-                visible={visiblePlaceholderTextModal}
-                value={placeholderText}
-                onChange={setPlaceholderText}
-                onClose={() => setVisiblePlaceholderTextModal(false)}
-                updatePlaceholderTextFunc={updatePlaceholderTextFunc}
-                onCancel={onCancel}
-            />
         </>
     );
 };

@@ -1,14 +1,14 @@
 import { useState } from "react"
 import Field from "../Field"
-import { useSidebar } from "@/providers/RightSidebarProvider"
 import { PresetButton } from "@/constants/types"
+import { useChat } from "@/providers/ChatModuleProvider"
 
 interface TableProps {
     presetButtons: PresetButton[],
     onChange: (e:any) =>void,
 }
 const Table = ({presetButtons, onChange}:TableProps) => {
-    const { notifyEmptyPresetButtonText } = useSidebar()
+    const { notifyEmptyPresetButtonText } = useChat()
     const [newRow, setNewRow] = useState({
         _id: -1,
         text: "",
@@ -75,25 +75,25 @@ const Table = ({presetButtons, onChange}:TableProps) => {
 
     return (
         <div className="flex flex-col">
-            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                <div className="overflow-y-auto h-[500px]">
+                <div className="overflow-y-auto h-[200px]">
                     <table
                     className="min-w-full text-left text-sm font-light text-surface dark:text-white ">
                     <thead
                         className="border-b border-neutral-200 font-medium dark:border-white/10">
                         <tr>
                             <th scope="col" className="px-6 py-4">#</th>
-                            <th scope="col" className="px-6 py-4">Preset Button Text</th>
-                            <th scope="col" className="px-6 py-4">Preset Button Prompt</th>
+                            <th scope="col" className="px-6 py-4 whitespace-nowrap">Text</th>
+                            <th scope="col" className="px-6 py-4 whitespace-nowrap">Prompt</th>
                         </tr>
                     </thead>
-                    <tbody className="">
+                    <tbody className="overflow-auto">
                         <tr>
-                            <td className="whitespace-nowrap px-6 py-4 font-medium">#</td>
-                            <td className="whitespace-nowrap px-6 py-4">
+                            <td className="whitespace-nowrap px-6 py-1 font-medium">#</td>
+                            <td className="whitespace-nowrap px-6 py-1 w-[400px] sm:w-[200px]">
                                 <Field
-                                    className=""
+                                    className="w-26"
                                     label=""
                                     placeholder=""
                                     icon=""
@@ -102,7 +102,7 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                     required
                                 />
                             </td>
-                            <td className="whitespace-nowrap px-6 py-4">
+                            <td className="whitespace-nowrap px-6 py-1 w-[400px] sm:w-[200px]">
                                 <Field
                                     className=""
                                     label=""
@@ -113,7 +113,7 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                     required
                                 />
                             </td>
-                            <td className="whitespace-nowrap px-6 py-4 ">
+                            <td className="whitespace-nowrap px-6 py-1 ">
                                 <button className="btn-stroke-light mr-3 w-[80px]" onClick={handleAddRow}>
                                     Add
                                 </button>
@@ -121,8 +121,8 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                         </tr>
                         {presetButtons.map((item, index) => (
                             <tr className="border-b border-neutral-200 dark:border-white/10" key={index}>
-                                <td className="whitespace-nowrap px-6 py-4 font-medium">{index+1}</td>
-                                <td className="whitespace-nowrap px-6 py-4">
+                                <td className="whitespace-nowrap px-6 py-1 font-medium">{index+1}</td>
+                                <td className="whitespace-nowrap px-6 py-1">
                                     <Field
                                         className=""
                                         label=""
@@ -133,7 +133,7 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                         required
                                     />
                                 </td>
-                                <td className="whitespace-nowrap px-6 py-4">
+                                <td className="whitespace-nowrap px-6 py-1">
                                     <Field
                                         className=""
                                         label=""
@@ -144,7 +144,7 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                         required
                                     />
                                 </td>
-                                <td className="whitespace-nowrap px-6 py-4">
+                                <td className="whitespace-nowrap px-6 py-1">
                                     <button className="btn-stroke-light mr-3 w-[80px]" onClick={()=>handleDeleteRow(index)}>
                                         Delete
                                     </button>

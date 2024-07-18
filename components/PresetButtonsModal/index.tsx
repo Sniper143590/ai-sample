@@ -6,15 +6,13 @@ import Table from "../Table";
 import { PresetButton } from "@/constants/types";
 
 type PresetButtonsModalProps = {
-    visible: boolean;
     value: PresetButton[],
     onChange: (e:any) => void;
-    onClose: () => void;
     updatePresetButtonsFunc: ()=>void;
     onCancel:()=>void;
 };
 
-const PresetButtonsModal = ({ visible, value, onChange, onClose, updatePresetButtonsFunc, onCancel}: PresetButtonsModalProps) => {
+const PresetButtonsModal = ({  value, onChange, updatePresetButtonsFunc, onCancel}: PresetButtonsModalProps) => {
 
     let copyButtonRef = useRef(null);
 
@@ -26,7 +24,6 @@ const PresetButtonsModal = ({ visible, value, onChange, onClose, updatePresetBut
                     <div className="ml-3 h6">Saved!</div>
                 </Notify>
             ));
-            onClose()
         } catch (error) {
             toast(() => (
                 <Notify iconClose>
@@ -39,20 +36,12 @@ const PresetButtonsModal = ({ visible, value, onChange, onClose, updatePresetBut
 
     const handleCancelButtonClick = () => {
         onCancel()
-        onClose()
     }
 
     return (
-        <Modal
-            classWrap="max-w-[80rem]"
-            classButtonClose="absolute top-6 right-6 w-10 h-10 rounded-full bg-n-2 md:top-5 md:right-5 dark:bg-n-4/25 dark:fill-n-4 dark:hover:fill-n-1"
-            visible={visible}
-            onClose={onClose}
-            initialFocus={copyButtonRef}
-            >
             <div
                 className="p-12 md:p-5"
-            >
+                >
                 <div className="mb-2 h6">Preset Button Prompts</div>
                 <Table presetButtons={value} onChange={onChange}/> 
                 <div className="flex justify-end">
@@ -62,7 +51,6 @@ const PresetButtonsModal = ({ visible, value, onChange, onClose, updatePresetBut
                     <button className="btn-blue" onClick={handlePresetButtonsSaveButton}>Save</button>
                 </div>
             </div>
-        </Modal>
     );
 };
 

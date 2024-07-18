@@ -5,6 +5,8 @@ import Navigation from "./Navigation";
 import Profile from "./Profile";
 import ToggleTheme from "./ToggleTheme";
 import { twMerge } from "tailwind-merge";
+import ChatList from "./ChatList";
+import { chatList } from "@/mocks/chatList";
 
 type LeftSidebarProps = {
     value: boolean;
@@ -103,12 +105,12 @@ const LeftSidebar = ({
                 </div>
                 <div className="grow overflow-y-auto scroll-smooth scrollbar-none">
                     <Navigation visible={value} items={navigation} />
-                    {/* <div
+                    <div
                         className={`my-4 h-0.25 bg-n-6 ${
                             value ? "-mx-4 md:mx-0" : "-mx-2 md:mx-0"
                         }`}
                     ></div>
-                    <ChatList visible={value} items={chatList} /> */}
+                    <ChatList visible={value}/>
                 </div>
                 <div className="absolute left-0 bottom-0 right-0 pb-6 px-4 bg-n-7 before:absolute before:left-0 before:right-0 before:bottom-full before:h-10 before:bg-gradient-to-t before:from-[#131617] before:to-[rgba(19,22,23,0)] before:pointer-events-none md:px-3">
                     {/* <Profile visible={value} /> */}

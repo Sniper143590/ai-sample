@@ -2,18 +2,17 @@ import Chat from "@/components/Chat";
 import Message from "@/components/Message";
 import Question from "@/components/Question";
 import Answer from "@/components/Answer";
-import { navigation } from "@/constants/navigation";
-import { useSidebar } from "@/providers/RightSidebarProvider";
-import { PresetButton } from "@/constants/types";
 import { useChat } from "@/providers/ChatModuleProvider";
 
 const ChatPage = () => {
-    const {placeholderText, moduleIndex} = useSidebar()
-    const { queries, results, getResponseFunc } = useChat()
+    const { queries, results, getResponseFunc, placeholderText, moduleIndex, chatModule } = useChat()
 
     return (
         <>
-            <Chat title={navigation[moduleIndex-1]?.title}>
+            <div className="">
+
+            </div>
+            <Chat title={chatModule.name}>
                 {queries.map((item, index) => (
                     <div key={index}>
                         <Question content={item.query} time={item.time} />
@@ -27,7 +26,7 @@ const ChatPage = () => {
                 ))}
             </Chat>
             <Message
-                placeholder={placeholderText}
+                placeholder={chatModule.placeholder_text}
                 handleSendButtonClick={getResponseFunc}
             />
         </>

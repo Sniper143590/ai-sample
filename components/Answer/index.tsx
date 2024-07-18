@@ -1,8 +1,8 @@
 import Image from "@/components/Image";
+import { useChat } from "@/providers/ChatModuleProvider";
 import Icon from "@/components/Icon";
 import Loading from "./Loading";
 import Actions from "./Actions";
-import { useChat } from "@/providers/ChatModuleProvider";
 
 type AnswerProps = {
     children?: React.ReactNode;
@@ -11,10 +11,10 @@ type AnswerProps = {
 };
 
 const Answer = ({ children, loading, time }: AnswerProps) => {
-    const {cancelGeneration} = useChat()
+    const {chatModule} = useChat()
     const handleCancelClick =() => {
         console.log("Cancelled@")
-        cancelGeneration();
+        // cancelGeneration();
     }
     return (
         <div className="max-w-[50rem]">
@@ -30,7 +30,7 @@ const Answer = ({ children, loading, time }: AnswerProps) => {
                 >
                     <Image
                         className="object-cover rounded-2xl"
-                        src="/images/avatar-chat.png"
+                        src={chatModule.avatar===""?"/images/avatar-chat.png":chatModule.avatar}
                         fill
                         alt="Avatar"
                     />

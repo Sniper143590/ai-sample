@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { EventHandler, useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -6,25 +6,35 @@ import { twMerge } from "tailwind-merge";
 import Icon from "@/components/Icon";
 import Modal from "@/components/Modal";
 import AddChatList from "@/components/AddChatList";
-
-type ChatListType = {
-    id: string;
-    title: string;
-    counter: number;
-    color: string;
-    url: string;
-};
+import { useChat } from "@/providers/ChatModuleProvider";
+import Image from "@/components/Image";
 
 type ChatListProps = {
     visible?: boolean;
-    items: ChatListType[];
 };
 
-const ChatList = ({ visible, items }: ChatListProps) => {
+const ChatList = ({ visible }: ChatListProps) => {
     const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
     const pathname = usePathname();
+    const { chatModules, setChatModuleFromId, initChatModuleInfo, deleteChatModuleWithId } = useChat();
+    const [chatModuleId, setChatModuleId] = useState("")
 
+    const handleEditClick = (id:string) => {
+        setChatModuleId(id)
+        setChatModuleFromId(id)
+        setVisibleModal(true)
+    }
+
+    const handleNewListClick = () => {
+        setChatModuleId("")
+        initChatModuleInfo()
+        setVisibleModal(true)
+    }
+
+    const handleDelClick = (id:string) => {
+        deleteChatModuleWithId(id)
+    }
     return (
         <>
             <div className="mb-auto pb-6">
@@ -49,35 +59,42 @@ const ChatList = ({ visible, items }: ChatListProps) => {
                         leaveTo="transform scale-95 opacity-0"
                     >
                         <Disclosure.Panel className={`${visible && "px-2"}`}>
-                            {items.map((item) => (
+                            {chatModules.map((item) => (
                                 <Link
                                     className={twMerge(
                                         `flex items-center w-full h-12 rounded-lg text-n-3/75 base2 font-semibold transition-colors hover:text-n-1 ${
                                             visible ? "px-3" : "px-5"
                                         } ${
-                                            pathname === item.url &&
+                                            pathname.includes(item._id) &&
                                             "text-n-1 bg-gradient-to-l from-[#323337] to-[rgba(80,62,110,0.29)]"
                                         }`
                                     )}
-                                    key={item.id}
-                                    href={item.url}
+                                    key={item._id}
+                                    href={`/admin/${item._id}`}
                                 >
-                                    <div className="flex justify-center items-center w-6 h-6">
-                                        <div
-                                            className="w-3.5 h-3.5 rounded"
-                                            style={{
-                                                backgroundColor: item.color,
-                                            }}
-                                        ></div>
+                                    <div className=" flex justify-center items-center w-6 h-6">
+                                        <Image
+                                            className="object-cover w-full h-full rounded-full"
+                                            src={item.avatar===""?"/images/chat.png":item.avatar}
+                                            width={30}
+                                            height={30}
+                                            alt="Avatar"
+                                        />
                                     </div>
                                     {!visible && (
                                         <>
                                             <div className="ml-5">
-                                                {item.title}
+                                                {item.name}
                                             </div>
-                                            <div className="ml-auto px-2 bg-n-6 rounded-lg base2 font-semibold text-n-4">
-                                                {item.counter}
-                                            </div>
+                                            <button className="ml-auto base2 font-semibold text-n-4" onClick={(event)=>{event.preventDefault();handleEditClick(item._id)}} title="Edit">
+                                                <Icon className="w-5 h-5 fill-n-4 transition-colors group-hover:fill-accent-1" name="scale" />
+                                            </button>
+                                            <button className="ml-2 base2 font-semibold text-n-4" onClick={(event)=>{event.preventDefault();handleDelClick(item._id)}} title="Delete">
+                                                <Icon
+                                                    className="w-5 h-5 fill-n-4 transition-colors group-hover:fill-accent-1"
+                                                    name="trash"
+                                                />
+                                            </button>
                                         </>
                                     )}
                                 </Link>
@@ -89,7 +106,7 @@ const ChatList = ({ visible, items }: ChatListProps) => {
                     className={`group flex items-center w-full h-12 text-left base2 text-n-3/75 transition-colors hover:text-n-3 ${
                         visible ? "justify-center px-3" : "px-5"
                     }`}
-                    onClick={() => setVisibleModal(true)}
+                    onClick={handleNewListClick}
                 >
                     <Icon
                         className="fill-n-4 transition-colors group-hover:fill-n-3"
@@ -100,12 +117,12 @@ const ChatList = ({ visible, items }: ChatListProps) => {
             </div>
             <Modal
                 className="md:!p-0"
-                classWrap="max-w-[40rem] md:min-h-screen-ios md:rounded-none md:pb-8"
+                classWrap="max-w-[60rem] md:min-h-screen-ios md:rounded-none md:pb-8"
                 classButtonClose="absolute top-6 right-6 w-10 h-10 rounded-full bg-n-2 md:right-5 dark:bg-n-4/25 dark:fill-n-4 dark:hover:fill-n-1"
                 visible={visibleModal}
                 onClose={() => setVisibleModal(false)}
-            >
-                <AddChatList onCancel={() => setVisibleModal(false)} />
+            > 
+                <AddChatList onCancelFunc={() => setVisibleModal(false)} chatModuleId={chatModuleId}/>
             </Modal>
         </>
     );

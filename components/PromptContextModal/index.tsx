@@ -3,7 +3,6 @@ import { toast } from "react-hot-toast";
 import Modal from "@/components/Modal";
 import Field from "@/components/Field";
 import Notify from "@/components/Notify";
-import { useSidebar } from "@/providers/RightSidebarProvider";
 
 
 type PromptContextModalProps = {
@@ -16,7 +15,7 @@ type PromptContextModalProps = {
 };
 
 const PromptContextModal = ({ visible, value, onChange, onClose, updatePromptContextFunc, onCancel }: PromptContextModalProps) => {
-    // const { updatePromptContextFunc, onCancel } = useSidebar()
+    
     let copyButtonRef = useRef(null);
 
     const handlePromptContextSaveButton = async () => {
