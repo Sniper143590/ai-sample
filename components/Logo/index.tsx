@@ -6,11 +6,11 @@ type TestProps = {
     dark?: boolean;
 };
 
-const Test = ({ className, dark }: TestProps) => (
-    <Link className={`flex w-[11.88rem] ${className}`} href="/">
+const Test = ({ className }: TestProps) => (
+    <Link className={`flex w-[14.88rem] h-[2.3rem] ${className}`} href="/">
         <Image
             className="w-full h-auto"
-            src={dark ? "/images/logo-dark.svg" : "/images/logo.svg"}
+            src="/images/logo_long.png"
             width={190}
             height={40}
             alt="Brainwave"
