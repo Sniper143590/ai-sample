@@ -21,12 +21,8 @@ const Main = ({}: MainProps) => {
                         with us
                     </div>
                 </div>
-                <Menu className="max-w-[30.75rem] mx-auto" items={navigation} />
+                <Menu className="max-w-[30.75rem] mx-auto" />
             </div>
-            {/* <Message
-                value={message}
-                onChange={(e: any) => setMessage(e.target.value)}
-            /> */}
         </>
     );
 };

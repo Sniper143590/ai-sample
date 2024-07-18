@@ -1,17 +1,16 @@
 import TextareaAutosize from "react-textarea-autosize";
 import Icon from "@/components/Icon";
-import { PresetButton } from "@/constants/types";
 import AddFile from "./AddFile";
 import Files from "./Files";
 import PrePromptButtons from "../PrePromptButtons";
-import { useSidebar } from "@/providers/RightSidebarProvider";
 import { useChat } from "@/providers/ChatModuleProvider";
+import { PresetButton } from "@/constants/types";
 
 type MessageProps = {
     placeholder?: string;
     image?: string;
     document?: any;
-    handleSendButtonClick:(llm:string, promptContext:string, item?:{_id:number, text:string, prompt:string})=> void;
+    handleSendButtonClick:(item?:PresetButton)=> void;
 };
 
 const Message = ({
@@ -21,10 +20,9 @@ const Message = ({
     handleSendButtonClick,
 }: MessageProps) => {
     const stylesButton = "Group absolute right-3 bottom-2 w-10 h-10";
-    const {llm, promptContext } = useSidebar()
     const { query, setQuery} = useChat()
     const handleSendClick = () => {
-        handleSendButtonClick(llm, promptContext)
+        handleSendButtonClick()
     }
     
     return (
