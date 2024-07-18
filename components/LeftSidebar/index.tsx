@@ -21,23 +21,6 @@ const LeftSidebar = ({
     visibleRightSidebar,
     smallSidebar,
 }: LeftSidebarProps) => {
-    // const [visibleSearch, setVisibleSearch] = useState<boolean>(false);
-    // const [visibleSettings, setVisibleSettings] = useState<boolean>(false);
-
-    // useEffect(() => {
-    //     window.addEventListener("keydown", handleWindowKeyDown);
-    //     return () => {
-    //         window.removeEventListener("keydown", handleWindowKeyDown);
-    //     };
-    // }, []);
-
-    // const handleWindowKeyDown = (event: any) => {
-    //     if (event.metaKey && event.key === "f") {
-    //         event.preventDefault();
-    //         // setVisibleSearch(true);
-    //     }
-    // };
-
     const navigation = [
         {
             title: "Chat Modules",
