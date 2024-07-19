@@ -42,6 +42,7 @@ const ChatContext = createContext<{
     notifyEmptyPresetButtonText:()=>void;
     moduleIndex:string;
     deleteChatModuleWithId:(chatModuleId:string)=>void;
+    notifyExceedMaxNumberButtons:()=>void;
 } | null>(null)
 
 type ChatModuleProviderProps = {

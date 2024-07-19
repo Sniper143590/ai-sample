@@ -82,7 +82,13 @@ export const updateChatModule = async (moduleIndex:string, newChatModule:ChatMod
   
       if (docToUpdate) {
           await updateDoc(docToUpdate, {
-              newChatModule // Replace "fieldName" with the actual field name and "NewValue" with the new value you want to set
+              _id:newChatModule._id,
+              name:newChatModule.name,
+              llm_name:newChatModule.llm_name,
+              avatar:newChatModule.avatar,
+              prompt_context:newChatModule.prompt_context,
+              preset_buttons:newChatModule.preset_buttons,
+              placeholder_text:newChatModule.placeholder_text // Replace "fieldName" with the actual field name and "NewValue" with the new value you want to set
           });
           console.log("Document successfully updated!");
       } else {
