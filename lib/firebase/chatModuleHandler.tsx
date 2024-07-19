@@ -73,6 +73,8 @@ export const updateChatModule = async (moduleIndex:string, newChatModule:ChatMod
       )
       const querySnapshot = await getDocs(q);
       let docToUpdate = null;
+
+      console.log(newChatModule.avatar)
   
       querySnapshot.forEach((doc) => {
       if (doc.data()._id === moduleIndex) { // Check if the document's field matches the known value

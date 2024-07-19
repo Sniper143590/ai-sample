@@ -9,7 +9,6 @@ import { addNewChatModule, getChatModules, updateChatModule, deleteChatModuleByI
 import { uploadImage } from "@/lib/firebase/storageHandler";
 import imageCompression from 'browser-image-compression';
 import { usePathname } from "next/navigation";
-import path from "path";
 
 const useChatModule = () => {
     const [query, setQuery] = useState("")
@@ -249,7 +248,7 @@ const useChatModule = () => {
         const updatedChatModule = {
             _id:_id,
             name:name,
-            avatar:avatarUrl,
+            avatar:url,
             llm_name:llm,
             placeholder_text:placeholderText,
             preset_buttons:presetButtons,

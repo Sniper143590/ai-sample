@@ -1,4 +1,5 @@
 "use client"
+
 import SignUpPage from "@/components/Pages/SignUpPage";
 import AuthProvider from "@/providers/AuthProvider";
 

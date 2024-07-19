@@ -33,9 +33,9 @@ export default function RootLayout({
             <head>
                 <meta
                     content="Figma UI kit designed to enhance the functionality of ChatGPT"
-                    name="Brainwave"
+                    name="Pro Audio Files AI"
                 />
-                <meta content="Brainwave" property="og:title" />
+                <meta content="Pro Audio Files AI" property="og:title" />
                 <meta
                     content="Figma UI kit designed to enhance the functionality of ChatGPT"
                     property="og:description"
@@ -48,9 +48,9 @@ export default function RootLayout({
                     property="og:url"
                     content="https://ui8.net/ui8/products/brainwave-ai-ui-design-kit"
                 />
-                <meta property="og:site_name" content="Brainwave" />
+                <meta property="og:site_name" content="Pro Audio Files AI" />
                 <meta
-                    content="Brainwave"
+                    content="Pro Audio Files AI"
                     property="twitter:title"
                 />
                 <meta
