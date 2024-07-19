@@ -366,7 +366,6 @@ const useChatModule = () => {
             setLoading(false)
             setQuery("")
     }
-
     const cancelGeneration =  () => {
          cancelOperation()
     }
