@@ -7,13 +7,13 @@ type TestProps = {
 };
 
 const Test = ({ className }: TestProps) => (
-    <Link className={`flex w-[14.88rem] h-[2.3rem] ${className}`} href="/">
+    <Link className={`flex ${className}`} href="/">
         <Image
-            className="w-full h-auto"
+            className="object-contain"
             src="/images/logo_long.png"
-            width={190}
-            height={40}
             alt="Brainwave"
+            width={220}
+            height={50}
         />
     </Link>
 );

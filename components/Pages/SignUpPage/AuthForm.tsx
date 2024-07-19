@@ -29,10 +29,6 @@ const AuthForm = () => {
                 <ForgotPassword onClick={() => setForgot(false)} />
             ) : (
                 <>
-                    <Logo
-                        className="max-w-[11.875rem] mx-auto mb-8"
-                        dark={isLightMode}
-                    />
                     <Tab.Group defaultIndex={0}>
                         <Tab.List className="flex mb-8 p-1 bg-n-2 rounded-xl dark:bg-n-7">
                             {tabNav.map((button, index) => (
