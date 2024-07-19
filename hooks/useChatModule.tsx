@@ -359,10 +359,7 @@ const useChatModule = () => {
                         return { _id:index, text: item, prompt: item };
                     }
                 );
-                setPrePrompts(updatedPrePrompts)
-                
-                
-
+                setPresetButtons(updatedPrePrompts)
             } catch {
                 setResults(prev=>[...prev, "Network Error"])
             }
