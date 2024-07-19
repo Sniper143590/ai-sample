@@ -8,7 +8,7 @@ import Notify from "@/components/Notify";
 import { toast } from "react-hot-toast";
 import handleTxError from "@/lib/handleTxError"
 import getUserDataByEmail from "@/lib/firebase/getUserDataByEmail"
-// import createUserFromCredential from "@/lib/createUserFromCredential"
+import createUserFromCredential from "@/lib/createUserFromCredential"
 // import { User } from 'firebase/auth'
 import useSocialLogin from "./useSocialLogin"
 import useIsMobile from "./useIsMobile"
@@ -23,13 +23,13 @@ const useAuthFlow = () => {
   const [userName, setUserName] = useState("")
   const [userEmail, setUserEmail] = useState("")
   const [userPassword, setUserPassword] = useState("")
-  // const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({});
 
 //   const isSignUpPage = pathname.includes("/signup") || pathname === "/"
 //   const isSignInPage = pathname.includes("/signin")
 //   const isResetPage = pathname.includes("/forgotpass")
 
-  // const isAuthenticated = userData
+  const isAuthenticated = userData
 
   const updatePassword = async () => {
     const response: any = await sendResetPassLink(userEmail)
@@ -93,16 +93,16 @@ const useAuthFlow = () => {
     }
   }
 
-  // useEffect(() => {
-  //   auth.onAuthStateChanged(async (user) => {
-  //     if (user) {
-  //       const data = await createUserFromCredential(user)
-  //       setUserData(data)
-  //       return
-  //     }
-  //     setUserData({})
-  //   })
-  // }, [userData])
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const data = await createUserFromCredential(user)
+        setUserData(data)
+        return
+      }
+      setUserData({})
+    })
+  }, [userData])
 
   useEffect(() => {
 
@@ -119,8 +119,8 @@ const useAuthFlow = () => {
     login,
     loading,
     updatePassword,
-    // isAuthenticated,
-    // userData,
+    isAuthenticated,
+    userData,
     logout,
     ...socialLogins,
     checkEmail,

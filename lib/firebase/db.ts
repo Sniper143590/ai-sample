@@ -5,13 +5,13 @@ import { getAuth } from "firebase/auth"
 import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCf-jNdG3wgPukGmft0e5JtF9z44O31Iro",
-  authDomain: "pro-audio-files-ai.firebaseapp.com",
-  projectId: "pro-audio-files-ai",
-  storageBucket: "pro-audio-files-ai.appspot.com",
-  messagingSenderId: "383684347376",
-  appId: "1:383684347376:web:1676c30d261243323b0935",
-  measurementId: "G-H9XQSCQ1B5"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
