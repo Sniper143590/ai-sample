@@ -100,26 +100,6 @@ const LeftSidebar = ({
                     <ToggleTheme visible={value} />
                 </div>
             </div>
-            {/* <Modal
-                className="md:!p-0"
-                classWrap="md:min-h-screen-ios md:rounded-none dark:shadow-[inset_0_0_0_0.0625rem_#232627,0_2rem_4rem_-1rem_rgba(0,0,0,0.33)] dark:md:shadow-none"
-                classButtonClose="hidden md:flex md:absolute md:top-6 md:left-6 dark:fill-n-1"
-                classOverlay="md:bg-n-1"
-                visible={visibleSearch}
-                onClose={() => setVisibleSearch(false)}
-            >
-                <Search items={resultSearch} />
-            </Modal>
-            <Modal
-                className="md:!p-0"
-                classWrap="max-w-[48rem] md:min-h-screen-ios md:rounded-none"
-                classButtonClose="hidden md:block md:absolute md:top-5 md:right-5 dark:fill-n-4"
-                classOverlay="md:bg-n-1"
-                visible={visibleSettings}
-                onClose={() => setVisibleSettings(false)}
-            >
-                <Settings items={settings} />
-            </Modal> */}
         </>
     );
 };
