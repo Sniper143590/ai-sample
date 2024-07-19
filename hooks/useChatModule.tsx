@@ -32,8 +32,6 @@ const useChatModule = () => {
     const [chatModules, setChatModules] = useState<ChatModule[]>([]);
 
     const { startOperation, cancelOperation } = getResponseFromLlm();
-    const cancelRef = useRef(cancelOperation);
-    const doNothing = () => {};
 
     useEffect(() => {
         const fetchChatModules = async () => {
@@ -52,16 +50,15 @@ const useChatModule = () => {
             const pathSegments = window.location.pathname.split('/');
             const lastSegment = pathSegments[pathSegments.length - 1];
             const chatModuleWithId = result.find(module => module._id === lastSegment);
-            console.log(lastSegment)
-
             if (chatModuleWithId){
-                console.log(chatModuleWithId)
                 setModuleIndex(lastSegment)
                 setChatModule(chatModuleWithId)
+                setPresetButtons(chatModuleWithId.preset_buttons)
+                console.log(chatModuleWithId.preset_buttons)
             }
         };
         fetchChatModules();
-    }, [pathname]);
+    }, []);
     
     function getCurrentTime(): string {
         const now = new Date();
@@ -142,6 +139,14 @@ const useChatModule = () => {
         toast(() => (
             <Notify iconClose>
                 <div className="mr-6 ml-3 h6 ml-4">Preset Button Text is required!</div>
+            </Notify>
+          ));
+    }
+
+    const notifyExceedMaxNumberButtons =() => {
+        toast(() => (
+            <Notify iconClose>
+                <div className="mr-6 ml-3 h6 ml-4">You can have a maximum of 5 buttons for a chat module!</div>
             </Notify>
           ));
     }
@@ -429,6 +434,7 @@ const useChatModule = () => {
         updateChatModuleWithId,
         moduleIndex,
         deleteChatModuleWithId,
+        notifyExceedMaxNumberButtons,
     }
 }
 

@@ -1,14 +1,14 @@
 import { useState } from "react"
-import Field from "../Field"
 import { PresetButton } from "@/constants/types"
 import { useChat } from "@/providers/ChatModuleProvider"
+import Field from "../Field"
 
 interface TableProps {
     presetButtons: PresetButton[],
     onChange: (e:any) =>void,
 }
 const Table = ({presetButtons, onChange}:TableProps) => {
-    const { notifyEmptyPresetButtonText } = useChat()
+    const { notifyEmptyPresetButtonText, notifyExceedMaxNumberButtons } = useChat()
     const [newRow, setNewRow] = useState({
         _id: -1,
         text: "",
@@ -53,6 +53,10 @@ const Table = ({presetButtons, onChange}:TableProps) => {
     const handleAddRow = () => {
         if(newRow.text===""){
             notifyEmptyPresetButtonText()
+            return
+        }
+        if(presetButtons.length>=5){
+            notifyExceedMaxNumberButtons()
             return
         }
         onChange([...presetButtons, {_id:presetButtons.length, text:newRow.text, prompt:newRow.prompt}]);

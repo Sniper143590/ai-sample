@@ -5,13 +5,10 @@ import Answer from "@/components/Answer";
 import { useChat } from "@/providers/ChatModuleProvider";
 
 const ChatPage = () => {
-    const { queries, results, getResponseFunc, placeholderText, moduleIndex, chatModule } = useChat()
+    const { queries, results, getResponseFunc, chatModule } = useChat()
 
     return (
         <>
-            <div className="">
-
-            </div>
             <Chat title={chatModule.name}>
                 {queries.map((item, index) => (
                     <div key={index}>
