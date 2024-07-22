@@ -11,10 +11,8 @@ import getUserDataByEmail from "@/lib/firebase/getUserDataByEmail"
 import createUserFromCredential from "@/lib/createUserFromCredential"
 // import { User } from 'firebase/auth'
 import useSocialLogin from "./useSocialLogin"
-import useIsMobile from "./useIsMobile"
 
 const useAuthFlow = () => {
-  const isMobile = useIsMobile()
   const router = useRouter()
   const pathname = usePathname()
   const [loading, setLoading] = useState(false)
@@ -23,7 +21,7 @@ const useAuthFlow = () => {
   const [userName, setUserName] = useState("")
   const [userEmail, setUserEmail] = useState("")
   const [userPassword, setUserPassword] = useState("")
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<any>(null);
 
 //   const isSignUpPage = pathname.includes("/signup") || pathname === "/"
 //   const isSignInPage = pathname.includes("/signin")
@@ -93,20 +91,20 @@ const useAuthFlow = () => {
     }
   }
 
+  
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         const data = await createUserFromCredential(user)
         setUserData(data)
+        localStorage.setItem("userData", JSON.stringify(data))
         return
       }
-      setUserData({})
+      setUserData(null)
+      localStorage.setItem("userData", "")
+      router.push("/")
     })
-  }, [userData])
-
-  useEffect(() => {
-
-  }, [pathname, isMobile])
+  }, [pathname])
 
   return {
     userEmail,

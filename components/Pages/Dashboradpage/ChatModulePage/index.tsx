@@ -1,4 +1,5 @@
 import ChatModuleLayout from "@/components/Layout/ChatModuleLayout"
+import withAuth from "@/hooks/withAuth"
 import ChatPage from "./ChatPage"
 
 const ChatModulePage = () => {
@@ -10,4 +11,4 @@ const ChatModulePage = () => {
     )
 }
 
-export default ChatModulePage
+export default withAuth(ChatModulePage)
