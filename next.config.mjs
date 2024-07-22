@@ -3,10 +3,13 @@ const nextConfig = {
   images: {
     domains: ["cdn.sanity.io", "pbs.twimg.com", "firebasestorage.googleapis.com"],
   },
+  compiler: {
+    styledComponents: true, // Add this for styled-components
+  },
     async headers() {
       return [
         {
-          source: "/login",
+          source: "/",
           headers: [
             {
               key: "Cross-Origin-Embedder-Policy",
@@ -16,10 +19,8 @@ const nextConfig = {
         },
       ];
     },
-    productionBrowserSourceMaps: true,
     webpack: (config) => {
         config.resolve.fallback = { fs: false, net: false, tls: false }
-        
         return config
       },
       reactStrictMode: false,
