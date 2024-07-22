@@ -83,11 +83,17 @@ const useAuthFlow = () => {
     return false
   }
 
-  const logout = () => {
+  const logout = async () => {
     try {
-      auth.signOut()
+      setLoading(true)
+      await auth.signOut()
+      localStorage.setItem("token", "")
+      localStorage.setItem("userData", "")
+      router.push("/")
+      setLoading(false)
     } catch (err) {
       handleTxError(err)
+      setLoading(false)
     }
   }
 
