@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef,    } from "react"
+import { useEffect, useState} from "react"
 import getResponseFromLlm from "@/lib/getResponseFromLlm"
 import Notify from "@/components/Notify";
 import { toast } from "react-hot-toast";

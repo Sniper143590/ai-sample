@@ -1,10 +1,11 @@
-'use client'
+"use client"
 
-import AuthProvider from "@/providers/AuthProvider";
 import ChatModulePage from "@/components/Pages/Dashboradpage/ChatModulePage";
 import ChatModuleProvider from "@/providers/ChatModuleProvider";
+import AuthProvider from "@/providers/AuthProvider";
+import withAuth from "@/hooks/withAuth";
 
-export default function Module() {
+const Module = () => {
 
     return (
         <AuthProvider>
@@ -14,3 +15,5 @@ export default function Module() {
         </AuthProvider>
     )
 }
+
+export default withAuth(Module)
