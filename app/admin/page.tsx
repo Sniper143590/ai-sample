@@ -3,6 +3,7 @@
 import AuthProvider from "@/providers/AuthProvider";
 import Dashboard from "@/components/Pages/Dashboradpage";
 import ChatModuleProvider from "@/providers/ChatModuleProvider";
+import withAuth from "@/hooks/withAuth";
 
 const Chats = () => {
     return (
@@ -14,4 +15,4 @@ const Chats = () => {
     )
 }
 
-export default Chats
+export default withAuth(Chats)

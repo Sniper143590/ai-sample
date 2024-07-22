@@ -1,5 +1,4 @@
 import AdminFullLayout from "@/components/Layout/AdminFullLayout"
-import withAuth from "@/hooks/withAuth"
 import Main from "./Main"
 
 const Dashboard = () => {
@@ -10,4 +9,4 @@ const Dashboard = () => {
     )
 }
 
-export default withAuth(Dashboard)
+export default Dashboard
