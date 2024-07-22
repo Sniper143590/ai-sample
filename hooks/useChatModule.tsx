@@ -234,6 +234,8 @@ const useChatModule = () => {
                 } else {
                     setAvatarUrl(url)
                 }
+            } else {
+                url = avatarUrl
             }
         } catch (error) {
             console.log(error)

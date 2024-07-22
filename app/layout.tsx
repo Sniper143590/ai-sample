@@ -76,6 +76,7 @@ export default function RootLayout({
             <body
                 className={`${karla.variable} ${inter.variable} bg-n-7 text-[1rem] leading-6 -tracking-[.01em] text-n-7 antialiased md:bg-n-1 dark:text-n-1 dark:md:bg-n-6`}
             >
+                
                 <Providers>{children}</Providers>
             </body>
         </html>

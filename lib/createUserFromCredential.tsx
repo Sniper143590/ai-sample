@@ -10,13 +10,13 @@ const createUserFromCredential = async (user:User) => {
     await setDoc(userRef, {
       uid:user.uid,
       email: user.email,
-      displayName: user.displayName || "User 1",
+      displayName: user.displayName || user.email,
       photoURL: user.photoURL || null,
       createdAt: new Date(),
     })
     return user
   } catch (error) {
-    console.log("Error while registering>>>", error)
+    console.log("Error while registering >>>", error)
     return { error }
   }
 }
