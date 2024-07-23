@@ -11,7 +11,7 @@ const Test = ({ className }: TestProps) => (
         <Image
             className="object-contain"
             src="/images/logo_long.png"
-            alt="Brainwave"
+            alt="Pro Audio Files AI"
             width={220}
             height={50}
         />

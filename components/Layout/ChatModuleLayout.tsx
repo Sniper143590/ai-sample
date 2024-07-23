@@ -45,7 +45,7 @@ const ChatModuleLayout = ({
     return (
         <>
             <Head>
-                <title>Brainwave</title>
+                <title>Pro Audio Files AI</title>
             </Head>
             <div
                 className={`pr-6 bg-n-7 md:bg-n-1 dark:md:bg-n-6 md:overflow-hidden ${

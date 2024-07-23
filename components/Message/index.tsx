@@ -40,7 +40,7 @@ const Message = ({
                         autoFocus
                         value={query}
                         onChange={(e) =>setQuery(e.target.value)}
-                        placeholder={placeholder || "Ask Brainwave anything"}
+                        placeholder={placeholder || "Ask Pro Audio Files AI anything"}
                     />
                     {query === "" ? (
                         <button className={`${stylesButton}`}>

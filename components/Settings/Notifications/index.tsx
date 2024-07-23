@@ -36,7 +36,7 @@ const Notifications = ({}: NotificationsProps) => {
         },
         {
             id: "2",
-            title: "From Brainwave app",
+            title: "From Pro Audio Files AI app",
             checkboxs: [{ id: "0", title: "Mentioned", isChecked: true }],
         },
     ]);
