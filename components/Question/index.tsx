@@ -37,7 +37,7 @@ const Question = ({ content, image, document, time }: QuestionProps) => {
             <div className="relative w-16 h-16 ml-auto rounded-2xl overflow-hidden shadow-[0_0_0_0.25rem_#FEFEFE] dark:shadow-[0_0_0_0.25rem_#232627]">
                 <Image
                     className="object-cover"
-                    src={avatar}
+                    src={avatar?avatar:"/images/avatar.jpg"}
                     fill
                     alt="Avatar"
                 />
