@@ -15,7 +15,6 @@ const useChatModule = () => {
     const [queries, setQueries] = useState<{query:string, time:string}[]>([])
     const [results, setResults] = useState<string[]>([])
     const [loading, setLoading] = useState(false)
-    const pathname = usePathname()
     const [moduleIndex, setModuleIndex] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [avatar, setAvatar] = useState<File | null>(null);
@@ -76,6 +75,7 @@ const useChatModule = () => {
         if (chatModuleWithId) {
             setName(chatModuleWithId.name)
             setLlm(chatModuleWithId.llm_name)
+            setAvatar(null)
             setAvatarUrl(chatModuleWithId.avatar)
             setPlaceholderText(chatModuleWithId.placeholder_text)
             setPresetButtons(chatModuleWithId.preset_buttons)
