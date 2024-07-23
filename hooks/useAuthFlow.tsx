@@ -10,6 +10,7 @@ import handleTxError from "@/lib/handleTxError"
 import getUserDataByEmail from "@/lib/firebase/getUserDataByEmail"
 import createUserFromCredential from "@/lib/createUserFromCredential"
 // import { User } from 'firebase/auth'
+import { changePassword } from "@/lib/firebase/changePassword"
 import useSocialLogin from "./useSocialLogin"
 
 const useAuthFlow = () => {
@@ -18,9 +19,11 @@ const useAuthFlow = () => {
   const [loading, setLoading] = useState(false)
   const socialLogins = useSocialLogin()
 
-  const [userName, setUserName] = useState("")
-  const [userEmail, setUserEmail] = useState("")
-  const [userPassword, setUserPassword] = useState("")
+  const [userName, setUserName] = useState<string>("")
+  const [avatar, setAvatar] = useState("")
+  const [userEmail, setUserEmail] = useState<string| null>("")
+  const [userPassword, setUserPassword] = useState<string | null>("")
+  const [userPasswordConfirm, setUserPasswordConfirm] = useState<string | null>("")
   const [userData, setUserData] = useState<any>(null);
 
 //   const isSignUpPage = pathname.includes("/signup") || pathname === "/"
@@ -30,18 +33,22 @@ const useAuthFlow = () => {
   const isAuthenticated = userData
 
   const updatePassword = async () => {
-    const response: any = await sendResetPassLink(userEmail)
-    if (response?.error) {
-        return
+    if(userEmail){
+      const response: any = await sendResetPassLink(userEmail)
+      if (response?.error) {
+          return
+      }
+      else {
+          router.push("/")
+      }
     }
-    else {
-        router.push("/")
-    }
+    
   }
 
   const register = async () => {
     setLoading(true)
-    const response = await userRegister(userEmail, userPassword)
+    if(userEmail && userPassword) {
+      const response = await userRegister(userEmail, userPassword)
     if (response?.error) {
         setLoading(false)
         console.log("Error ------->",response.error)
@@ -55,15 +62,18 @@ const useAuthFlow = () => {
       setLoading(false)
       return true
     }
+    } return false
   }
 
   const checkEmail = async () => {
-    const response: any = await getUserDataByEmail(userEmail)
+    if(userEmail) {
+      const response: any = await getUserDataByEmail(userEmail)
 
     if (response) {
       toast.error("Already registered!")
       router.push("/signin")
       return
+    }
     }
   }
 
@@ -97,12 +107,31 @@ const useAuthFlow = () => {
     }
   }
 
+  const updatePasswordFromSettings = async (newPwd:string) => {
+    try {
+      setLoading(true)
+      await changePassword(newPwd)
+      setLoading(false)
+      toast((t) => (
+        <Notify iconCheck>
+            <div className="mr-6 ml-3 h6 ml-4">Successfully updated!</div>
+        </Notify>
+      ));
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+    }
+  }
+
   
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         const data = await createUserFromCredential(user)
-        setUserData(data)
+        setUserEmail(user.email)
+        setUserData(user)
+        setUserName(user.displayName?user.displayName:"")
+        setAvatar(user.photoURL?user.photoURL:"")
         localStorage.setItem("userData", JSON.stringify(data))
         return
       }
@@ -128,6 +157,11 @@ const useAuthFlow = () => {
     logout,
     ...socialLogins,
     checkEmail,
+    avatar,
+    setAvatar,
+    userPasswordConfirm,
+    setUserPasswordConfirm,
+    updatePasswordFromSettings,
   }
 }
 

@@ -8,15 +8,22 @@ interface AuthProviderProps {
 interface AuthContextData {
     checkEmail: () => Promise<void>;
     googleSign: () => Promise<void>;
-    userEmail: string;
+    userEmail: string | null;
     loading:boolean;
-    setUserEmail: React.Dispatch<React.SetStateAction<string>>;
-    userPassword: string;
-    setUserPassword: React.Dispatch<React.SetStateAction<string>>;
+    setUserEmail: React.Dispatch<React.SetStateAction<string|null>>;
+    userPassword: string| null;
+    setUserPassword: React.Dispatch<React.SetStateAction<string|null>>;
     register: () => Promise<boolean>;
     updatePassword:()=>Promise<void>;
     login: () => Promise<boolean>;
     logout: () => void;
+    userData:any;
+    userName:string;
+    avatar:string;
+    setAvatar:React.Dispatch<React.SetStateAction<string>>;
+    userPasswordConfirm:string | null;
+    setUserPasswordConfirm:React.Dispatch<React.SetStateAction<string | null>>;
+    updatePasswordFromSettings:(pwd:string) =>void;
 }
 
 const AuthContext = createContext<AuthContextData | null>(null)
