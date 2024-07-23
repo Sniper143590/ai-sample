@@ -15,6 +15,7 @@ export async function uploadImage(compressedFile:File, _id:string) {
         const downloadURL = await getDownloadURL(storageRef);
         return downloadURL;
     } catch (error) {
+        console.log(error)
         return "error"
     }
 }

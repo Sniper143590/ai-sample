@@ -2,6 +2,14 @@
 const nextConfig = {
   images: {
     domains: ["cdn.sanity.io", "pbs.twimg.com", "firebasestorage.googleapis.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: "firebasestorage.googleapis.com", // Your image domain
+        port: '',
+        pathname: '/images/**' 
+      }
+    ]
   },
   compiler: {
     styledComponents: true, // Add this for styled-components
