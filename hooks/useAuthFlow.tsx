@@ -21,9 +21,9 @@ const useAuthFlow = () => {
 
   const [userName, setUserName] = useState<string>("")
   const [avatar, setAvatar] = useState("")
-  const [userEmail, setUserEmail] = useState<string| null>("")
-  const [userPassword, setUserPassword] = useState<string | null>("")
-  const [userPasswordConfirm, setUserPasswordConfirm] = useState<string | null>("")
+  const [userEmail, setUserEmail] = useState<string>("")
+  const [userPassword, setUserPassword] = useState<string>("")
+  const [userPasswordConfirm, setUserPasswordConfirm] = useState<string>("")
   const [userData, setUserData] = useState<any>(null);
 
 //   const isSignUpPage = pathname.includes("/signup") || pathname === "/"
@@ -128,7 +128,7 @@ const useAuthFlow = () => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         const data = await createUserFromCredential(user)
-        setUserEmail(user.email)
+        setUserEmail(user.email || "")
         setUserData(user)
         setUserName(user.displayName?user.displayName:"")
         setAvatar(user.photoURL?user.photoURL:"")
