@@ -1,5 +1,6 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 import { auth } from "./db"
+import createUserFromCredential from "../createUserFromCredential"
 import handleTxError from "../handleTxError"
 
 const signInWithGoogle = async () => {
