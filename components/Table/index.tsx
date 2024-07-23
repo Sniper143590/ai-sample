@@ -5,9 +5,10 @@ import Field from "../Field"
 
 interface TableProps {
     presetButtons: PresetButton[],
+    disabled?:boolean,
     onChange: (e:any) =>void,
 }
-const Table = ({presetButtons, onChange}:TableProps) => {
+const Table = ({presetButtons, onChange, disabled = false}:TableProps) => {
     const { notifyEmptyPresetButtonText, notifyExceedMaxNumberButtons } = useChat()
     const [newRow, setNewRow] = useState({
         _id: -1,
@@ -104,6 +105,7 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                     value={newRow.text}
                                     onChange={(e: any) => handleTextChange(e.target.value, newRow._id)}
                                     required
+                                    disabled={disabled}
                                 />
                             </td>
                             <td className="whitespace-nowrap px-6 py-1 w-[400px] sm:w-[200px]">
@@ -115,6 +117,7 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                     value={newRow.prompt}
                                     onChange={(e: any) => handlePromptChange(e.target.value, newRow._id)}
                                     required
+                                    disabled={disabled}
                                 />
                             </td>
                             <td className="whitespace-nowrap px-6 py-1 ">
@@ -135,6 +138,7 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                         value={item.text}
                                         onChange={(e: any) => handleTextChange(e.target.value, item._id)}
                                         required
+                                        disabled={disabled}
                                     />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-1">
@@ -146,10 +150,11 @@ const Table = ({presetButtons, onChange}:TableProps) => {
                                         value={item.prompt}
                                         onChange={(e: any) => handlePromptChange(e.target.value, item._id)}
                                         required
+                                        disabled={disabled}
                                     />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-1">
-                                    <button className="btn-stroke-light mr-3 w-[80px]" onClick={()=>handleDeleteRow(index)}>
+                                    <button className="btn-stroke-light mr-3 w-[80px]" onClick={()=>handleDeleteRow(index)} disabled={disabled}>
                                         Delete
                                     </button>
                                 </td>
