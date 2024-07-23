@@ -225,6 +225,7 @@ const useChatModule = () => {
                 const compressedImage = await compressImage(avatar)
                 url = await uploadImage(compressedImage, _id)
                 if (url==="error") {
+                    setLoading(false)
                     toast(() => (
                         <Notify iconClose>
                             <div className="mr-6 ml-3 h6 ml-4">Invalid File Format!</div>
