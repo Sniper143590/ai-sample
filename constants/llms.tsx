@@ -23,4 +23,8 @@ export const llms = [
         id: 5,
         title: "gpt-4o",
     },
+    {
+        id: 6,
+        title: "gpt-4o-mini",
+    }
 ];
