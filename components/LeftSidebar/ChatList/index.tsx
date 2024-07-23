@@ -1,4 +1,4 @@
-import { EventHandler, useState } from "react";
+import { useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -74,7 +74,7 @@ const ChatList = ({ visible }: ChatListProps) => {
                                 >
                                     <div className=" flex justify-center items-center w-6 h-6">
                                         <Image
-                                            className="object-cover w-full h-full rounded-full"
+                                            className="object-cover w-full h-full rounded-sm"
                                             src={item.avatar===""?"/images/chat.png":item.avatar}
                                             width={30}
                                             height={30}
