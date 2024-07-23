@@ -353,6 +353,7 @@ const useChatModule = () => {
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             try{
                 setLoading(true)
+                setQuery("")
                 const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context);
                 setResults(prev=>[...prev, result.message])
                 let preprompts = result.preprompts
