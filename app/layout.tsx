@@ -18,7 +18,7 @@ const karla = Karla({
 });
 
 export const metadata: Metadata = {
-    title: "Brainwave - AI UI Kit",
+    title: "Pro AUdio Files AI",
     description:
         "Figma UI kit designed to enhance the functionality of ChatGPT",
 };

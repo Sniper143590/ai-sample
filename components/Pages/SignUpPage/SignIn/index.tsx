@@ -67,7 +67,7 @@ const SignIn = ({ onClick }: SignInProps) => {
             </button>
             
             <button className="btn-blue btn-large w-full" type="button" onClick={handleSubmit}>
-                Sign in with Brainwave
+                Sign in
             </button>
         </>
     );
