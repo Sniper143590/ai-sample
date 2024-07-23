@@ -24,7 +24,7 @@ const useAuthFlow = () => {
   const [userEmail, setUserEmail] = useState<string>("")
   const [userPassword, setUserPassword] = useState<string>("")
   const [userPasswordConfirm, setUserPasswordConfirm] = useState<string>("")
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<any>({});
 
 //   const isSignUpPage = pathname.includes("/signup") || pathname === "/"
 //   const isSignInPage = pathname.includes("/signin")
@@ -139,7 +139,7 @@ const useAuthFlow = () => {
       localStorage.setItem("userData", "")
       router.push("/")
     })
-  }, [pathname])
+  }, [loading])
 
   return {
     userEmail,

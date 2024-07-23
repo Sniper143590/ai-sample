@@ -24,6 +24,18 @@ const Message = ({
     const handleSendClick = () => {
         handleSendButtonClick()
     }
+
+    const handleKeyDown = (event:  React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter') {
+            if (event.shiftKey) {
+                event.preventDefault(); // Prevent default Enter behavior
+                setQuery((prev) => `${prev}\n`); // Add a newline
+            } else {
+                event.preventDefault(); // Prevent default Enter behavior
+                handleSendButtonClick(); // Trigger your message sending function
+            }
+        }
+    };
     
     return (
         <div className="relative z-5 px-10 pb-6 before:absolute before:-top-6 before:left-0 before:right-6  before:pointer-events-none 2xl:px-6 2xl:pb-5 md:px-4 md:pb-4 dark:before:to-n-6 dark:before:from-n-6/0">
@@ -41,6 +53,7 @@ const Message = ({
                         value={query}
                         onChange={(e) =>setQuery(e.target.value)}
                         placeholder={placeholder || "Ask Pro Audio Files AI anything"}
+                        onKeyDown={handleKeyDown}
                     />
                     {query === "" ? (
                         <button className={`${stylesButton}`}>

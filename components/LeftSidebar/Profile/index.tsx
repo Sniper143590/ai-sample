@@ -3,7 +3,6 @@ import Image from "@/components/Image";
 import Icon from "@/components/Icon";
 import Settings from "@/components/Settings";
 import { useAuth } from "@/providers/AuthProvider";
-import { settings } from "@/constants/settings";
 import Modal from "@/components/Modal";
 
 type ProfileProps = {
@@ -49,10 +48,10 @@ const Profile = ({ visible }: ProfileProps) => {
                             </div>
                             <div className="mx-2 !w-[160px]">
                                 <div className="base2 font-semibold text-n-1 truncate">
-                                    {userData?.displayName?userData?.displayName:userData?.email}
+                                    {userData.displayName?userData.displayName:userData.email}
                                 </div>
                                 <div className="caption1 font-semibold text-n-3/50 truncate">
-                                    {userData?.email}
+                                    {userData.email}
                                 </div>
                             </div>
                             
