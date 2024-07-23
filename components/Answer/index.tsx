@@ -11,7 +11,6 @@ type AnswerProps = {
 };
 
 const Answer = ({ children, loading, time }: AnswerProps) => {
-    const {chatModule} = useChat()
     const handleCancelClick =() => {
         console.log("Cancelled@")
         // cancelGeneration();
@@ -30,7 +29,7 @@ const Answer = ({ children, loading, time }: AnswerProps) => {
                 >
                     <Image
                         className="object-cover rounded-2xl"
-                        src={chatModule.avatar===""?"/images/avatar-chat.png":chatModule.avatar}
+                        src="/images/avatar-chat.png"
                         fill
                         alt="Avatar"
                     />

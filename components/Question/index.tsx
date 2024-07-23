@@ -1,5 +1,6 @@
 import Image from "@/components/Image";
 import Document from "./Document";
+import { useAuth } from "@/providers/AuthProvider";
 
 type QuestionProps = {
     content: any;
@@ -8,7 +9,9 @@ type QuestionProps = {
     time: string;
 };
 
-const Question = ({ content, image, document, time }: QuestionProps) => (
+const Question = ({ content, image, document, time }: QuestionProps) => {
+    const {avatar} = useAuth()
+    return (
     <div className="max-w-[50rem] ml-auto">
         <div className="space-y-6 pt-6 px-6 pb-16 border-3 border-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:border-transparent dark:bg-n-5/50">
             {document && <Document value={document} />}
@@ -34,13 +37,14 @@ const Question = ({ content, image, document, time }: QuestionProps) => (
             <div className="relative w-16 h-16 ml-auto rounded-2xl overflow-hidden shadow-[0_0_0_0.25rem_#FEFEFE] dark:shadow-[0_0_0_0.25rem_#232627]">
                 <Image
                     className="object-cover"
-                    src="/images/avatar.jpg"
+                    src={avatar}
                     fill
                     alt="Avatar"
                 />
             </div>
         </div>
     </div>
-);
+)
+}
 
 export default Question;
