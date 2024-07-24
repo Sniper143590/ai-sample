@@ -1,5 +1,4 @@
 import Image from "@/components/Image";
-import Icon from "@/components/Icon";
 import Loading from "./Loading";
 import Action from "./Action";
 

@@ -37,6 +37,7 @@ export const getChatModules = async () => {
         llm_name:doc.data().llm_name,
         avatar:doc.data().avatar,
         name: doc.data().name,
+        actions:doc.data().actions,
         prompt_context: doc.data().prompt_context,
         preset_buttons: doc.data().preset_buttons,
         placeholder_text: doc.data().placeholder_text

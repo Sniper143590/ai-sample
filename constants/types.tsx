@@ -9,6 +9,7 @@ export interface ChatModule {
   avatar:string;
   llm_name:string;
   name:string;
+  actions:string[];
   placeholder_text:string;
   preset_buttons:PresetButton[];
   prompt_context:string;
