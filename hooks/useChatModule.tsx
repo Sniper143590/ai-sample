@@ -37,6 +37,7 @@ const useChatModule = () => {
 
     useEffect(() => {
         const fetchChatModules = async () => {
+            setLoading(true)
             const pathSegments = window.location.pathname.split('/');
             const lastSegment = pathSegments[pathSegments.length - 1];
             // Check if cached data exists and is not expired
@@ -59,6 +60,7 @@ const useChatModule = () => {
                 setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
                 // console.log(chatModuleWithId.preset_buttons)
             }
+            setLoading(false)
         };
         fetchChatModules()
     }, []);
