@@ -91,7 +91,7 @@ const useChatModule = () => {
         if(chatModuleWithId)
         {
             setChatModule(chatModuleWithId)
-            // setPresetButtons(chatModuleWithId.preset_buttons)
+            setPresetButtons(chatModuleWithId.preset_buttons)
 
             setQueries([])
             setResults([])
