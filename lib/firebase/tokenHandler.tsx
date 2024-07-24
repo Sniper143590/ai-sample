@@ -11,8 +11,8 @@ export const verifyToken = async () => {
         // console.log("Here >>>>> ",decodedToken);
         if (decodedToken.exp){
             if (decodedToken.exp * 1000 < Date.now()) {
-                console.log("Decoded exp ....", decodedToken.exp * 1000)
-                console.log(Date.now())
+                // console.log("Decoded exp ....", decodedToken.exp * 1000)
+                // console.log(Date.now())
                 return false; // Token expired
             } else {
                 return true; // Token is still valid

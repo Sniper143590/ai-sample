@@ -17,7 +17,7 @@ const EditProfile = ({onClose}: EditProfileProps) => {
 
     const [objectURL, setObjectURL] = useState<any>(userData?.photoURL);
     const [name, setName] = useState<string>("");
-    console.log(userData)
+    // console.log(userData)
     const handleUpload = (e: any) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
