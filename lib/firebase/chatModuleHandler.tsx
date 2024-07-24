@@ -58,7 +58,7 @@ export async function addNewChatModule(newChatModule:ChatModule) {
         placeholder_text:newChatModule.placeholder_text,
         prompt_context:newChatModule.prompt_context,
       });
-      console.log("Document written with ID: ", newChatModule._id);
+      // console.log("Document written with ID: ", newChatModule._id);
       return true;
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -75,7 +75,7 @@ export const updateChatModule = async (moduleIndex:string, newChatModule:ChatMod
       const querySnapshot = await getDocs(q);
       let docToUpdate = null;
 
-      console.log(newChatModule.avatar)
+      // console.log(newChatModule.avatar)
   
       querySnapshot.forEach((doc) => {
       if (doc.data()._id === moduleIndex) { // Check if the document's field matches the known value
@@ -93,7 +93,7 @@ export const updateChatModule = async (moduleIndex:string, newChatModule:ChatMod
               preset_buttons:newChatModule.preset_buttons,
               placeholder_text:newChatModule.placeholder_text // Replace "fieldName" with the actual field name and "NewValue" with the new value you want to set
           });
-          console.log("Document successfully updated!");
+          // console.log("Document successfully updated!");
       } else {
           console.log("No document found with the specified field value.");
       }
@@ -116,7 +116,7 @@ export async function deleteChatModuleById(_id:string) {
     querySnapshot.forEach(async (doc) => {
       // Delete each document
       await deleteDoc(doc.ref);
-      console.log(`Deleted document with ID: ${_id}`);
+      // console.log(`Deleted document with ID: ${_id}`);
     });
     return true;
 

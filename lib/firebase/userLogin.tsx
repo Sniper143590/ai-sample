@@ -10,7 +10,7 @@ const userLogin = async (email:any, password:any) => {
     if (!credential.user.emailVerified) {
       return { error: "Email is not verified" }
     }
-    console.log(credential)
+    // console.log(credential)
     localStorage.setItem("token", await credential.user.getIdToken(true))
    
     return credential

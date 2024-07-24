@@ -21,7 +21,7 @@ const updatePlaceholderText = async (moduleIndex:number, placeholderText:string)
         await updateDoc(docToUpdate, {
             placeholder_text: placeholderText // Replace "fieldName" with the actual field name and "NewValue" with the new value you want to set
         });
-        console.log("Document successfully updated!");
+        // console.log("Document successfully updated!");
     } else {
         console.log("No document found with the specified field value.");
     }

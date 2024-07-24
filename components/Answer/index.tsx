@@ -10,7 +10,7 @@ type AnswerProps = {
 
 const Answer = ({ children, loading, time }: AnswerProps) => {
     const handleCancelClick =() => {
-        console.log("Cancelled@")
+        // console.log("Cancelled@")
         // cancelGeneration();
     }
     return (

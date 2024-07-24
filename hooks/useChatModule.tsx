@@ -366,7 +366,7 @@ const useChatModule = () => {
     }
 
     const getResponseFunc = async (item?:PresetButton) => {
-            console.log(query)
+            // console.log(query)
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             try{
                 setLoading(true)

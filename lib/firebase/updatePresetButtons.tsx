@@ -22,7 +22,7 @@ const updatePresetButtons = async (moduleIndex:number, presetButtons:PresetButto
         await updateDoc(docToUpdate, {
             preset_buttons: presetButtons // Replace "fieldName" with the actual field name and "NewValue" with the new value you want to set
         });
-        console.log("Document successfully updated!");
+        // console.log("Document successfully updated!");
     } else {
         console.log("No document found with the specified field value.");
     }
