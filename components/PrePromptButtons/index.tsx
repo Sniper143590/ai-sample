@@ -11,14 +11,17 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
         handleButtonClick(item)
     }
     return (
-        <div className="flex flex-col mb-3 px-20 w-full">
-            {presetButtons && presetButtons.map((item, index) => (
-                <button key={index} className="btn-normal mt-1 w-[calc(100%-1rem)] 2xl:mx-2 border" onClick={()=>handleClick(item)}>
-                    {item.text}
-                </button>
-                )
-            )}
-        </div>
+        <div className="flex flex-wrap items-center justify-center mb-3 md:px-5 px-20 w-full"> 
+        {presetButtons && presetButtons.map((item, index) => (
+          <button 
+            key={index} 
+            className="btn-normal mt-1 w-2/5 md:w-full mx-2 border truncate" 
+            onClick={() => handleClick(item)}
+          >
+            {item.text}
+          </button>
+        ))}
+      </div>
     )
 }
 

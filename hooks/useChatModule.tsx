@@ -27,8 +27,9 @@ const useChatModule = () => {
     const [presetButtons, setPresetButtons] = useState<PresetButton[]>([])
     const [originalPresetButtons, setOriginalPresetButtons] = useState<PresetButton[]>([]);
     const [placeholderText, setPlaceholderText] = useState<string>("")
+    const [actions, setActions] = useState<string[]>([])
     
-    const [chatModule, setChatModule] = useState<ChatModule>({_id:"", name:"",llm_name:"", prompt_context:"", placeholder_text:"", avatar:"", preset_buttons:[]} as ChatModule);
+    const [chatModule, setChatModule] = useState<ChatModule>({_id:"", name:"",llm_name:"", prompt_context:"", placeholder_text:"",actions:[], avatar:"", preset_buttons:[]} as ChatModule);
     const [chatModules, setChatModules] = useState<ChatModule[]>([]);
 
     const { startOperation, cancelOperation } = getResponseFromLlm();
@@ -46,7 +47,7 @@ const useChatModule = () => {
     
             const result = await getChatModules();
             // Store the fetched data along with a timestamp for expiration check
-            localStorage.setItem('chatModules', JSON.stringify({ data: result, timestamp: new Date().getTime() }));
+            // localStorage.setItem('chatModules', JSON.stringify({ data: result, timestamp: new Date().getTime() }));
             setChatModules(result);
             const chatModuleWithId = result.find(module => module._id === lastSegment);
             if (chatModuleWithId){
@@ -161,7 +162,7 @@ const useChatModule = () => {
     const notifyExceedMaxNumberButtons =() => {
         toast(() => (
             <Notify iconClose>
-                <div className="mr-6 ml-3 h6 ml-4">You can have a maximum of 5 buttons for a chat module!</div>
+                <div className="mr-6 ml-3 h6 ml-4">You can have a maximum of 6 buttons for a chat module!</div>
             </Notify>
           ));
     }
