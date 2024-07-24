@@ -9,14 +9,14 @@ interface ResponseData {
   }
 
 const getResponseFromLlm = (): {
-    startOperation: (query: string, llm: string, promptContext: string) => Promise<ResponseData>;
+    startOperation: (query: string, llm: string, promptContext: string, lastThreeConversations:{query:string, answer:string}[]) => Promise<ResponseData>;
     cancelOperation: () => void;
   }  => {
 
     // const cancelTokenSourceRef = useRef<CancelTokenSource>(axios.CancelToken.source());
   
 
-    const startOperation = async (query:string, llm:string, promptContext:string) => {
+    const startOperation = async (query:string, llm:string, promptContext:string, lastThreeConversations:{query:string, answer:string}[]) => {
         try {
             const controller = new AbortController();
             const signal = controller.signal;
@@ -26,8 +26,6 @@ const getResponseFromLlm = (): {
             const headers = {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': "1",
-            
-
           };
           
     
@@ -38,10 +36,11 @@ const getResponseFromLlm = (): {
             query,
             llm,
             promptContext,
+            lastThreeConversations,
             // signal: signal,
           }, { headers, cancelToken: source.token, signal: signal });
-          controller.abort();
-          source.cancel('Operation canceled by the user.');
+          // controller.abort();
+          // source.cancel('Operation canceled by the user.');
 
           return response.data;
         } catch (error:any) {

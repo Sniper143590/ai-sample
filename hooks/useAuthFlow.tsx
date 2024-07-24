@@ -95,12 +95,12 @@ const useAuthFlow = () => {
 
   const logout = async () => {
     try {
+      router.push("/")
       setLoading(true)
       await auth.signOut()
-      localStorage.setItem("token", "")
-      localStorage.setItem("userData", "")
-      router.push("/")
       setLoading(false)
+      return
+
     } catch (err) {
       handleTxError(err)
       setLoading(false)
@@ -126,6 +126,7 @@ const useAuthFlow = () => {
   
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
+      console.log("done")
       if (user) {
         const data = await createUserFromCredential(user)
         setUserEmail(user.email || "")
@@ -133,13 +134,15 @@ const useAuthFlow = () => {
         setUserName(user.displayName?user.displayName:"")
         setAvatar(user.photoURL?user.photoURL:"")
         localStorage.setItem("userData", JSON.stringify(data))
-        return
-      }
-      setUserData(null)
-      localStorage.setItem("userData", "")
-      router.push("/")
+      } else {
+        router.push("/");
+        localStorage.setItem("token", "");
+        localStorage.setItem("userData", JSON.stringify(""));
+        setUserData(null);
+    }
+    
     })
-  }, [loading])
+  }, [])
 
   return {
     userEmail,

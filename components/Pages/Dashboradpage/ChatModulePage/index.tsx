@@ -5,9 +5,9 @@ import ChatPage from "./ChatPage"
 const ChatModulePage = () => {
    
     return (
-            <ChatModuleLayout>
+            // <ChatModuleLayout>
                 <ChatPage />
-            </ChatModuleLayout>
+            // </ChatModuleLayout>
     )
 }
 

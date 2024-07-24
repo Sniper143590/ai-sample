@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useRef } from "react";
 import ModalShareChat from "@/components/ModalShareChat";
 

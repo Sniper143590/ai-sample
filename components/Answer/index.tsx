@@ -1,8 +1,7 @@
 import Image from "@/components/Image";
-import { useChat } from "@/providers/ChatModuleProvider";
 import Icon from "@/components/Icon";
 import Loading from "./Loading";
-import Actions from "./Actions";
+import Action from "./Action";
 
 type AnswerProps = {
     children?: React.ReactNode;
@@ -47,7 +46,7 @@ const Answer = ({ children, loading, time }: AnswerProps) => {
                         <div className="caption1 text-n-4/50 dark:text-n-4">
                             {time}
                         </div>
-                        <Actions />
+                        <Action visible={!loading}/>
                     </div>
                 )}
             </div>

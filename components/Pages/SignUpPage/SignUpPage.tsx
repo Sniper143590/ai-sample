@@ -1,7 +1,5 @@
-'use client'
-
-import AuthForm from "./AuthForm"
 import Image from "@/components/Image"
+import AuthForm from "./AuthForm"
 
 const SignUpPage = () => {
 
