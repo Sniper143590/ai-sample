@@ -8,11 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { addNewChatModule, getChatModules, updateChatModule, deleteChatModuleById } from "@/lib/firebase/chatModuleHandler";
 import { uploadImage } from "@/lib/firebase/storageHandler";
 import imageCompression from 'browser-image-compression';
-import { usePathname } from "next/navigation";
+import React from "react";
 
 const useChatModule = () => {
     const [query, setQuery] = useState("")
+    const [loaded, setLoaded] = useState(false)
     const [queries, setQueries] = useState<{query:string, time:string}[]>([])
+    const [conversations, setConversations] = useState<{query:string, answer:string}[]>([])
     const [results, setResults] = useState<string[]>([])
     const [loading, setLoading] = useState(false)
     const [moduleIndex, setModuleIndex] = useState<string>("");
@@ -33,6 +35,8 @@ const useChatModule = () => {
 
     useEffect(() => {
         const fetchChatModules = async () => {
+            const pathSegments = window.location.pathname.split('/');
+            const lastSegment = pathSegments[pathSegments.length - 1];
             // Check if cached data exists and is not expired
             const cachedData = localStorage.getItem('chatModules');
             if (cachedData) {
@@ -44,9 +48,6 @@ const useChatModule = () => {
             // Store the fetched data along with a timestamp for expiration check
             localStorage.setItem('chatModules', JSON.stringify({ data: result, timestamp: new Date().getTime() }));
             setChatModules(result);
-
-            const pathSegments = window.location.pathname.split('/');
-            const lastSegment = pathSegments[pathSegments.length - 1];
             const chatModuleWithId = result.find(module => module._id === lastSegment);
             if (chatModuleWithId){
                 setModuleIndex(lastSegment)
@@ -55,7 +56,7 @@ const useChatModule = () => {
                 console.log(chatModuleWithId.preset_buttons)
             }
         };
-        fetchChatModules();
+        fetchChatModules()
     }, []);
     
     function getCurrentTime(): string {
@@ -72,6 +73,7 @@ const useChatModule = () => {
 
     const setChatModuleFromId = (chatModuleId:string) => {
         const chatModuleWithId = chatModules.find(module => module._id === chatModuleId);
+        console.log(chatModuleWithId)
         if (chatModuleWithId) {
             setName(chatModuleWithId.name)
             setLlm(chatModuleWithId.llm_name)
@@ -80,6 +82,20 @@ const useChatModule = () => {
             setPlaceholderText(chatModuleWithId.placeholder_text)
             setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
+            
+        }
+    }
+
+    const selectChatModuleFromId = (id:string) => {
+        const chatModuleWithId = chatModules.find(module => module._id === id);
+        if(chatModuleWithId)
+        {
+            setChatModule(chatModuleWithId)
+            // setPresetButtons(chatModuleWithId.preset_buttons)
+
+            setQueries([])
+            setResults([])
+            setConversations([])
         }
     }
 
@@ -349,13 +365,15 @@ const useChatModule = () => {
     }
 
     const getResponseFunc = async (item?:PresetButton) => {
-          
+            console.log(query)
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             try{
                 setLoading(true)
                 setQuery("")
-                const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context);
+                const lastThreeConversations = conversations.slice(-3);
+                const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations);
                 setResults(prev=>[...prev, result.message])
+                setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:result.message}])
                 let preprompts = result.preprompts
                 const updatedPrePrompts = preprompts.map((item:string, index:number)=>
                     {
@@ -364,6 +382,7 @@ const useChatModule = () => {
                 );
                 setPresetButtons(updatedPrePrompts)
             } catch {
+                setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
                 setResults(prev=>[...prev, "Network Error"])
             }
             setLoading(false)
@@ -434,6 +453,8 @@ const useChatModule = () => {
         moduleIndex,
         deleteChatModuleWithId,
         notifyExceedMaxNumberButtons,
+        loaded,
+        selectChatModuleFromId,
     }
 }
 

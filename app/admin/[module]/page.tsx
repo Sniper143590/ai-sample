@@ -1,19 +1,19 @@
 "use client"
 
 import ChatModulePage from "@/components/Pages/Dashboradpage/ChatModulePage";
-import ChatModuleProvider from "@/providers/ChatModuleProvider";
-import AuthProvider from "@/providers/AuthProvider";
-import withAuth from "@/hooks/withAuth";
+import ChatModuleLayout from "@/components/Layout/ChatModuleLayout"
 
 const Module = () => {
 
     return (
-        <AuthProvider>
-            <ChatModuleProvider>
-                <ChatModulePage />
-            </ChatModuleProvider>
-        </AuthProvider>
+        // <AuthProvider>
+        //     <ChatModuleProvider>
+                <ChatModuleLayout>
+                    <ChatModulePage />
+                </ChatModuleLayout>
+        //      </ChatModuleProvider>
+        // </AuthProvider>
     )
 }
 
-export default withAuth(Module)
+export default Module

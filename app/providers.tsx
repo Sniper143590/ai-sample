@@ -2,13 +2,19 @@
 
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { Toaster, resolveValue } from "react-hot-toast";
+import AuthProvider from "@/providers/AuthProvider";
+import ChatModuleProvider from "@/providers/ChatModuleProvider";
 import theme from "./theme";
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <>
                 <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-                <ChakraProvider>{children}</ChakraProvider>
+                <AuthProvider>
+                    <ChatModuleProvider>
+                        <ChakraProvider>{children}</ChakraProvider>
+                    </ChatModuleProvider>
+                </AuthProvider>
                 <Toaster
                     containerStyle={{
                         bottom: 40,

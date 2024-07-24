@@ -13,8 +13,8 @@ const Profile = ({ visible }: ProfileProps) => {
     const { logout, userData } = useAuth()
     const [visibleSettings, setVisibleSettings] = useState<boolean>(false);
 
-    const handleLogOutClick = () => {
-        logout()
+    const handleLogOutClick = async () => {
+        await logout()
     }
     const handleSettingsClick = () => {
         setVisibleSettings(true)

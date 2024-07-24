@@ -61,7 +61,7 @@ const AddChatList = ({ onCancelFunc, chatModuleId }: AddChatListProps) => {
                 <div className="relative p-1 flex items-center justify-center bg-primary-1 w-[70px] h-[70px] rounded-[1rem]">
                     <input className="absolute inset-0 z-10 opacity-0" type="file" accept="image/*" onChange={(e)=>handleIconChageClick(e)} disabled={loading} /> 
                     <div className="w-full h-full  border-n-1 rounded-xl">
-                        <div className="flex justify-center items-center mt-1 w-8 h-8 mx-auto rounded-md">
+                        <div className="flex justify-center items-center mt-4 w-8 h-8 mx-auto rounded-md">
                             {avatarUrl?(<Image
                                 className="object-cover rounded-md"
                                 src={avatarUrl}

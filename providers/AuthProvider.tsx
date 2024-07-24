@@ -1,3 +1,5 @@
+"use client"
+
 import { createContext, ReactNode, useContext, useMemo } from "react"
 import useAuthFlow from "../hooks/useAuthFlow"
 

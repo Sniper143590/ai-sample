@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import Icon from "@/components/Icon";
 import Modal from "@/components/Modal";
@@ -17,7 +16,8 @@ const ChatList = ({ visible }: ChatListProps) => {
     const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
     const pathname = usePathname();
-    const { chatModules, setChatModuleFromId, initChatModuleInfo, deleteChatModuleWithId } = useChat();
+    const router = useRouter()
+    const { chatModules, setChatModuleFromId, selectChatModuleFromId, initChatModuleInfo, deleteChatModuleWithId } = useChat();
     const [chatModuleId, setChatModuleId] = useState("")
 
     const handleEditClick = (id:string) => {
@@ -34,6 +34,11 @@ const ChatList = ({ visible }: ChatListProps) => {
 
     const handleDelClick = (id:string) => {
         deleteChatModuleWithId(id)
+    }
+    
+    const handleModuleClick = (id:string) => {
+        selectChatModuleFromId(id)
+        router.push(`/admin/${id}`)
     }
     return (
         <>
@@ -60,9 +65,9 @@ const ChatList = ({ visible }: ChatListProps) => {
                     >
                         <Disclosure.Panel className={`${visible && "px-2"}`}>
                             {chatModules.map((item) => (
-                                <Link
+                                <div
                                     className={twMerge(
-                                        `flex items-center w-full h-12 rounded-lg text-n-3/75 base2 font-semibold transition-colors hover:text-n-1 ${
+                                        `cursor-pointer flex items-center w-full h-12 rounded-lg text-n-3/75 base2 font-semibold transition-colors hover:text-n-1 ${
                                             visible ? "px-3" : "px-5"
                                         } ${
                                             pathname.includes(item._id) &&
@@ -70,7 +75,7 @@ const ChatList = ({ visible }: ChatListProps) => {
                                         }`
                                     )}
                                     key={item._id}
-                                    href={`/admin/${item._id}`}
+                                    onClick={()=>{handleModuleClick(item._id)}}
                                 >
                                     <div className=" flex justify-center items-center w-6 h-6">
                                         <Image
@@ -97,7 +102,7 @@ const ChatList = ({ visible }: ChatListProps) => {
                                             </button>
                                         </>
                                     )}
-                                </Link>
+                                </div>
                             ))}
                         </Disclosure.Panel>
                     </Transition>

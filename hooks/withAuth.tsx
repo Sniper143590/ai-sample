@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { verifyToken } from '@/lib/firebase/tokenHandler';
@@ -15,7 +17,6 @@ function withAuth(Component:any) {
                 } else {
                     setIsAuthenticated(false)
                     router.push("/")
-                    
                 }
                 // const userData =localStorage.getItem('userData');
                 // if (userData!=="") {
@@ -30,7 +31,7 @@ function withAuth(Component:any) {
             };
 
             checkAuth();
-        }, [router]);
+        }, []);
 
         // Show a loading state while authentication is being checked
        

@@ -8,7 +8,7 @@ export const verifyToken = async () => {
     if (token&&token!==""){
         const decodedToken = await jwt.decode(token) as JwtPayload; 
         // You can access the decoded token's payload
-        console.log("Here >>>>> ",decodedToken);
+        // console.log("Here >>>>> ",decodedToken);
         if (decodedToken.exp){
             if (decodedToken.exp * 1000 < Date.now()) {
                 console.log("Decoded exp ....", decodedToken.exp * 1000)

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { createContext, useContext, useMemo, ReactNode  } from 'react'
 import useChatModule from '@/hooks/useChatModule'
 import { PresetButton } from '@/constants/types';
@@ -42,7 +44,9 @@ const ChatContext = createContext<{
     notifyEmptyPresetButtonText:()=>void;
     moduleIndex:string;
     deleteChatModuleWithId:(chatModuleId:string)=>void;
+    selectChatModuleFromId:(id:string)=>void;
     notifyExceedMaxNumberButtons:()=>void;
+    loaded:boolean;
 } | null>(null)
 
 type ChatModuleProviderProps = {
