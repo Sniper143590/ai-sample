@@ -27,9 +27,10 @@ const useChatModule = () => {
     const [presetButtons, setPresetButtons] = useState<PresetButton[]>([])
     const [originalPresetButtons, setOriginalPresetButtons] = useState<PresetButton[]>([]);
     const [placeholderText, setPlaceholderText] = useState<string>("")
-    const [actions, setActions] = useState<string[]>([])
+    const [actions, setActions] = useState<{id:number, prompt:string}[]>([])
+    const [presetButtonPrompt, setPresetButtonPrompt] = useState("")
     
-    const [chatModule, setChatModule] = useState<ChatModule>({_id:"", name:"",llm_name:"", prompt_context:"", placeholder_text:"",actions:[], avatar:"", preset_buttons:[]} as ChatModule);
+    const [chatModule, setChatModule] = useState<ChatModule>({_id:"", name:"",llm_name:"", prompt_context:"", placeholder_text:"",actions:[], presetButtonPrompt:"", avatar:"", preset_buttons:[]} as ChatModule);
     const [chatModules, setChatModules] = useState<ChatModule[]>([]);
 
     const { startOperation, cancelOperation } = getResponseFromLlm();
@@ -39,11 +40,11 @@ const useChatModule = () => {
             const pathSegments = window.location.pathname.split('/');
             const lastSegment = pathSegments[pathSegments.length - 1];
             // Check if cached data exists and is not expired
-            const cachedData = localStorage.getItem('chatModules');
-            if (cachedData) {
-                const parsedData = JSON.parse(cachedData);
-                setChatModules(parsedData.data);
-            }
+            // const cachedData = localStorage.getItem('chatModules');
+            // if (cachedData) {
+            //     const parsedData = JSON.parse(cachedData);
+            //     setChatModules(parsedData.data);
+            // }
     
             const result = await getChatModules();
             // Store the fetched data along with a timestamp for expiration check
@@ -54,7 +55,9 @@ const useChatModule = () => {
                 setModuleIndex(lastSegment)
                 setChatModule(chatModuleWithId)
                 setPresetButtons(chatModuleWithId.preset_buttons)
-                console.log(chatModuleWithId.preset_buttons)
+                setActions(chatModuleWithId.actions)
+                setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
+                // console.log(chatModuleWithId.preset_buttons)
             }
         };
         fetchChatModules()
@@ -79,6 +82,8 @@ const useChatModule = () => {
             setName(chatModuleWithId.name)
             setLlm(chatModuleWithId.llm_name)
             setAvatar(null)
+            setActions(chatModuleWithId.actions)
+            setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
             setAvatarUrl(chatModuleWithId.avatar)
             setPlaceholderText(chatModuleWithId.placeholder_text)
             setPresetButtons(chatModuleWithId.preset_buttons)
@@ -92,8 +97,9 @@ const useChatModule = () => {
         if(chatModuleWithId)
         {
             setChatModule(chatModuleWithId)
+            setActions(chatModuleWithId.actions)
+            setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
             setPresetButtons(chatModuleWithId.preset_buttons)
-
             setQueries([])
             setResults([])
             setConversations([])
@@ -154,7 +160,7 @@ const useChatModule = () => {
     const notifyEmptyPresetButtonText =() => {
         toast(() => (
             <Notify iconClose>
-                <div className="mr-6 ml-3 h6 ml-4">Preset Button Text is required!</div>
+                <div className="mr-6 ml-3 h6 ml-4">The field is required!</div>
             </Notify>
           ));
     }
@@ -162,7 +168,7 @@ const useChatModule = () => {
     const notifyExceedMaxNumberButtons =() => {
         toast(() => (
             <Notify iconClose>
-                <div className="mr-6 ml-3 h6 ml-4">You can have a maximum of 6 buttons for a chat module!</div>
+                <div className="mr-6 ml-3 h6 ml-4">You can have a maximum of 6 items for a chat module!</div>
             </Notify>
           ));
     }
@@ -228,6 +234,8 @@ const useChatModule = () => {
         setAvatar(null)
         setAvatarUrl("")
         setLlm("")
+        setActions([])
+        setPresetButtonPrompt("")
         setRole("")
         setPlaceholderText("")
         setPresetButtons([])
@@ -270,6 +278,8 @@ const useChatModule = () => {
             name:name,
             avatar:url,
             llm_name:llm,
+            actions:actions,
+            presetButtonPrompt:presetButtonPrompt,
             placeholder_text:placeholderText,
             preset_buttons:presetButtons,
             prompt_context:role
@@ -339,6 +349,8 @@ const useChatModule = () => {
             name:name,
             llm_name:llm,
             avatar:url,
+            actions:actions,
+            presetButtonPrompt:presetButtonPrompt,
             placeholder_text:placeholderText,
             preset_buttons:presetButtons,
             prompt_context:role
@@ -372,7 +384,7 @@ const useChatModule = () => {
                 setLoading(true)
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
-                const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations);
+                const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt);
                 setResults(prev=>[...prev, result.message])
                 setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:result.message}])
                 let preprompts = result.preprompts
@@ -456,6 +468,10 @@ const useChatModule = () => {
         notifyExceedMaxNumberButtons,
         loaded,
         selectChatModuleFromId,
+        actions,
+        setActions,
+        presetButtonPrompt,
+        setPresetButtonPrompt,
     }
 }
 

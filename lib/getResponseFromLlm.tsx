@@ -9,14 +9,14 @@ interface ResponseData {
   }
 
 const getResponseFromLlm = (): {
-    startOperation: (query: string, llm: string, promptContext: string, lastThreeConversations:{query:string, answer:string}[]) => Promise<ResponseData>;
+    startOperation: (query: string, llm: string, promptContext: string, lastThreeConversations:{query:string, answer:string}[], presetButtonPrompt:string) => Promise<ResponseData>;
     cancelOperation: () => void;
   }  => {
 
     // const cancelTokenSourceRef = useRef<CancelTokenSource>(axios.CancelToken.source());
   
 
-    const startOperation = async (query:string, llm:string, promptContext:string, lastThreeConversations:{query:string, answer:string}[]) => {
+    const startOperation = async (query:string, llm:string, promptContext:string, lastThreeConversations:{query:string, answer:string}[], presetButtonPrompt:string) => {
         try {
             const controller = new AbortController();
             const signal = controller.signal;
@@ -37,6 +37,7 @@ const getResponseFromLlm = (): {
             llm,
             promptContext,
             lastThreeConversations,
+            presetButtonPrompt,
             // signal: signal,
           }, { headers, cancelToken: source.token, signal: signal });
           // controller.abort();

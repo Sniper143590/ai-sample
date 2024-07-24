@@ -31,13 +31,16 @@ const Field = ({
     disabled,
 }: FieldProps) => {
     const handleKeyDown = (event: any) => {
-        const remainingChars = 880 - value.length;
-        if (remainingChars <= 0 && event.key !== "Backspace") {
-            event.preventDefault();
+        if(value!==""){
+            const remainingChars = 880 - value.length;
+            if (remainingChars <= 0 && event.key !== "Backspace") {
+                event.preventDefault();
+            }
         }
+        
     };
 
-    const remainingChars = 880 - value.length;
+    const remainingChars = 880 - value?.length;
 
     return (
         <div className={`${className}`}>

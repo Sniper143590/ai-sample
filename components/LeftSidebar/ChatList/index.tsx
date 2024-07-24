@@ -40,6 +40,7 @@ const ChatList = ({ visible }: ChatListProps) => {
         selectChatModuleFromId(id)
         router.push(`/admin/${id}`)
     }
+
     return (
         <>
             <div className="mb-auto pb-6">
@@ -62,12 +63,12 @@ const ChatList = ({ visible }: ChatListProps) => {
                         leave="transition duration-75 ease-out"
                         leaveFrom="transform scale-100 opacity-100"
                         leaveTo="transform scale-95 opacity-0"
-                    >
+                        >
                         <Disclosure.Panel className={`${visible && "px-2"}`}>
                             {chatModules.map((item) => (
-                                <div
+                                <button
                                     className={twMerge(
-                                        `cursor-pointer flex items-center w-full h-12 rounded-lg text-n-3/75 base2 font-semibold transition-colors hover:text-n-1 ${
+                                        `cursor-pointer flex items-center  w-full h-12 rounded-lg text-n-3/75 base2 font-semibold transition-colors hover:text-n-1 ${
                                             visible ? "px-3" : "px-5"
                                         } ${
                                             pathname.includes(item._id) &&
@@ -91,10 +92,10 @@ const ChatList = ({ visible }: ChatListProps) => {
                                             <div className="ml-5">
                                                 {item.name}
                                             </div>
-                                            <button className="ml-auto base2 font-semibold text-n-4" onClick={(event)=>{event.preventDefault();handleEditClick(item._id)}} title="Edit">
+                                            <button className="ml-auto base2 z-10 font-semibold text-n-4" onClick={(event)=>{event.stopPropagation();handleEditClick(item._id)}} title="Edit">
                                                 <Icon className="w-5 h-5 fill-n-4 transition-colors group-hover:fill-accent-1" name="scale" />
                                             </button>
-                                            <button className="ml-2 base2 font-semibold text-n-4" onClick={(event)=>{event.preventDefault();handleDelClick(item._id)}} title="Delete">
+                                            <button className="ml-2 base2 z-10 font-semibold text-n-4" onClick={(event)=>{event.stopPropagation();handleDelClick(item._id)}} title="Delete">
                                                 <Icon
                                                     className="w-5 h-5 fill-n-4 transition-colors group-hover:fill-accent-1"
                                                     name="trash"
@@ -102,7 +103,7 @@ const ChatList = ({ visible }: ChatListProps) => {
                                             </button>
                                         </>
                                     )}
-                                </div>
+                                </button>
                             ))}
                         </Disclosure.Panel>
                     </Transition>
@@ -126,7 +127,7 @@ const ChatList = ({ visible }: ChatListProps) => {
                 classButtonClose="absolute top-6 right-6 w-10 h-10 rounded-full bg-n-2 md:right-5 dark:bg-n-4/25 dark:fill-n-4 dark:hover:fill-n-1"
                 visible={visibleModal}
                 onClose={() => setVisibleModal(false)}
-            > 
+                > 
                 <AddChatList onCancelFunc={() => setVisibleModal(false)} chatModuleId={chatModuleId}/>
             </Modal>
         </>

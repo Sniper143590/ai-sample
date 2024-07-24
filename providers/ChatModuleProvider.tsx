@@ -47,6 +47,10 @@ const ChatContext = createContext<{
     selectChatModuleFromId:(id:string)=>void;
     notifyExceedMaxNumberButtons:()=>void;
     loaded:boolean;
+    actions:{id:number, prompt:string}[];
+    setActions:React.Dispatch<React.SetStateAction<{id:number, prompt:string}[]>>;
+    presetButtonPrompt:string;
+    setPresetButtonPrompt:React.Dispatch<React.SetStateAction<string>>;
 } | null>(null)
 
 type ChatModuleProviderProps = {
