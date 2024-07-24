@@ -1,6 +1,5 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 import { auth } from "./db"
-import createUserFromCredential from "../createUserFromCredential"
 import handleTxError from "../handleTxError"
 
 const signInWithGoogle = async () => {
@@ -8,7 +7,7 @@ const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider()
     const response = await signInWithPopup(auth, provider)
     const credential = await GoogleAuthProvider.credentialFromResult(response)
-    console.log(credential)
+    // console.log(credential)
     if(credential?.idToken)
     localStorage.setItem("token", credential?.idToken)
     return credential

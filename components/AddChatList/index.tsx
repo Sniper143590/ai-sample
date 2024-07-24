@@ -6,6 +6,7 @@ import { useChat } from "@/providers/ChatModuleProvider";
 import Table from "../Table";
 import Image from "../Image";
 import Icon from "../Icon";
+import ActionTable from "./ActionTable";
 
 type AddChatListProps = {
     onCancelFunc: () => void;
@@ -14,7 +15,7 @@ type AddChatListProps = {
 
 const AddChatList = ({ onCancelFunc, chatModuleId }: AddChatListProps) => {
     
-    const { loading, name, setName, setAvatar, avatarUrl, setAvatarUrl, llm, setLlm, role, setRole, presetButtons, setPresetButtons, placeholderText, setPlaceholderText, addChatModule, updateChatModuleWithId} = useChat();
+    const { loading, name, setName, setAvatar, avatarUrl, setAvatarUrl, llm, setLlm, role, setRole, presetButtons, setPresetButtons, actions, setActions, presetButtonPrompt, setPresetButtonPrompt,  placeholderText, setPlaceholderText, addChatModule, updateChatModuleWithId} = useChat();
 
     const handleIconChageClick = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -102,6 +103,14 @@ const AddChatList = ({ onCancelFunc, chatModuleId }: AddChatListProps) => {
             <div className="flex flex-row gap-3 items-center">
                 <div className="base2 font-semibold">Placeholder* </div>
                 <input className="w-full h-13 px-3.5 bg-n-2 border-2 border-n-2 rounded-xl base2  text-n-7 outline-none transition-colors placeholder:text-n-4/50 focus:bg-transparent dark:bg-n-6 dark:border-n-6 dark:text-n-3 dark:focus:bg-transparent" value={placeholderText} onChange={(e)=>setPlaceholderText(e.target.value)} disabled={loading} /> 
+            </div>
+            <div className="flex flex-row gap-3 items-center">
+                <div className="base2 font-semibold">Follow Ups Prompt</div>
+                <input className="w-full h-13 px-3.5 bg-n-2 border-2 border-n-2 rounded-xl base2  text-n-7 outline-none transition-colors placeholder:text-n-4/50 focus:bg-transparent dark:bg-n-6 dark:border-n-6 dark:text-n-3 dark:focus:bg-transparent" value={presetButtonPrompt} onChange={(e)=>setPresetButtonPrompt(e.target.value)} disabled={loading} /> 
+            </div>
+            <div className="flex flex-col">
+                <div className="base2 font-semibold">Actions</div>
+                <ActionTable onChange={setActions} actions={actions} disabled={loading}/>
             </div>
             <div className="flex flex-col">
                 <div className="base2 font-semibold">Preset Buttons</div>

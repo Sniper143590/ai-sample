@@ -38,6 +38,7 @@ export const getChatModules = async () => {
         avatar:doc.data().avatar,
         name: doc.data().name,
         actions:doc.data().actions,
+        presetButtonPrompt:doc.data().presetButtonPrompt,
         prompt_context: doc.data().prompt_context,
         preset_buttons: doc.data().preset_buttons,
         placeholder_text: doc.data().placeholder_text
@@ -54,6 +55,8 @@ export async function addNewChatModule(newChatModule:ChatModule) {
         avatar:newChatModule.avatar,
         llm_name:newChatModule.llm_name,
         name:newChatModule.name,
+        actions:newChatModule.actions,
+        presetButtonPrompt:newChatModule.presetButtonPrompt,
         preset_buttons:newChatModule.preset_buttons,
         placeholder_text:newChatModule.placeholder_text,
         prompt_context:newChatModule.prompt_context,
@@ -89,6 +92,8 @@ export const updateChatModule = async (moduleIndex:string, newChatModule:ChatMod
               name:newChatModule.name,
               llm_name:newChatModule.llm_name,
               avatar:newChatModule.avatar,
+              actions:newChatModule.actions,
+              presetButtonPrompt:newChatModule.presetButtonPrompt,
               prompt_context:newChatModule.prompt_context,
               preset_buttons:newChatModule.preset_buttons,
               placeholder_text:newChatModule.placeholder_text // Replace "fieldName" with the actual field name and "NewValue" with the new value you want to set

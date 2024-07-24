@@ -5,14 +5,14 @@ import Action from "./Action";
 type AnswerProps = {
     children?: React.ReactNode;
     loading?: boolean;
+    isLast?:boolean;
     time?: string;
 };
 
-const Answer = ({ children, loading, time }: AnswerProps) => {
-    const handleCancelClick =() => {
-        // console.log("Cancelled@")
-        // cancelGeneration();
-    }
+const Answer = ({ children, loading, time, isLast }: AnswerProps) => {
+
+    // console.log(isLast)
+    
     return (
         <div className="max-w-[50rem]">
             <div className="pt-6 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7">
@@ -32,12 +32,13 @@ const Answer = ({ children, loading, time }: AnswerProps) => {
                         alt="Avatar"
                     />
                 </div>
-                {loading && (
+                {(!loading && isLast) && (
+                    
                     <div className="flex items-center">
                         <div className="caption1 text-n-4/50 dark:text-n-4">
                             {time}
                         </div>
-                        <Action visible={!loading}/>
+                        <Action />
                     </div>
                 )}
             </div>

@@ -28,7 +28,7 @@ const ChatPage = () => {
                     <div key={index}>
                         <Question content={item.query} time={item.time} />
                         {results[index]?(
-                            <Answer><div key={index} dangerouslySetInnerHTML={{ __html: formatText(results[index]) }} /> </Answer>
+                            <Answer isLast={(queries.length-1)===index}><div key={index} dangerouslySetInnerHTML={{ __html: formatText(results[index]) }} /> </Answer>
                         ):
                         (
                             <Answer loading />

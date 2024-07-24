@@ -1,22 +1,10 @@
-import { toast } from "react-hot-toast";
-import Notify from "@/components/Notify";
 import { useChat } from "@/providers/ChatModuleProvider";
 
-type ActionProps = {
-    visible?:boolean;
-};
+const Action = () => {
 
-const Action = ({visible=true}: ActionProps) => {
-    const { getResponseFunc} = useChat()
-
-    const handleClickSimpler = () => {
-        getResponseFunc({_id:0, text:"Make it simpler", prompt:"Make it simpler"})
-    }
-    const handleClickMore = () => {
-        getResponseFunc({_id:0, text:"Make it more advanced", prompt:"Make it more advanced"})
-    }
-    const handleClickExample = () => {
-        getResponseFunc({_id:0, text:"Give me an example", prompt:"Give me an example"})
+    const { getResponseFunc, actions} = useChat()
+    const handleActionClick = (value:string) => {
+        getResponseFunc({_id:0, text:value, prompt:value})
     }
 
     const styleButton: string =
@@ -24,16 +12,17 @@ const Action = ({visible=true}: ActionProps) => {
 
     return (
         <>
-            {visible&& (
-                <>
-                    <button className={styleButton} onClick={handleClickSimpler}>Make it simpler</button>
-                    <button className={styleButton} onClick={handleClickMore}>Make it more advanced</button>
-                    <button className={styleButton} onClick={handleClickExample}>Give me an example</button>
-                </>
-            )}
+            
+            {
+                actions.map((item, index)=>(
+                    <button key={index} className={styleButton} onClick={()=>handleActionClick(item.prompt)}>{item.prompt}</button>
+                ))
+                
+            }
             
         </>
     );
 };
+
 
 export default Action;
