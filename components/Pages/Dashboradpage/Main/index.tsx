@@ -1,8 +1,4 @@
-import { useState } from "react";
-// import Message from "@/components/Message";
 import Menu from "@/components/Menu";
-
-import { navigation } from "@/constants/navigation";
 
 type MainProps = {};
 
