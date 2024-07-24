@@ -48,10 +48,10 @@ const Profile = ({ visible }: ProfileProps) => {
                             </div>
                             <div className="mx-2 !w-[160px]">
                                 <div className="base2 font-semibold text-n-1 truncate">
-                                    {userData.displayName?userData.displayName:userData.email}
+                                    {userData&&(userData.displayName?userData.displayName:userData.email)}
                                 </div>
                                 <div className="caption1 font-semibold text-n-3/50 truncate">
-                                    {userData.email}
+                                    {userData&&userData.email}
                                 </div>
                             </div>
                             

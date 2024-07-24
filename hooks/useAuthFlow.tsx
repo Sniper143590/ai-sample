@@ -98,6 +98,7 @@ const useAuthFlow = () => {
       router.push("/")
       setLoading(true)
       await auth.signOut()
+      setUserData(null)
       setLoading(false)
       return
 
