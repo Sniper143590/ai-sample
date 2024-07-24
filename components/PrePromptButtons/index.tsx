@@ -15,7 +15,7 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
             {presetButtons && presetButtons.map((item, index) => (
             <button 
                 key={index} 
-                className="btn-normal mt-1 w-2/5 md:w-full mx-2 p-2 border truncate" 
+                className="btn-normal mt-1 w-2/5 md:w-full mx-2 px-2 border truncate" 
                 onClick={() => handleClick(item)}
             >
                 {item.text}
