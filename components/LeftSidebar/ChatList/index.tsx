@@ -56,7 +56,7 @@ const ChatList = ({ visible }: ChatListProps) => {
                             className="fill-n-4 transition-transform ui-open:rotate-180"
                             name="arrow-down"
                         />
-                        {!visible && <div className="ml-5">Chat list</div>}
+                        {!visible && <div className="ml-5">Modules</div>}
                     </Disclosure.Button>
                     <Transition
                         enter="transition duration-100 ease-out"
@@ -120,7 +120,7 @@ const ChatList = ({ visible }: ChatListProps) => {
                         className="fill-n-4 transition-colors group-hover:fill-n-3"
                         name="plus-circle"
                     />
-                    {!visible && <div className="ml-5">New list</div>}
+                    {!visible && <div className="ml-5">New Module</div>}
                 </button>
             </div>
             <Modal
