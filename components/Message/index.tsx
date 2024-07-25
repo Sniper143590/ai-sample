@@ -20,7 +20,7 @@ const Message = ({
     handleSendButtonClick,
 }: MessageProps) => {
     const stylesButton = "Group absolute right-3 bottom-2 w-10 h-10";
-    const { query, setQuery} = useChat()
+    const { query, setQuery, loading} = useChat()
     const handleSendClick = () => {
         handleSendButtonClick()
     }
@@ -54,6 +54,7 @@ const Message = ({
                         onChange={(e) =>setQuery(e.target.value)}
                         placeholder={placeholder || "Ask Pro Audio Files AI anything"}
                         onKeyDown={handleKeyDown}
+                        disabled={loading}
                     />
                     {query === "" ? (
                         <button className={`${stylesButton}`}>
@@ -66,6 +67,7 @@ const Message = ({
                         <button
                             className={`${stylesButton} bg-primary-1 rounded-xl transition-colors hover:bg-primary-1/90`}
                             onClick={handleSendClick}
+                            disabled={loading}
                         >
                             <Icon className="fill-n-1" name="arrow-up" />
                         </button>
