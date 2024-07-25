@@ -1,5 +1,6 @@
 import { useEffect, useState} from "react"
 import getResponseFromLlm from "@/lib/getResponseFromLlm"
+import refreshPresetButtonText from "@/lib/refreshPresetButtonText";
 import Notify from "@/components/Notify";
 import { toast } from "react-hot-toast";
 import { PresetButton } from "@/constants/types";
@@ -407,6 +408,25 @@ const useChatModule = () => {
          cancelOperation()
     }
 
+    const refreshPresetPrompts = async () => {
+        try {
+            setLoading(true)
+            const result = await refreshPresetButtonText(queries[queries.length-1].query, chatModule.presetButtonPrompt)
+            let preprompts = result.preprompts
+            const updatedPrePrompts = preprompts.map((item:string, index:number)=>
+                {
+                    return { _id:index, text: item, prompt: item };
+                }
+            );
+            // console.log(updatedPrePrompts)
+            setPresetButtons(updatedPrePrompts)
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
+    }
+
     // const getResponseFromButtonFunc = async (preprompt:{_id:number, text:string, prompt:string}, llm:string, promptContext:string) => {
     //     console.log(llm)
     //     if (llm){
@@ -474,6 +494,7 @@ const useChatModule = () => {
         setActions,
         presetButtonPrompt,
         setPresetButtonPrompt,
+        refreshPresetPrompts,
     }
 }
 

@@ -51,6 +51,7 @@ const ChatContext = createContext<{
     setActions:React.Dispatch<React.SetStateAction<{id:number, prompt:string}[]>>;
     presetButtonPrompt:string;
     setPresetButtonPrompt:React.Dispatch<React.SetStateAction<string>>;
+    refreshPresetPrompts:()=>void;
 } | null>(null)
 
 type ChatModuleProviderProps = {
