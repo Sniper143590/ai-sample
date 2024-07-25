@@ -10,9 +10,11 @@ import { addNewChatModule, getChatModules, updateChatModule, deleteChatModuleByI
 import { uploadImage } from "@/lib/firebase/storageHandler";
 import imageCompression from 'browser-image-compression';
 import React from "react";
+import { usePathname } from "next/navigation";
 
 const useChatModule = () => {
     const [query, setQuery] = useState("")
+    const pathname =  usePathname()
     const [loaded, setLoaded] = useState(false)
     const [queries, setQueries] = useState<{query:string, time:string}[]>([])
     const [conversations, setConversations] = useState<{query:string, answer:string}[]>([])
@@ -39,7 +41,7 @@ const useChatModule = () => {
     useEffect(() => {
         const fetchChatModules = async () => {
             setLoading(true)
-            const pathSegments = window.location.pathname.split('/');
+            const pathSegments = pathname.split('/');
             const lastSegment = pathSegments[pathSegments.length - 1];
             // Check if cached data exists and is not expired
             // const cachedData = localStorage.getItem('chatModules');
@@ -54,6 +56,7 @@ const useChatModule = () => {
             setChatModules(result);
             const chatModuleWithId = result.find(module => module._id === lastSegment);
             if (chatModuleWithId){
+                console.log(chatModuleWithId)
                 setModuleIndex(lastSegment)
                 setChatModule(chatModuleWithId)
                 setPresetButtons(chatModuleWithId.preset_buttons)
@@ -64,7 +67,7 @@ const useChatModule = () => {
             setLoading(false)
         };
         fetchChatModules()
-    }, []);
+    }, [pathname]);
     
     function getCurrentTime(): string {
         const now = new Date();
@@ -82,6 +85,7 @@ const useChatModule = () => {
         const chatModuleWithId = chatModules.find(module => module._id === chatModuleId);
         console.log(chatModuleWithId)
         if (chatModuleWithId) {
+            setChatModule(chatModuleWithId)
             setName(chatModuleWithId.name)
             setLlm(chatModuleWithId.llm_name)
             setAvatar(null)
@@ -91,7 +95,7 @@ const useChatModule = () => {
             setPlaceholderText(chatModuleWithId.placeholder_text)
             setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
-            
+            // setPrePrompts(chatModuleWithId.preset_buttons)
         }
     }
 
@@ -106,6 +110,7 @@ const useChatModule = () => {
             setQueries([])
             setResults([])
             setConversations([])
+            // setPrePrompts(chatModuleWithId.preset_buttons)
         }
     }
 
@@ -410,6 +415,14 @@ const useChatModule = () => {
 
     const refreshPresetPrompts = async () => {
         try {
+            if(queries.length<1){
+                toast(() => (
+                    <Notify iconClose>
+                        <div className="mr-6 ml-3 h6 ml-4">Please ask anything first!</div>
+                    </Notify>
+                  ));
+                return
+            }
             setLoading(true)
             const result = await refreshPresetButtonText(queries[queries.length-1].query, chatModule.presetButtonPrompt)
             let preprompts = result.preprompts

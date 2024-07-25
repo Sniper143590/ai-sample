@@ -14,13 +14,12 @@ type MessageProps = {
 };
 
 const Message = ({
-    placeholder,
     image,
     document,
     handleSendButtonClick,
 }: MessageProps) => {
     const stylesButton = "Group absolute right-3 bottom-2 w-10 h-10";
-    const { query, setQuery, loading} = useChat()
+    const { query, chatModule, setQuery, loading} = useChat()
     const handleSendClick = () => {
         handleSendButtonClick()
     }
@@ -52,7 +51,7 @@ const Message = ({
                         autoFocus
                         value={query}
                         onChange={(e) =>setQuery(e.target.value)}
-                        placeholder={placeholder || "Ask Pro Audio Files AI anything"}
+                        placeholder={chatModule.placeholder_text || "Ask Pro Audio Files AI anything"}
                         onKeyDown={handleKeyDown}
                         disabled={loading}
                     />
