@@ -36,9 +36,11 @@ const ChatList = ({ visible }: ChatListProps) => {
         deleteChatModuleWithId(id)
     }
     
-    const handleModuleClick = (id:string) => {
-        selectChatModuleFromId(id)
+    const handleModuleClick = async (id:string) => {
         router.push(`/admin/${id}`)
+
+        selectChatModuleFromId(id)
+
     }
 
     return (

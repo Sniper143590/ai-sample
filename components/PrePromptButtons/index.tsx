@@ -7,7 +7,7 @@ interface PrePromptButtonsProps {
 }
 
 const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
-    const {presetButtons, loading, refreshPresetPrompts} = useChat()
+    const {chatModule, loading, refreshPresetPrompts} = useChat()
     const handleClick = (item:{_id:number, text:string, prompt:string}) =>{
         handleButtonClick(item)
     }
@@ -18,7 +18,7 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
     return (
         <div className="flex flex-wrap items-center justify-center mb-3 md:px-5 px-20 w-full"> 
         
-            {presetButtons && presetButtons.map((item, index) => (
+            {chatModule && chatModule.preset_buttons.map((item, index) => (
             <button 
                 key={index} 
                 className="btn-normal mt-1 w-2/5 md:w-full mx-2 px-2 border truncate" 

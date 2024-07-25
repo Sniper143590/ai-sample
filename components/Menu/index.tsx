@@ -1,28 +1,28 @@
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Icon from "@/components/Icon";
 import { useChat } from "@/providers/ChatModuleProvider";
 import Image from "../Image";
-
-type MenuType = {
-    title: string;
-    icon: string;
-    color: string;
-    url: string;
-};
+import Link from "next/link";
 
 type MenuProps = {
     className?: string;
 };
 
 const Menu = ({ className}: MenuProps) => {
+    const router = useRouter()
 
-    const { chatModules } = useChat()
+    const { chatModules, selectChatModuleFromId } = useChat()
 
+    const handleClick = (id:string) => {
+        selectChatModuleFromId(id)
+        router.push(`/admin/${id}`)
+    }
     return ( <div className={className}>
         {chatModules.map((item, index) => (
             <Link
                 className="group flex items-center mb-5 p-3.5 border border-n-3 rounded-xl h6 transition-all hover:border-transparent hover:shadow-[0_0_1rem_0.25rem_rgba(0,0,0,0.04),0px_2rem_1.5rem_-1rem_rgba(0,0,0,0.12)] last:mb-0 2xl:p-2.5 lg:p-3.5 dark:border-n-5 dark:hover:border-n-7 dark:hover:bg-n-7"
                 href={`/admin/${item._id}`}
+                onClick={()=>handleClick(item._id)}
                 key={index}
             >
                 <div className="relative flex justify-center items-center w-15 h-15 mr-6 rounded-xl">
