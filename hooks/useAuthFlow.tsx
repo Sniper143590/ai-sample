@@ -5,12 +5,15 @@ import userLogin from "@/lib/firebase/userLogin"
 import sendResetPassLink from "@/lib/firebase/sendResetPassLink"
 import { auth } from "@/lib/firebase/db"
 import Notify from "@/components/Notify";
+import imageCompression from 'browser-image-compression';
+import { uploadImage } from "@/lib/firebase/storageHandler";
 import { toast } from "react-hot-toast";
 import handleTxError from "@/lib/handleTxError"
 import getUserDataByEmail from "@/lib/firebase/getUserDataByEmail"
 import createUserFromCredential from "@/lib/createUserFromCredential"
 // import { User } from 'firebase/auth'
 import { changePassword } from "@/lib/firebase/changePassword"
+import { changeUserName, changePhotoURL, getUserData } from "@/lib/firebase/userHandler"
 import useSocialLogin from "./useSocialLogin"
 
 const useAuthFlow = () => {
@@ -108,16 +111,82 @@ const useAuthFlow = () => {
     }
   }
 
-  const updatePasswordFromSettings = async (newPwd:string) => {
+  const compressImage = async (imageFile:File) => {
+    const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1024,
+        useWebWorker: true
+    };
+    try {
+        const compressedFile = await imageCompression(imageFile, options);
+        return compressedFile;
+    } catch (error) {
+        console.error("Error compressing image:", error);
+        throw error
+    }
+}
+
+  const updateNameAndPasswordFromSettings = async (newPwd:string, name:string, photo?:File) => {
     try {
       setLoading(true)
-      await changePassword(newPwd)
+      let resultOfName = true, resultOfPwd = true;
+      if(newPwd!=="") {
+        resultOfPwd = await changePassword(newPwd)
+      } 
+      if (name!==userName){
+        resultOfName = await changeUserName(name, userData.uid)
+        setUserName(name)
+        setUserData((prev:{}) => ({ ...prev, displayName: name }));
+      }
+      if (photo){
+        let url;
+        try {
+            if (avatar) {
+                const compressedImage = await compressImage(photo)
+                url = await uploadImage(compressedImage, userData.uid)
+                if (url==="error") {
+                    setLoading(false)
+                    toast(() => (
+                        <Notify iconClose>
+                            <div className="mr-6 ml-3 h6 ml-4">Invalid File Format!</div>
+                        </Notify>
+                    ));
+                    return false
+                } else {
+                    setAvatar(url)
+                }
+            } else {
+                url = avatar
+            }
+        } catch (error) {
+            console.log(error)
+            toast(() => (
+                <Notify iconClose>
+                    <div className="mr-6 ml-3 h6 ml-4">Invalide File Format!</div>
+                </Notify>
+            ));
+            setLoading(false)
+            return false
+        }
+        const resultOfAvatar = await changePhotoURL(url, userData.uid)
+        if (resultOfAvatar){
+          setUserData((prev:{})=>({...prev, photoURL:url}))
+        }
+      }
       setLoading(false)
-      toast((t) => (
-        <Notify iconCheck>
-            <div className="mr-6 ml-3 h6 ml-4">Successfully updated!</div>
-        </Notify>
-      ));
+      if (resultOfName&&resultOfPwd){
+        toast((t) => (
+          <Notify iconCheck>
+              <div className="mr-6 ml-3 h6 ml-4">Successfully updated!</div>
+          </Notify>
+        ));
+      } else {
+        toast((t) => (
+          <Notify iconClose>
+              <div className="mr-6 ml-3 h6 ml-4">Failed to update!</div>
+          </Notify>
+        ));
+      }
     } catch (error) {
       setLoading(false)
       console.log(error)
@@ -129,12 +198,16 @@ const useAuthFlow = () => {
     auth.onAuthStateChanged(async (user) => {
       console.log("done")
       if (user) {
-        const data = await createUserFromCredential(user)
-        setUserEmail(user.email || "")
-        setUserData(user)
-        setUserName(user.displayName?user.displayName:"")
-        setAvatar(user.photoURL?user.photoURL:"")
-        localStorage.setItem("userData", JSON.stringify(data))
+        setLoading(true)
+        await createUserFromCredential(user)
+        const userData = await getUserData(user.email)
+        // console.log("Here >>>>", userData)
+        setUserEmail(userData[0].email || "")
+        setUserData(userData[0])
+        setUserName(userData[0].displayName?userData[0].displayName:"")
+        setAvatar(userData[0].photoURL?userData[0].photoURL:"")
+        localStorage.setItem("userData", JSON.stringify(userData[0]))
+        setLoading(false)
       } else {
         router.push("/");
         localStorage.setItem("token", "");
@@ -165,7 +238,7 @@ const useAuthFlow = () => {
     setAvatar,
     userPasswordConfirm,
     setUserPasswordConfirm,
-    updatePasswordFromSettings,
+    updateNameAndPasswordFromSettings,
   }
 }
 

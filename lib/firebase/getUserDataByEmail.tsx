@@ -1,8 +1,9 @@
 import axios from "axios"
 import handleTxError from "../handleTxError"
 
-const getUserDataByEmail = async (email:string) => {
+const getUserDataByEmail = async (email:string | null) => {
   try {
+    if(email===null) return
     const response = await axios.get("/api/auth/getUserByEmail", {
       params: {
         email,
@@ -14,6 +15,6 @@ const getUserDataByEmail = async (email:string) => {
     handleTxError(error)
     return null
   }
-}
+}     
 
 export default getUserDataByEmail
