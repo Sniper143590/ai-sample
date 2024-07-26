@@ -7,7 +7,7 @@ interface PrePromptButtonsProps {
 }
 
 const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
-    const {presetButtons, loading, refreshPresetPrompts} = useChat()
+    const {presetButtons, loading, refreshPresetPrompts , loaded} = useChat()
     const handleClick = (item:{_id:number, text:string, prompt:string}) =>{
         handleButtonClick(item)
     }
@@ -28,11 +28,13 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
                 {item.text}
             </button>
             ))}
-            <div className="w-full flex items-center justify-center mt-1">
-            <button className="btn-refresh" disabled={loading} onClick={() => handleRefresh()}>
-                <Image rel="preload" width={20} height={20} className={loading?"animate-spin":""} src="/images/refresh.png" alt="Loading icon" />
-            </button>
+            {loaded && (
+                <div className="w-full flex items-center justify-center mt-1">
+                <button className="btn-refresh" disabled={loading} onClick={() => handleRefresh()}>
+                    <Image rel="preload" width={20} height={20} className={loading?"animate-spin":""} src="/images/refresh.png" alt="Loading icon" />
+                </button>
             </div>
+            )}
         </div>
     )
 }

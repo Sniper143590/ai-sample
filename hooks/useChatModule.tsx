@@ -62,6 +62,7 @@ const useChatModule = () => {
                 setPresetButtons(chatModuleWithId.preset_buttons)
                 setActions(chatModuleWithId.actions)
                 setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
+                setLoaded(false)
                 // console.log(chatModuleWithId.preset_buttons)
             }
             setLoading(false)
@@ -93,6 +94,7 @@ const useChatModule = () => {
             setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
             setAvatarUrl(chatModuleWithId.avatar)
             setPlaceholderText(chatModuleWithId.placeholder_text)
+            setLoaded(false)
             // setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
             // setPrePrompts(chatModuleWithId.preset_buttons)
@@ -402,6 +404,7 @@ const useChatModule = () => {
                     }
                 );
                 setPresetButtons(updatedPrePrompts)
+                setLoaded(true)
             } catch {
                 setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
                 setResults(prev=>[...prev, "Network Error"])
@@ -409,7 +412,7 @@ const useChatModule = () => {
             setLoading(false)
             setQuery("")
     }
-    
+
     const cancelGeneration =  () => {
          cancelOperation()
     }
