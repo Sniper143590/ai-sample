@@ -49,6 +49,7 @@ const useChatModule = () => {
             //     const parsedData = JSON.parse(cachedData);
             //     setChatModules(parsedData.data);
             // }
+            setLoaded(false)
     
             const result = await getChatModules();
             // Store the fetched data along with a timestamp for expiration check
@@ -62,7 +63,6 @@ const useChatModule = () => {
                 setPresetButtons(chatModuleWithId.preset_buttons)
                 setActions(chatModuleWithId.actions)
                 setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
-                setLoaded(false)
                 // console.log(chatModuleWithId.preset_buttons)
             }
             setLoading(false)
@@ -84,8 +84,10 @@ const useChatModule = () => {
 
     const setChatModuleFromId = (chatModuleId:string) => {
         const chatModuleWithId = chatModules.find(module => module._id === chatModuleId);
-        console.log(chatModuleWithId)
+        // console.log(chatModuleWithId)
+
         if (chatModuleWithId) {
+            setLoaded(false)
             setChatModule(chatModuleWithId)
             setName(chatModuleWithId.name)
             setLlm(chatModuleWithId.llm_name)
@@ -94,7 +96,6 @@ const useChatModule = () => {
             setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
             setAvatarUrl(chatModuleWithId.avatar)
             setPlaceholderText(chatModuleWithId.placeholder_text)
-            setLoaded(false)
             // setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
             // setPrePrompts(chatModuleWithId.preset_buttons)
@@ -407,7 +408,8 @@ const useChatModule = () => {
                 setLoaded(true)
             } catch {
                 setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
-                setResults(prev=>[...prev, "Network Error"])
+                setResults(prev=>[...prev, "Backend Error"])
+                setLoaded(true)
             }
             setLoading(false)
             setQuery("")
