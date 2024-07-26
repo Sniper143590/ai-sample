@@ -11,19 +11,20 @@ type EditProfileProps = {
 };
 
 const EditProfile = ({onClose}: EditProfileProps) => {
-    const { userName, loading, setUserPassword, updatePasswordFromSettings, userData } = useAuth()
+    const { avatar, userName, loading, setUserPassword, updateNameAndPasswordFromSettings, userData } = useAuth()
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-    const [objectURL, setObjectURL] = useState<any>(userData?.photoURL);
-    const [name, setName] = useState<string>("");
+    const [file, setFile] = useState<File>();
+    const [avatarUrl, setAvatarUrl] = useState(avatar)
+    const [name, setName] = useState<string>(userName);
     // console.log(userData)
     const handleUpload = (e: any) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
-            
+            setFile(file)
+            setAvatarUrl(URL.createObjectURL(file))
             // setImage(file);
-            setObjectURL(URL.createObjectURL(file));
         }
     };
 
@@ -36,7 +37,7 @@ const EditProfile = ({onClose}: EditProfileProps) => {
               ));
             return
         }
-        if(newPassword.length<8){
+        if(newPassword!==""&&newPassword.length<8){
             toast(() => (
                 <Notify iconClose>
                     <div className="mr-6 ml-3 h6 ml-4">Password should be at least 8 characters!</div>
@@ -45,7 +46,7 @@ const EditProfile = ({onClose}: EditProfileProps) => {
             return
         }
         setUserPassword(newPassword)
-        await updatePasswordFromSettings(newPassword)
+        await updateNameAndPasswordFromSettings(newPassword, name, file)
         onClose()
     }
 
@@ -57,10 +58,10 @@ const EditProfile = ({onClose}: EditProfileProps) => {
             </div>
             <div className="flex items-center mb-6">
                 <div className="relative flex justify-center items-center shrink-0 w-28 h-28 mr-4 rounded-full overflow-hidden bg-n-2 dark:bg-n-6">
-                    {objectURL !== null ? (
+                    {avatar !== "" ? (
                         <Image
                             className="object-cover rounded-full"
-                            src={objectURL}
+                            src={avatarUrl}
                             fill
                             alt="Avatar"
                         />
@@ -79,7 +80,7 @@ const EditProfile = ({onClose}: EditProfileProps) => {
                             onChange={handleUpload}
                         />
                         <button className="btn-stroke-light peer-hover:bg-n-3 dark:peer-hover:bg-n-5">
-                            Upload new image
+                            Upload a new image
                         </button>
                     </div>
                     <div className="caption1 text-n-4">
@@ -93,8 +94,8 @@ const EditProfile = ({onClose}: EditProfileProps) => {
                 label="Name"
                 placeholder="Username"
                 icon="profile-1"
-                value={userName}
-                onChange={(e: any) => setName(e.target.value)}
+                value={name}
+                onChange={(event:React.ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
                 required
                 disabled={loading}
             />

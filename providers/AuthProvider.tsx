@@ -25,7 +25,7 @@ interface AuthContextData {
     setAvatar:React.Dispatch<React.SetStateAction<string>>;
     userPasswordConfirm:string;
     setUserPasswordConfirm:React.Dispatch<React.SetStateAction<string>>;
-    updatePasswordFromSettings:(pwd:string) =>void;
+    updateNameAndPasswordFromSettings:(pwd:string, name:string, photoURL?:File) =>void;
 }
 
 const AuthContext = createContext<AuthContextData | null>(null)

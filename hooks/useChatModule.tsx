@@ -93,7 +93,7 @@ const useChatModule = () => {
             setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
             setAvatarUrl(chatModuleWithId.avatar)
             setPlaceholderText(chatModuleWithId.placeholder_text)
-            setPresetButtons(chatModuleWithId.preset_buttons)
+            // setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
             // setPrePrompts(chatModuleWithId.preset_buttons)
         }
@@ -409,6 +409,7 @@ const useChatModule = () => {
             setLoading(false)
             setQuery("")
     }
+    
     const cancelGeneration =  () => {
          cancelOperation()
     }

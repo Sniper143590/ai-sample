@@ -10,7 +10,7 @@ type ProfileProps = {
 };
 
 const Profile = ({ visible }: ProfileProps) => {
-    const { logout, userData } = useAuth()
+    const { logout, userData, loading } = useAuth()
     const [visibleSettings, setVisibleSettings] = useState<boolean>(false);
 
     const handleLogOutClick = async () => {
@@ -38,12 +38,12 @@ const Profile = ({ visible }: ProfileProps) => {
                     {!visible && (
                         <div className="flex flex-row">
                             <div className="relative !w-10 !h-10">
-                                <Image
+                                { !loading && (<Image
                                     className="rounded-full object-cover"
-                                    src="/images/avatar.jpg"
+                                    src={userData.photoURL?userData.photoURL:"/images/avatar.jpg"}
                                     fill
                                     alt="Avatar"
-                                />
+                                />)}
                                 {/* <div className="absolute -right-0.75 -bottom-0.75 w-4.5 h-4.5 bg-primary-2 rounded-full border-4 border-n-6"></div> */}
                             </div>
                             <div className="mx-2 !w-[160px]">
