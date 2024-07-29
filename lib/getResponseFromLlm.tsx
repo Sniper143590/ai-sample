@@ -1,6 +1,6 @@
 import axios, { CancelTokenSource } from "axios"
 import { BACKEND_URL } from "@/constants/backend"
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ExceptionHandler } from "next-api-decorators/dist/decorators";
 
 interface ResponseData {
@@ -24,8 +24,8 @@ const getResponseFromLlm = (): {
             const source = CancelToken.source();
 
             const headers = {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': "1",
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': "1",
           };
           
     

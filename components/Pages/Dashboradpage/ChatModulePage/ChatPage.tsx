@@ -2,6 +2,7 @@ import Chat from "@/components/Chat";
 import Message from "@/components/Message";
 import Question from "@/components/Question";
 import Answer from "@/components/Answer";
+import { marked } from "marked";
 import { useChat } from "@/providers/ChatModuleProvider";
 
 
@@ -13,7 +14,15 @@ const ChatPage = () => {
         const items = text.split('\n'); 
       
         // 2. Map each item to an <li> element:
-        const listItems = items.map(item => `<li>${item}</li>`).join(''); 
+        const listItems = items.map(item => {
+            if (item.trim() === '') {
+              // If the item is empty (after trimming whitespace), return a line break
+              return '<br>';
+            } else {
+              // Otherwise, return the regular <li> element
+              return `<li>${item}</li>`;
+            }
+          }).join('');
       
         // 3. Construct the complete <ul> list:
         const formattedResponse = `<ul>\n${listItems}\n</ul>`;
@@ -28,7 +37,7 @@ const ChatPage = () => {
                     <div key={index}>
                         <Question content={item.query} time={item.time} />
                         {results[index]?(
-                            <Answer isLast={(queries.length-1)===index}><div key={index} dangerouslySetInnerHTML={{ __html: formatText(results[index]) }} /> </Answer>
+                            <Answer isLast={(queries.length-1)===index}><div key={index}  dangerouslySetInnerHTML={{ __html: formatText(results[index]) }} /></Answer>
                         ):
                         (
                             <Answer loading />
