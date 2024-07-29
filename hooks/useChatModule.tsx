@@ -32,6 +32,7 @@ const useChatModule = () => {
     const [placeholderText, setPlaceholderText] = useState<string>("")
     const [actions, setActions] = useState<{id:number, prompt:string}[]>([])
     const [presetButtonPrompt, setPresetButtonPrompt] = useState("")
+    const [chatSession, setChatSession] = useState("")
     
     const [chatModule, setChatModule] = useState<ChatModule>({_id:"", name:"",llm_name:"", prompt_context:"", placeholder_text:"",actions:[], presetButtonPrompt:"", avatar:"", preset_buttons:[]} as ChatModule);
     const [chatModules, setChatModules] = useState<ChatModule[]>([]);
@@ -57,6 +58,7 @@ const useChatModule = () => {
             setChatModules(result);
             const chatModuleWithId = result.find(module => module._id === lastSegment);
             if (chatModuleWithId){
+                setChatSession(uuidv4())
                 console.log(chatModuleWithId)
                 setModuleIndex(lastSegment)
                 setChatModule(chatModuleWithId)
@@ -399,7 +401,7 @@ const useChatModule = () => {
                 setLoading(true)
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
-                const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt);
+                const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession);
                 setResults(prev=>[...prev, result.message])
                 setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:result.message}])
                 let preprompts = result.preprompts
