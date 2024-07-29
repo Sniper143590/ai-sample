@@ -61,6 +61,7 @@ const useChatModule = () => {
                 setModuleIndex(lastSegment)
                 setChatModule(chatModuleWithId)
                 setPresetButtons(chatModuleWithId.preset_buttons)
+                setPrePrompts(chatModuleWithId.preset_buttons)
                 setActions(chatModuleWithId.actions)
                 setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
                 // console.log(chatModuleWithId.preset_buttons)
@@ -96,7 +97,7 @@ const useChatModule = () => {
             setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
             setAvatarUrl(chatModuleWithId.avatar)
             setPlaceholderText(chatModuleWithId.placeholder_text)
-            // setPresetButtons(chatModuleWithId.preset_buttons)
+            setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
             // setPrePrompts(chatModuleWithId.preset_buttons)
         }
@@ -109,11 +110,11 @@ const useChatModule = () => {
             setChatModule(chatModuleWithId)
             setActions(chatModuleWithId.actions)
             setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
-            setPresetButtons(chatModuleWithId.preset_buttons)
+            // setPresetButtons(chatModuleWithId.preset_buttons)
             setQueries([])
             setResults([])
             setConversations([])
-            // setPrePrompts(chatModuleWithId.preset_buttons)
+            setPrePrompts(chatModuleWithId.preset_buttons)
         }
     }
 
@@ -305,6 +306,9 @@ const useChatModule = () => {
                     chatModule._id === updatedChatModule._id ? updatedChatModule : chatModule
                 )
             );
+            if(!loaded&&moduleIndex===_id) {
+                setPrePrompts(presetButtons)
+            }
             toast(() => (
                 <Notify iconCheck>
                     <div className="mr-6 ml-3 h6 ml-4">Successfully updated!</div>
@@ -404,7 +408,7 @@ const useChatModule = () => {
                         return { _id:index, text: item, prompt: item };
                     }
                 );
-                setPresetButtons(updatedPrePrompts)
+                setPrePrompts(updatedPrePrompts)
                 setLoaded(true)
             } catch {
                 setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
@@ -438,7 +442,7 @@ const useChatModule = () => {
                 }
             );
             // console.log(updatedPrePrompts)
-            setPresetButtons(updatedPrePrompts)
+            setPrePrompts(updatedPrePrompts)
             setLoading(false)
         } catch (error) {
             console.log(error)

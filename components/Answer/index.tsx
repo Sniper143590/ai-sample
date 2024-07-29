@@ -1,4 +1,5 @@
 import Image from "@/components/Image";
+import {marked} from "marked"
 import Loading from "./Loading";
 import Action from "./Action";
 
@@ -11,7 +12,7 @@ type AnswerProps = {
 
 const Answer = ({ children, loading, time, isLast }: AnswerProps) => {
 
-    // console.log(isLast)
+    console.log(isLast)
     
     return (
         <div className="max-w-[50rem]">
