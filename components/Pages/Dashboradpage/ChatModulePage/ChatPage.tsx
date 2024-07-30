@@ -20,12 +20,12 @@ const ChatPage = () => {
           } else {
             // Otherwise, return the regular <li> element
             // Use replace to bold text within ** **
-            return `<li>${item.replace(/(\*\*)(.*?)(\*\*)/g, '<strong>$2</strong>')}</li>`;
+            return `${item.replace(/(\*\*)(.*?)(\*\*)/g, '<strong>$2</strong>')}`;
           }
         }).join('');
       
         // 3. Construct the complete <ul> list:
-        const formattedResponse = `<ul>\n${listItems}\n</ul>`;
+        const formattedResponse = `${listItems}`;
       
         // No need to split by ** again, bolding is already done
         // const secondItems = formattedResponse.split('**');
