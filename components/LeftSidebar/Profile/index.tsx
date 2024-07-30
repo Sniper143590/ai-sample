@@ -38,12 +38,25 @@ const Profile = ({ visible }: ProfileProps) => {
                     {!visible && (
                         <div className="flex flex-row">
                             <div className="relative !w-10 !h-10">
-                                { !loading && (<Image
+                                {/* { !loading && (<Image
                                     className="rounded-full object-cover"
                                     src={userData.photoURL?userData.photoURL:"/images/avatar.jpg"}
                                     fill
                                     alt="Avatar"
-                                />)}
+                                />)} */}
+                                {userData.photoURL !== "" ? (
+                                    <Image
+                                        className="object-cover rounded-full"
+                                        src={userData.photoURL}
+                                        fill
+                                        alt="Avatar"
+                                    />
+                                ) : (
+                                    <Icon
+                                        className="mt-2 ml-2 rounded-full object-cover fill-n-4"
+                                        name="profile"
+                                    />
+                                )}
                                 {/* <div className="absolute -right-0.75 -bottom-0.75 w-4.5 h-4.5 bg-primary-2 rounded-full border-4 border-n-6"></div> */}
                             </div>
                             <div className="mx-2 !w-[160px]">
