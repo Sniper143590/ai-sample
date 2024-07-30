@@ -42,6 +42,11 @@ const useAuthFlow = () => {
           return
       }
       else {
+        toast((t) => (
+          <Notify iconCheck>
+              <div className="mr-6 ml-3 h6 ml-4">Please check your email to reset your password</div>
+          </Notify>
+        ));
           router.push("/")
       }
     }
@@ -139,9 +144,8 @@ const useAuthFlow = () => {
         setUserData((prev:{}) => ({ ...prev, displayName: name }));
       }
       if (photo){
-        let url:string;
+        let url="";
         try {
-            if (avatar) {
                 const compressedImage = await compressImage(photo)
                 url = await uploadImage(compressedImage, userData.uid)
                 if (url==="error") {
@@ -151,7 +155,7 @@ const useAuthFlow = () => {
                             <div className="mr-6 ml-3 h6 ml-4">Invalid File Format!</div>
                         </Notify>
                     ));
-                    return false
+                    return
                 } else {
                     setAvatar(url)
                     const resultOfAvatar = await changePhotoURL(url, userData.uid)
@@ -160,10 +164,6 @@ const useAuthFlow = () => {
                       setUserData((prev:{})=>({...prev, photoURL:url}))
                     }
                 }
-            } else {
-                url = avatar
-                
-            }
         } catch (error) {
             console.log(error)
             toast(() => (

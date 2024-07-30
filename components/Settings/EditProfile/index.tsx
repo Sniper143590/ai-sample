@@ -11,20 +11,21 @@ type EditProfileProps = {
 };
 
 const EditProfile = ({onClose}: EditProfileProps) => {
-    const { avatar, userName, loading, setUserPassword, updateNameAndPasswordFromSettings, userData } = useAuth()
+    const { avatar, userName, loading, setUserPassword, updateNameAndPasswordFromSettings } = useAuth()
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
     const [file, setFile] = useState<File>();
     const [avatarUrl, setAvatarUrl] = useState(avatar)
     const [name, setName] = useState<string>(userName);
-    // console.log(userData)
+    // console.log("Photo URL >>> ", avatar)
     const handleUpload = (e: any) => {
         if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            setFile(file)
-            setAvatarUrl(URL.createObjectURL(file))
+            const f= e.target.files[0];
+            setFile(f)
+            setAvatarUrl(URL.createObjectURL(f))
             // setImage(file);
+            // console.log("Here goes avatar local URL:", URL.createObjectURL(f))
         }
     };
 
@@ -58,7 +59,7 @@ const EditProfile = ({onClose}: EditProfileProps) => {
             </div>
             <div className="flex items-center mb-6">
                 <div className="relative flex justify-center items-center shrink-0 w-28 h-28 mr-4 rounded-full overflow-hidden bg-n-2 dark:bg-n-6">
-                    {avatar !== "" ? (
+                    {avatarUrl !== "" ? (
                         <Image
                             className="object-cover rounded-full"
                             src={avatarUrl}
