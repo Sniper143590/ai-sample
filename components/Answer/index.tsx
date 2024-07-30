@@ -2,6 +2,7 @@ import Image from "@/components/Image";
 import {marked} from "marked"
 import Loading from "./Loading";
 import Action from "./Action";
+import Icon from "../Icon";
 
 type AnswerProps = {
     children?: React.ReactNode;
@@ -31,7 +32,15 @@ const Answer = ({ children, loading, time, response }: AnswerProps) => {
                         alt="Avatar"
                     />
                 </div>
-                {(!loading) && (
+                {loading? (
+                    <button className="group flex items-center ml-3 px-2 py-0.5 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 dark:text-n-3 dark:hover:text-primary-1">
+                        <Icon
+                            className="w-4 h-4 mr-2 transition-colors group-hover:fill-primary-1 dark:fill-n-3"
+                            name="pause-circle"
+                        />
+                        Pause generating
+                    </button>
+                ): (
                     
                     <div className="flex justify-end w-4/5 flex-wrap mt-3">
                         <div className="caption1 text-n-4/50 dark:text-n-4">
