@@ -19,7 +19,7 @@ const Message = ({
     handleSendButtonClick,
 }: MessageProps) => {
     const stylesButton = "Group absolute right-3 bottom-2 w-10 h-10";
-    const { query, chatModule, setQuery, loading} = useChat()
+    const { query, chatModule, setQuery, loaded, loading} = useChat()
     const handleSendClick = () => {
         if(query==="")return
         handleSendButtonClick()
@@ -52,7 +52,7 @@ const Message = ({
                         autoFocus
                         value={query}
                         onChange={(e) =>setQuery(e.target.value)}
-                        placeholder={chatModule.placeholder_text || "Ask Pro Audio Files AI anything"}
+                        placeholder={loading?"": (loaded?"How would you like to modify this answer?":chatModule.placeholder_text)}
                         onKeyDown={handleKeyDown}
                         disabled={loading}
                     />
