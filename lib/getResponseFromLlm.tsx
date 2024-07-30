@@ -1,7 +1,5 @@
 import axios, { CancelTokenSource } from "axios"
 import { BACKEND_URL } from "@/constants/backend"
-import { useRef } from "react";
-import { ExceptionHandler } from "next-api-decorators/dist/decorators";
 
 interface ResponseData {
     message: string;
@@ -29,10 +27,17 @@ const getResponseFromLlm = (): {
           };
           
     
-        //   const source = axios.CancelToken.source();
-        //   cancelTokenSourceRef.current = source;
-    
-          const response = await axios.post(`${BACKEND_URL}/api/query`, {
+          //   const source = axios.CancelToken.source();
+          //   cancelTokenSourceRef.current = source;
+          //  var eventSourceInitDict = {
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     'ngrok-skip-browser-warning': "1",
+          //   }
+          // };
+          // var es = new EventSource(`${BACKEND_URL}/api/query1`, eventSourceInitDict);
+      
+          const response = await axios.post(`${BACKEND_URL}/api/query1`, {
             query,
             llm,
             promptContext,

@@ -12,7 +12,7 @@ type ProfileProps = {
 const Profile = ({ visible }: ProfileProps) => {
     const { logout, userData, loading } = useAuth()
     const [visibleSettings, setVisibleSettings] = useState<boolean>(false);
-
+    console.log(userData.photoURL)
     const handleLogOutClick = async () => {
         await logout()
     }

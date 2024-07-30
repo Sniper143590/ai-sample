@@ -101,7 +101,7 @@ const useAuthFlow = () => {
       router.push("/")
       setLoading(true)
       await auth.signOut()
-      setUserData(null)
+      // setUserData(null)
       setLoading(false)
       return
 
@@ -139,7 +139,7 @@ const useAuthFlow = () => {
         setUserData((prev:{}) => ({ ...prev, displayName: name }));
       }
       if (photo){
-        let url;
+        let url:string;
         try {
             if (avatar) {
                 const compressedImage = await compressImage(photo)
@@ -154,9 +154,15 @@ const useAuthFlow = () => {
                     return false
                 } else {
                     setAvatar(url)
+                    const resultOfAvatar = await changePhotoURL(url, userData.uid)
+                    if (resultOfAvatar){
+                      console.log(url)
+                      setUserData((prev:{})=>({...prev, photoURL:url}))
+                    }
                 }
             } else {
                 url = avatar
+                
             }
         } catch (error) {
             console.log(error)
@@ -168,10 +174,7 @@ const useAuthFlow = () => {
             setLoading(false)
             return false
         }
-        const resultOfAvatar = await changePhotoURL(url, userData.uid)
-        if (resultOfAvatar){
-          setUserData((prev:{})=>({...prev, photoURL:url}))
-        }
+        
       }
       setLoading(false)
       if (resultOfName&&resultOfPwd){
@@ -201,7 +204,7 @@ const useAuthFlow = () => {
         setLoading(true)
         await createUserFromCredential(user)
         const userData = await getUserData(user.email)
-        // console.log("Here >>>>", userData)
+        console.log("Here >>>>", userData)
         setUserEmail(userData[0].email || "")
         setUserData(userData[0])
         setUserName(userData[0].displayName?userData[0].displayName:"")
@@ -212,7 +215,7 @@ const useAuthFlow = () => {
         router.push("/");
         localStorage.setItem("token", "");
         localStorage.setItem("userData", JSON.stringify(""));
-        setUserData(null);
+        // setUserData(null);
     }
     
     })
