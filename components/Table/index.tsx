@@ -56,10 +56,6 @@ const Table = ({presetButtons, onChange, disabled = false}:TableProps) => {
             notifyEmptyPresetButtonText()
             return
         }
-        if(presetButtons.length>6){
-            notifyExceedMaxNumberButtons()
-            return
-        }
         onChange([...presetButtons, {_id:presetButtons.length, text:newRow.text, prompt:newRow.prompt}]);
         setNewRow({
             _id: -1,
