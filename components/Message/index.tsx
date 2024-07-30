@@ -58,7 +58,7 @@ const Message = ({
                     />
                     
                         <button
-                            className={`${stylesButton} bg-primary-1 rounded-xl transition-colors hover:bg-primary-1/90`}
+                            className={`${stylesButton} rounded-full ${(query==="" || loading) ? "bg-n-3":"bg-n-5 hover:bg-primary-1/90"} transition-colors `}
                             onClick={handleSendClick}
                             disabled={loading}
                         >
