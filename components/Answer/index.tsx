@@ -6,13 +6,11 @@ import Action from "./Action";
 type AnswerProps = {
     children?: React.ReactNode;
     loading?: boolean;
-    isLast?:boolean;
+    response?:string;
     time?: string;
 };
 
-const Answer = ({ children, loading, time, isLast }: AnswerProps) => {
-
-    console.log(isLast)
+const Answer = ({ children, loading, time, response }: AnswerProps) => {
     
     return (
         <div className="max-w-[50rem]">
@@ -35,11 +33,11 @@ const Answer = ({ children, loading, time, isLast }: AnswerProps) => {
                 </div>
                 {(!loading) && (
                     
-                    <div className="flex items-center w-4/5 md:2/3 sm:1/2">
+                    <div className="flex justify-end w-4/5 md:2/3 sm:1/2">
                         <div className="caption1 text-n-4/50 dark:text-n-4">
                             {time}
                         </div>
-                        <Action />
+                        <Action response={response}/>
                     </div>
                 )}
             </div>
