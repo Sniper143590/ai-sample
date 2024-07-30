@@ -21,6 +21,7 @@ const Message = ({
     const stylesButton = "Group absolute right-3 bottom-2 w-10 h-10";
     const { query, chatModule, setQuery, loading} = useChat()
     const handleSendClick = () => {
+        if(query==="")return
         handleSendButtonClick()
     }
 
@@ -55,14 +56,7 @@ const Message = ({
                         onKeyDown={handleKeyDown}
                         disabled={loading}
                     />
-                    {query === "" ? (
-                        <button className={`${stylesButton}`}>
-                            <Icon
-                                className="fill-n-4 transition-colors group-hover:fill-primary-1"
-                                name="recording"
-                            />
-                        </button>
-                    ) : (
+                    
                         <button
                             className={`${stylesButton} bg-primary-1 rounded-xl transition-colors hover:bg-primary-1/90`}
                             onClick={handleSendClick}
@@ -70,7 +64,6 @@ const Message = ({
                         >
                             <Icon className="fill-n-1" name="arrow-up" />
                         </button>
-                    )}
                 </div>
             </div>
         </div>
