@@ -33,7 +33,7 @@ const Answer = ({ children, loading, time, isLast }: AnswerProps) => {
                         alt="Avatar"
                     />
                 </div>
-                {(!loading && isLast) && (
+                {(!loading) && (
                     
                     <div className="flex items-center w-4/5 md:2/3 sm:1/2">
                         <div className="caption1 text-n-4/50 dark:text-n-4">

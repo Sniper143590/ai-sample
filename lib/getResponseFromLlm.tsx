@@ -37,7 +37,7 @@ const getResponseFromLlm = (): {
           // };
           // var es = new EventSource(`${BACKEND_URL}/api/query1`, eventSourceInitDict);
       
-          const response = await axios.post(`${BACKEND_URL}/api/query1`, {
+          const response = await axios.post(`${BACKEND_URL}/api/query`, {
             query,
             llm,
             promptContext,
