@@ -35,7 +35,7 @@ const ActionTable = ({actions, onChange, disabled = false}:TableProps) => {
             notifyEmptyPresetButtonText()
             return
         }
-        if(actions.length>4){
+        if(actions.length>20){
             notifyExceedMaxNumberButtons()
             return
         }
