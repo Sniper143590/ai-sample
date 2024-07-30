@@ -33,7 +33,7 @@ const Answer = ({ children, loading, time, response }: AnswerProps) => {
                 </div>
                 {(!loading) && (
                     
-                    <div className="flex justify-end w-4/5 md:2/3 sm:1/2">
+                    <div className="flex justify-end w-4/5 flex-wrap mt-3">
                         <div className="caption1 text-n-4/50 dark:text-n-4">
                             {time}
                         </div>

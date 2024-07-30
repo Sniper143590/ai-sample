@@ -13,14 +13,14 @@ const Action = ({response}:ActionPropType) => {
     }
 
     const styleButton: string =
-        "h-6 ml-3 px-2 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 truncate";
+        "flex-shrink-0  m-2 w-auto ml-3 px-2 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 truncate";
 
     return (
         <>
             
             {
                 actions.map((item, index)=>(
-                    <div className="group flex relative">
+                    <div className="group flex absolute right-0 top-4 relative">
                         <button key={index} className={styleButton} onClick={()=>handleActionClick(item.prompt)} data-tooltip={item.prompt}>{item.prompt}</button>
                         <span className="group-hover:opacity-100 transition-opacity bg-gray-800 px-1 text-sm text-gray-100 rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{item.prompt}</span>
                     </div>
