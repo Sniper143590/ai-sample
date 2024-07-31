@@ -7,7 +7,7 @@ interface PrePromptButtonsProps {
 }
 
 const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
-    const {prePrompts, loading, refreshPresetPrompts , loaded} = useChat()
+    const {prePrompts, loading, prePromptLoading, refreshPresetPrompts , loaded} = useChat()
     const handleClick = (item:{_id:number, text:string, prompt:string}) =>{
         handleButtonClick(item)
     }
@@ -18,7 +18,7 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
     return (
         <div className="flex flex-wrap items-center justify-center mb-3 md:px-5 px-20 w-full"> 
         
-            {!loading && prePrompts && prePrompts.map((item, index) => (
+            {!loading && !prePromptLoading && prePrompts && prePrompts.map((item, index) => (
             <button 
                 key={index} 
                 className="btn-normal mt-1 w-2/5 md:w-full mx-2 px-2 border truncate" 
@@ -28,10 +28,10 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
                 {item.text}
             </button>
             ))}
-            {loaded && (
+            {loaded && !loading &&(
                 <div className="w-full flex items-center justify-center mt-1">
                 <button className="btn-refresh" disabled={loading} onClick={() => handleRefresh()}>
-                    <Image rel="preload" width={20} height={20} className={loading?"animate-spin":""} src="/images/refresh.png" alt="Loading icon" />
+                    <Image rel="preload" width={20} height={20} className={prePromptLoading?"animate-spin":""} src="/images/refresh.png" alt="Loading icon" />
                 </button>
             </div>
             )}

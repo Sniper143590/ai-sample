@@ -16,6 +16,7 @@ const useChatModule = () => {
     const [query, setQuery] = useState("")
     const pathname =  usePathname()
     const [loaded, setLoaded] = useState(false)
+    const [prePromptLoading, setPrePromptLoading] = useState(false)
     const [queries, setQueries] = useState<{query:string, time:string}[]>([])
     const [conversations, setConversations] = useState<{query:string, answer:string}[]>([])
     const [results, setResults] = useState<string[]>([])
@@ -435,7 +436,8 @@ const useChatModule = () => {
                   ));
                 return
             }
-            setLoading(true)
+            // setLoading(true)
+            setPrePromptLoading(true)
             const result = await refreshPresetButtonText(conversations[queries.length-1].answer, chatModule.presetButtonPrompt)
             let preprompts = result.preprompts
             const updatedPrePrompts = preprompts.map((item:string, index:number)=>
@@ -445,7 +447,8 @@ const useChatModule = () => {
             );
             // console.log(updatedPrePrompts)
             setPrePrompts(updatedPrePrompts)
-            setLoading(false)
+            // setLoading(false)
+            setPrePromptLoading(false)
         } catch (error) {
             console.log(error)
             setLoading(false)
@@ -480,6 +483,8 @@ const useChatModule = () => {
         setQuery,
         loading, 
         setLoading,
+        prePromptLoading,
+        setPrePromptLoading,
         queries,
         results,
         name,
