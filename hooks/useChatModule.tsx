@@ -436,7 +436,7 @@ const useChatModule = () => {
                 return
             }
             setLoading(true)
-            const result = await refreshPresetButtonText(queries[queries.length-1].query, chatModule.presetButtonPrompt)
+            const result = await refreshPresetButtonText(conversations[queries.length-1].answer, chatModule.presetButtonPrompt)
             let preprompts = result.preprompts
             const updatedPrePrompts = preprompts.map((item:string, index:number)=>
                 {

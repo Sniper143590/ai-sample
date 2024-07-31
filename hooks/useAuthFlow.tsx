@@ -38,8 +38,14 @@ const useAuthFlow = () => {
   const updatePassword = async () => {
     if(userEmail){
       const response: any = await sendResetPassLink(userEmail)
-      if (response?.error) {
-          return
+      if (response.error) {
+        toast((t) => (
+          <Notify iconClose>
+              <div className="mr-6 ml-3 h6 ml-4">{response.console.error}
+              </div>
+          </Notify>
+        ));
+          console.log(response.error)
       }
       else {
         toast((t) => (
@@ -47,7 +53,7 @@ const useAuthFlow = () => {
               <div className="mr-6 ml-3 h6 ml-4">Please check your email to reset your password</div>
           </Notify>
         ));
-          router.push("/")
+        // router.push("/")
       }
     }
     
