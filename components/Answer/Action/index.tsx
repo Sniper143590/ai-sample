@@ -20,7 +20,7 @@ const Action = ({response}:ActionPropType) => {
             
             {
                 actions.map((item, index)=>(
-                    <div className="flex absolute right-0 top-4 relative">
+                    <div className="flex absolute right-0 top-2 relative">
                         <button key={index} className={styleButton} onClick={()=>handleActionClick(item.prompt)} data-tooltip={item.prompt}>{item.prompt}</button>
                     </div>
                 ))

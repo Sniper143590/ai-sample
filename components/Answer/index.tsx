@@ -9,12 +9,13 @@ type AnswerProps = {
     loading?: boolean;
     response?:string;
     time?: string;
+    isLast?:boolean;
 };
 
-const Answer = ({ children, loading, time, response }: AnswerProps) => {
+const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
     
     return (
-        <div className="max-w-[50rem]">
+        <div className={`max-w-[50rem] ${isLast?"question-container":""}`}>
             <div className="pt-6 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7 h2-style h3-style">
                 {loading ? <Loading /> : (children)}
             </div>
@@ -42,7 +43,7 @@ const Answer = ({ children, loading, time, response }: AnswerProps) => {
                     </button>
                 ): (
                     
-                    <div className="flex justify-end w-4/5 flex-wrap mt-3">
+                    <div className="flex justify-end w-4/5 flex-wrap ">
                         <div className="caption1 text-n-4/50 dark:text-n-4">
                             {time}
                         </div>
