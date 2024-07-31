@@ -16,16 +16,16 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
     }
 
     return (
-        <div className="flex flex-wrap items-center justify-center mb-3 md:px-5 px-20 w-full"> 
+        <div className={`flex flex-wrap items-center justify-center mb-3 md:px-5 px-20 w-full  `}> 
         
-            {!loading && !prePromptLoading && prePrompts && prePrompts.map((item, index) => (
+            {!loading && prePrompts && prePrompts.map((item, index) => (
             <button 
-                key={index} 
-                className="btn-normal mt-1 w-2/5 md:w-full mx-2 px-2 border truncate" 
+                key={index}
+                className={`btn-normal mt-1 w-2/5 md:w-full mx-2 px-2 border truncate ${prePromptLoading?"animate-pulse bg-gray-300":""}`} 
                 onClick={() => handleClick(item)}
                 disabled={loading}
             >
-                {item.text}
+                {prePromptLoading?"": item.text}
             </button>
             ))}
             {loaded && !loading &&(

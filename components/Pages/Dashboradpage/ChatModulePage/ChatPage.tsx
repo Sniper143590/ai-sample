@@ -1,3 +1,5 @@
+
+import { useEffect, useRef } from "react";
 import Chat from "@/components/Chat";
 import Message from "@/components/Message";
 import Question from "@/components/Question";
@@ -32,10 +34,35 @@ const ChatPage = () => {
       
         return formattedResponse;
       };
+      const chatContainerRef = useRef<HTMLDivElement>(null);
+
+      useEffect(() => {
+        // Function to scroll to the bottom of the chat container
+        const scrollToBottom = () => {
+          if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop =
+              chatContainerRef.current.scrollHeight;
+          }
+        };
+    
+        // Initial scroll to bottom
+        scrollToBottom();
+    
+        // Event listener for window resize (optional, only if needed)
+        const handleResize = () => {
+          scrollToBottom();
+        };
+    
+        // Add event listener for window resize (optional, only if needed)
+        window.addEventListener("resize", handleResize);
+    
+        // Cleanup function to remove the event listener
+        return () => window.removeEventListener("resize", handleResize);
+      }, [queries]);
 
     return (
         <>
-            <Chat title={chatModule.name}>
+            <Chat title={chatModule.name} chatContainerRef={chatContainerRef}>
                 {queries.map((item, index) => (
                     <div key={index}>
                         <Question content={item.query} time={item.time} />
