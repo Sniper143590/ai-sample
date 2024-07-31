@@ -9,8 +9,8 @@ const ForgotPasswordPage = () => {
     const handleBackClick = () => {
         router.push("/")
     }
-    const handleResetPassClick = () => {
-        updatePassword()
+    const handleResetPassClick = async () => {
+        await updatePassword()
     }
     return (
         <>
