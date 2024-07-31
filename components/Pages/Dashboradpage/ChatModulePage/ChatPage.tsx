@@ -38,26 +38,22 @@ const ChatPage = () => {
 
       useEffect(() => {
         // Function to scroll to the bottom of the chat container
-        const scrollToBottom = () => {
-          if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop =
-              chatContainerRef.current.scrollHeight;
-          }
-        };
-    
-        // Initial scroll to bottom
-        scrollToBottom();
-    
-        // Event listener for window resize (optional, only if needed)
-        const handleResize = () => {
-          scrollToBottom();
-        };
-    
-        // Add event listener for window resize (optional, only if needed)
-        window.addEventListener("resize", handleResize);
-    
-        // Cleanup function to remove the event listener
-        return () => window.removeEventListener("resize", handleResize);
+        const scrollToAlignTop = () => {
+            if (chatContainerRef.current) {
+              const lastQuestionElement = chatContainerRef.current.querySelector(
+                ".question-container" // Assuming you have a class for Question elements
+              ) as HTMLElement;
+      
+              if (lastQuestionElement) {
+                const distanceToTop =
+                  lastQuestionElement.offsetTop - chatContainerRef.current.offsetTop;
+                chatContainerRef.current.scrollTop = distanceToTop;
+              }
+            }
+          };
+      
+          // Call scrollToAlignTop after the chat updates
+          scrollToAlignTop();
       }, [queries]);
 
     return (
@@ -67,10 +63,10 @@ const ChatPage = () => {
                     <div key={index}>
                         <Question content={item.query} time={item.time} />
                         {results[index]?(
-                            <Answer response={results[index]}><div key={index}  dangerouslySetInnerHTML={{ __html: (formatText(results[index])) }} /></Answer>
+                            <Answer response={results[index]}  isLast={index===(queries.length-1)}><div key={index}  dangerouslySetInnerHTML={{ __html: (formatText(results[index])) }}/></Answer>
                         ):
                         (
-                            <Answer loading />
+                            <Answer loading isLast={index===(queries.length-1)}/>
                         )}
                     </div>
                 ))}
