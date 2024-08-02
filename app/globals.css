@@ -166,12 +166,24 @@ body {
 }
 
 .h2-style h2 {
-    font-size: 1.2rem; /* Adjust as needed */
+    font-size: 1.4rem; /* Adjust as needed */
 }
 
 .h3-style h3 {
+    font-size: 1.2rem; /* Adjust as needed */
+}
+
+.h4-style h4 {
     font-size: 1rem; /* Adjust as needed */
 }
+
+code {
+    background-color: #eee;
+    border-radius: 3px;
+    font-family: courier, monospace;
+    padding: 0 3px;
+  }
+  
 
 [data-placeholder]::after {
     content: " ";
