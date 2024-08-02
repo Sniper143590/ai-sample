@@ -34,7 +34,6 @@ const useChatModule = () => {
     const [actions, setActions] = useState<{id:number, prompt:string}[]>([])
     const [presetButtonPrompt, setPresetButtonPrompt] = useState("")
     const [chatSession, setChatSession] = useState("")
-    
     const [chatModule, setChatModule] = useState<ChatModule>({_id:"", name:"",llm_name:"", prompt_context:"", placeholder_text:"",actions:[], presetButtonPrompt:"", avatar:"", preset_buttons:[]} as ChatModule);
     const [chatModules, setChatModules] = useState<ChatModule[]>([]);
 
@@ -398,13 +397,15 @@ const useChatModule = () => {
     const getResponseFunc = async (item?:PresetButton) => {
             // console.log(query)
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
+            setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
+
             try{
                 setLoading(true)
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
                 const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession);
                 setResults(prev=>[...prev, result.message])
-                setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:result.message}])
+                // setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:result.message}])
                 let preprompts = result.preprompts
                 const updatedPrePrompts = preprompts.map((item:string, index:number)=>
                     {
@@ -414,7 +415,7 @@ const useChatModule = () => {
                 setPrePrompts(updatedPrePrompts)
                 setLoaded(true)
             } catch {
-                setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
+                // setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
                 setResults(prev=>[...prev, "Backend Error"])
                 setLoaded(true)
             }
@@ -525,6 +526,9 @@ const useChatModule = () => {
         presetButtonPrompt,
         setPresetButtonPrompt,
         refreshPresetPrompts,
+        conversations,
+        setConversations,
+        setResults,
     }
 }
 

@@ -1,5 +1,4 @@
 import Image from "@/components/Image";
-import {marked} from "marked"
 import Loading from "./Loading";
 import Action from "./Action";
 import Icon from "../Icon";
@@ -13,10 +12,10 @@ type AnswerProps = {
 };
 
 const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
-    
+    // console.log(children)
     return (
         <div className={`max-w-[50rem] ${isLast?"question-container":""}`}>
-            <div className="pt-6 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7 h2-style h3-style">
+            <div className="pt-6 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7 h2-style h3-style h4-style">
                 {loading ? <Loading /> : (children)}
             </div>
             <div className="-mt-8 flex items-end pl-6">

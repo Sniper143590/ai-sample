@@ -17,7 +17,7 @@ const ChatContext = createContext<{
     prePrompts:PresetButton[],
     setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>;
     cancelGeneration:()=>void;
-    //ChatModule
+    // ChatModule
     name:string;
     setName:React.Dispatch<React.SetStateAction<string>>;
     avatar:File | null;
@@ -54,6 +54,9 @@ const ChatContext = createContext<{
     refreshPresetPrompts:()=>void;
     prePromptLoading:boolean;
     setPrePromptLoading:React.Dispatch<React.SetStateAction<boolean>>;
+    conversations:{query:string, answer:string}[];
+    setConversations:React.Dispatch<React.SetStateAction<{query:string, answer:string}[]>>;
+    setResults:React.Dispatch<React.SetStateAction<string[]>>;
 } | null>(null)
 
 type ChatModuleProviderProps = {
