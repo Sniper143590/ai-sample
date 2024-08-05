@@ -15,6 +15,8 @@ import { usePathname } from "next/navigation";
 const useChatModule = () => {
     const [query, setQuery] = useState("")
     const [result, setResult] = useState("")
+    const [abortController, setAbortController] = useState<AbortController | null>(null);
+    const [isScrolled, setIsScrolled] = useState(false)
     const pathname =  usePathname()
     const [isProgress, setIsProgress] = useState(false)
     const [loaded, setLoaded] = useState(false)
@@ -27,6 +29,7 @@ const useChatModule = () => {
     const [name, setName] = useState<string>("");
     const [avatar, setAvatar] = useState<File | null>(null);
     const [avatarUrl, setAvatarUrl] = useState("");
+    const [currentScrollY, setCurrentScrollY] = useState(-1);
     const [llm, setLlm] = useState("");
     const [role, setRole] = useState("");
     const [prePrompts, setPrePrompts] = useState<PresetButton[]>([])
@@ -58,6 +61,7 @@ const useChatModule = () => {
             // Store the fetched data along with a timestamp for expiration check
             // localStorage.setItem('chatModules', JSON.stringify({ data: result, timestamp: new Date().getTime() }));
             setChatModules(result);
+            setIsScrolled(false);
             const chatModuleWithId = result.find(module => module._id === lastSegment);
             if (chatModuleWithId){
                 setChatSession(uuidv4())
@@ -106,6 +110,8 @@ const useChatModule = () => {
             setPlaceholderText(chatModuleWithId.placeholder_text)
             setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
+            setIsScrolled(false)
+            setCurrentScrollY(-1)
             // setPrePrompts(chatModuleWithId.preset_buttons)
         }
     }
@@ -401,22 +407,25 @@ const useChatModule = () => {
 
     const getResponseFunc = async (item?:PresetButton) => {
             // console.log(query)
+            setIsScrolled(false)
+            setCurrentScrollY(-1)
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
             const numberOfQueries = queries.length;
+            setAbortController(new AbortController())
+            console.log(abortController)
             try{
                 
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
                 setIsProgress(true)
                 setLoading(true)
-                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setPrePromptLoading,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession);
+                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setPrePromptLoading,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController);
                 setLoaded(true)
                 setIsProgress(false)
                 // setLoading(false)
             } catch {
                 setLoading(false)
-
                 // setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
                 setResults(prev=>[...prev, "Backend Error"])
                 setLoaded(true)
@@ -424,8 +433,9 @@ const useChatModule = () => {
             setQuery("")
     }
 
-    const cancelGeneration =  () => {
-         cancelOperation()
+    const cancelGeneration = () => {
+        console.log(abortController)
+         cancelOperation(abortController)
     }
 
     const refreshPresetPrompts = async () => {
@@ -532,6 +542,10 @@ const useChatModule = () => {
         setResults,
         isProgress,
         setIsProgress,
+        isScrolled,
+        setIsScrolled,
+        currentScrollY,
+        setCurrentScrollY,
     }
 }
 

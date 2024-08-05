@@ -10,38 +10,46 @@ import remarkGfm from 'remark-gfm'
 
 
 const ChatPage = () => {
-    const { loading, isProgress, queries, results, getResponseFunc, chatModule } = useChat()
-    
-      const chatContainerRef = useRef<HTMLDivElement>(null);
+    const { isScrolled, setIsScrolled, queries, results, getResponseFunc, chatModule } = useChat()
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
-      useEffect(() => {
-       
-        setTimeout(() => {
-        }, 1000); // 3000 milliseconds (3 seconds) delay
-        // Function to scroll to the bottom of the chat container
-        const scrollToAlignTop = () => {
+    useEffect(() => {
+        console.log(isScrolled)
+
+        // Check if manual scrolling is active
+        if (isScrolled) {
+          return; // Stop execution if manually scrolled
+        }
+        
+          // Function to scroll to the bottom of the chat container
+          const scrollToAlignTop = () => {
             if (chatContainerRef.current) {
               const lastQuestionElement = chatContainerRef.current.querySelector(
                 ".question-container" // Assuming you have a class for Question elements
               ) as HTMLElement;
       
               if (lastQuestionElement) {
+                
+                // Calculate the distance to the top of the last question element
                 const distanceToTop =
                   lastQuestionElement.offsetTop - chatContainerRef.current.offsetTop;
-                chatContainerRef.current.scrollTop = distanceToTop;
+                 
+                  // Update the scroll position 
+                  chatContainerRef.current.scrollTop = distanceToTop;
               }
             }
           };
+        scrollToAlignTop()
+      },[queries, results]); // Empty dependency array so it runs only once on mount
 
-         
-      
-          // Call scrollToAlignTop after the chat updates
-          scrollToAlignTop();
-      }, [queries, results]);
+      const onScrollHandle = () => {
+        setIsScrolled(true)
+        console.log("Wheel------")
+      }
 
     return (
         <>
-            <Chat title={chatModule.name} chatContainerRef={chatContainerRef}>
+            <Chat title={chatModule.name} chatContainerRef={chatContainerRef} onScroll = {onScrollHandle}>
                 {queries.map((item, index) => (
                     <div key={index}>
                         <Question content={item.query} time={item.time} isLast={index===(queries.length-1)}/>

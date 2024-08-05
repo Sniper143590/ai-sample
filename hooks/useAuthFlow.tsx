@@ -211,12 +211,19 @@ const useAuthFlow = () => {
         await createUserFromCredential(user)
         const userData = await getUserData(user.email)
         console.log("Here >>>>", userData)
-        setUserEmail(userData[0].email || "")
-        setUserData(userData[0])
-        setUserName(userData[0].displayName?userData[0].displayName:"")
-        setAvatar(userData[0].photoURL?userData[0].photoURL:"")
-        localStorage.setItem("userData", JSON.stringify(userData[0]))
-        setLoading(false)
+        if(userData){
+          setUserEmail(userData[0]?.email || "")
+          setUserData(userData[0])
+          setUserName(userData[0].displayName?userData[0].displayName:"")
+          setAvatar(userData[0].photoURL?userData[0].photoURL:"")
+          localStorage.setItem("userData", JSON.stringify(userData[0]))
+          setLoading(false)
+        } else {
+          router.push("/");
+          localStorage.setItem("token", "");
+          localStorage.setItem("userData", JSON.stringify(""));
+        }
+        
       } else {
         router.push("/");
         localStorage.setItem("token", "");

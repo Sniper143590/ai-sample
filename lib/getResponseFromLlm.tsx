@@ -1,33 +1,20 @@
-import axios, { CancelTokenSource } from "axios"
 import { BACKEND_URL } from "@/constants/backend"
 import { PresetButton } from "@/constants/types";
 
-import Streamify from 'streamify-string';
-
-interface ResponseData {
-  message: string;
-  preprompts: string[];
-}
-
 const getResponseFromLlm = (): {
-  startOperation: (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string) => void;
-  cancelOperation: () => void;
+  startOperation: (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string,abortController:AbortController|null) => void;
+  cancelOperation: (abortController:AbortController|null) => void;
 } => {
 
-  // const cancelTokenSourceRef = useRef<CancelTokenSource>(axios.CancelToken.source());
-  const controller = new AbortController();
-  const signal = controller.signal;
+
   let num;
 
-  const startOperation = async (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string) => {
+  const startOperation = async (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, abortController:AbortController|null) => {
     try {
 
-      
-      const CancelToken = axios.CancelToken;
-      const source = CancelToken.source();
-
       const headers = {
-        'Content-Type': 'text/plain',
+        'Accept': 'text/event-stream',
+        'Content-Type': 'text/event-stream',
         'ngrok-skip-browser-warning': "1",
       };
         const params =  { // Add parameters to the URL
@@ -44,9 +31,9 @@ const getResponseFromLlm = (): {
       const queryString = queryParams.toString();
       setLoading(true)
       setIsProgress(true)
-
-      await fetch(`${BACKEND_URL}/api/query1?${queryString}`, {
-        signal:signal,
+        console.log("Signal ->", abortController?.signal)
+      fetch(`${BACKEND_URL}/api/query1?${queryString}`, {
+        signal:abortController?.signal,
         method: 'GET',
         headers
       }).then(response => {
@@ -120,12 +107,15 @@ const getResponseFromLlm = (): {
 
           readData();
         }
+      }).catch(error=> {
+
+        console.log(error)
       })
 
     } catch (error: any) {
       setLoading(false)
       setIsProgress(false)
-      
+
       if (error.name === "AbortError") {
         console.log("Aborted")
         // Return "operation cancelled" if the request was cancelled
@@ -137,11 +127,14 @@ const getResponseFromLlm = (): {
     }
   };
 
-  const cancelOperation = () => {
+  const cancelOperation = (abortController:AbortController|null) => {
     // if (cancelTokenSourceRef.current) {
+    console.log(abortController)
+    if(abortController){
     console.log("Cancelled##");
-    
-    controller.abort()
+    abortController.abort()
+
+    }
     //     cancelTokenSourceRef.current.cancel("Operation cancelled");
     //     cancelTokenSourceRef.current = axios.CancelToken.source();
     // }

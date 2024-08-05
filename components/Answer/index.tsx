@@ -1,8 +1,8 @@
 import Image from "@/components/Image";
+import { useChat } from "@/providers/ChatModuleProvider";
 import Loading from "./Loading";
 import Action from "./Action";
 import Icon from "../Icon";
-import { useChat } from "@/providers/ChatModuleProvider";
 
 type AnswerProps = {
     children?: React.ReactNode;
@@ -13,11 +13,14 @@ type AnswerProps = {
 };
 
 const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
-    const { isProgress } = useChat()
+    const { isProgress, cancelGeneration } = useChat()
     // console.log(children)
+    const handlePauseGenerating = () =>{
+         cancelGeneration()
+    }
     return (
         <div className={`relative max-w-[50rem] ${isLast?"":""}`}>
-            <div className="relative pt-6 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7 h2-style h3-style h4-style h5-style h6-style h1-style">
+            <div className="relative pt-15 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7 h2-style h3-style h4-style h5-style h6-style h1-style">
                 {loading ? <Loading /> : (children)}
                 {(!loading && !isProgress) && (<Action response={response}/>)}
             </div>
@@ -37,7 +40,8 @@ const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
                     />
                 </div>
                 {loading? (
-                    <button className="group flex items-center ml-3 px-2 py-0.5 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 dark:text-n-3 dark:hover:text-primary-1">
+                    <button className="group flex items-center ml-3 px-2 py-0.5 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 dark:text-n-3 dark:hover:text-primary-1"
+                        onClick={handlePauseGenerating}>
                         <Icon
                             className="w-4 h-4 mr-2 transition-colors group-hover:fill-primary-1 dark:fill-n-3"
                             name="pause-circle"
