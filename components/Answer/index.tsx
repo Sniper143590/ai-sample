@@ -14,7 +14,7 @@ type AnswerProps = {
 const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
     // console.log(children)
     return (
-        <div className={`relative max-w-[50rem] ${isLast?"question-container":""}`}>
+        <div className={`relative max-w-[50rem] ${isLast?"":""}`}>
             <div className="relative pt-6 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7 h2-style h3-style h4-style h5-style h6-style h1-style">
                 {loading ? <Loading /> : (children)}
                 {!loading && (<Action response={response}/>)}

@@ -10,85 +10,13 @@ import remarkGfm from 'remark-gfm'
 
 
 const ChatPage = () => {
-    const { queries, results, setResults, conversations, setConversations, getResponseFunc, chatModule } = useChat()
-    function startsWithNumber(str:string) {
-        return /^\d/.test(str); 
-    }
-    function wrapCode(text: string): string {
-        // Replace all occurrences of `text` with <code>text</code>
-        return text.replace(/`(.*?)`/g, '<code>$1</code>'); 
-      }
-    function wrapMultiCode(text:string): string {
-        let lines = text.split("\n")
-        const name = lines[0]
-        let content = ""
-        for (let i=1;i<lines.length;i++){
-            content +=lines[i]
-        }
-        return `<pre><code className='language-${name}>${content}</code></pre>`
-    }
-    function replaceWithBold(text:string):string {
-        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    }
-    function wrapWithNumber(text:string):string {
-        return text.replace(/\*\*(.*?)\*\*/g, '$1')
-    }
-    const formatText = (text: string) => {
-        let html = "<ol style='display:flex; flex-direction:column;gap:0.5rem;'>"
-        let lines = text.split("\n")
-        let codeCount = 0;
-        for (let i =0; i<lines.length; i++) {
-            let line = lines[i]
-           
-            let htmlCode = ''
-            if(line.startsWith('#')) {
-                if(line){
-                    let headingLevel = line.split('#').length-1;
-                    htmlCode= `<br><li><strong><h${headingLevel}>${line.replace(/\*\*(.*?)\*\*/g, '$1').trim().substring(headingLevel).trim()}</h${headingLevel}></strong><li>`;
-                }
-            } else if(line.startsWith('---')){
-                htmlCode = "<hr>"
-            } 
-            else if (line.trim()===""){
-                htmlCode= ""
-            } else if (line.trim().startsWith('-')){
-                line ="<li style='margin-left:1.5rem;list-style-type: disc;'>" + line.slice(line.indexOf("-")+1) + "</li>"
-                htmlCode= line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            } else if(line.startsWith('  -')){
-                line ="<li style='margin-left:2.5rem;list-style-type: disc;'>" + line.slice(3) + "</li>"
-                htmlCode= line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
-            } 
-            else if(startsWithNumber(line)){
-                console.log("Synthesizers")
-                
-                htmlCode="<li><strong>"+wrapWithNumber(line)+"</strong></li>"
-            } else if(line.startsWith("  ```")){
-                codeCount ++;
-                // let blocks = ''
-
-                if(codeCount%2===1){
-                    let name = line.slice(3)
-                    console.log(name)
-                    htmlCode = `<pre><code>`
-                } else {
-                    htmlCode = "</code></pre>"
-                }
-                // htmlCode= line.replace(/```([\s\S]+?)```/g, '</p><pre><code>$1</code></pre><p>');
-            }
-            else {
-                // line.replace(/```([\s\S]*?)```/g, "<code>$1</code>");
-                htmlCode= "<li>"+(line.trim().replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>'))+"</li>"
-            }
-
-            html +=wrapCode(htmlCode)
-
-        }
-        console.log("Here goes the number of codes", codeCount)
-        return html + "</ol>";
-    };
+    const { queries, results, getResponseFunc, chatModule } = useChat()
+    
       const chatContainerRef = useRef<HTMLDivElement>(null);
 
       useEffect(() => {
+        setTimeout(() => {
+        }, 1000); // 3000 milliseconds (3 seconds) delay
         // Function to scroll to the bottom of the chat container
         const scrollToAlignTop = () => {
             if (chatContainerRef.current) {
@@ -103,17 +31,19 @@ const ChatPage = () => {
               }
             }
           };
+
+         
       
           // Call scrollToAlignTop after the chat updates
           scrollToAlignTop();
-      }, [queries]);
+      }, [queries, results]);
 
     return (
         <>
             <Chat title={chatModule.name} chatContainerRef={chatContainerRef}>
                 {queries.map((item, index) => (
                     <div key={index}>
-                        <Question content={item.query} time={item.time} />
+                        <Question content={item.query} time={item.time} isLast={index===(queries.length-1)}/>
                         {results[index]?(
                             <Answer response={results[index]}  isLast={index===(queries.length-1)}>
                                 {/* <div key={index} dangerouslySetInnerHTML={{ __html: formatText(results[index]) }}/> */}
