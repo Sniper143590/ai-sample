@@ -57,6 +57,8 @@ const ChatContext = createContext<{
     conversations:{query:string, answer:string}[];
     setConversations:React.Dispatch<React.SetStateAction<{query:string, answer:string}[]>>;
     setResults:React.Dispatch<React.SetStateAction<string[]>>;
+    isProgress:boolean;
+    setIsProgress:React.Dispatch<React.SetStateAction<boolean>>;
 } | null>(null)
 
 type ChatModuleProviderProps = {
