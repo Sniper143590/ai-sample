@@ -15,13 +15,14 @@ const getResponseFromLlm = (): {
 } => {
 
   // const cancelTokenSourceRef = useRef<CancelTokenSource>(axios.CancelToken.source());
-
+  const controller = new AbortController();
+  const signal = controller.signal;
+  let num;
 
   const startOperation = async (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string) => {
     try {
 
-      const controller = new AbortController();
-      const signal = controller.signal;
+      
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
 
@@ -45,6 +46,7 @@ const getResponseFromLlm = (): {
       setIsProgress(true)
 
       await fetch(`${BACKEND_URL}/api/query1?${queryString}`, {
+        signal:signal,
         method: 'GET',
         headers
       }).then(response => {
@@ -54,15 +56,17 @@ const getResponseFromLlm = (): {
           const reader = stream.getReader();
           let message = "";
           let initLength = numberOfQueries-1;
+          num = numberOfQueries-1;
           // Read and process data chunks
           const readData = async () => {
-            setIsProgress(true)
+            // setIsProgress(true)
 
             while (true) {
               const { value, done } = await reader.read();
 
               // Process the data chunk (value)
               if (done) {
+                setLoading(false)
                 setIsProgress(false)
                 console.log("Done-------->")
                 break;
@@ -121,7 +125,7 @@ const getResponseFromLlm = (): {
     } catch (error: any) {
       setLoading(false)
       setIsProgress(false)
-
+      
       if (error.name === "AbortError") {
         console.log("Aborted")
         // Return "operation cancelled" if the request was cancelled
@@ -136,7 +140,8 @@ const getResponseFromLlm = (): {
   const cancelOperation = () => {
     // if (cancelTokenSourceRef.current) {
     console.log("Cancelled##");
-    // controller.abort()
+    
+    controller.abort()
     //     cancelTokenSourceRef.current.cancel("Operation cancelled");
     //     cancelTokenSourceRef.current = axios.CancelToken.source();
     // }

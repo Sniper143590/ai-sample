@@ -10,11 +10,12 @@ import remarkGfm from 'remark-gfm'
 
 
 const ChatPage = () => {
-    const { queries, results, getResponseFunc, chatModule } = useChat()
+    const { loading, isProgress, queries, results, getResponseFunc, chatModule } = useChat()
     
       const chatContainerRef = useRef<HTMLDivElement>(null);
 
       useEffect(() => {
+       
         setTimeout(() => {
         }, 1000); // 3000 milliseconds (3 seconds) delay
         // Function to scroll to the bottom of the chat container

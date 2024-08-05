@@ -408,8 +408,12 @@ const useChatModule = () => {
                 
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
+                setIsProgress(true)
+                setLoading(true)
                 await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setPrePromptLoading,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession);
                 setLoaded(true)
+                setIsProgress(false)
+                // setLoading(false)
             } catch {
                 setLoading(false)
 
