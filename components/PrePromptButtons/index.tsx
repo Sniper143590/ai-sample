@@ -9,9 +9,13 @@ interface PrePromptButtonsProps {
 const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
     const {prePrompts, loading, isProgress, prePromptLoading, refreshPresetPrompts , loaded} = useChat()
     const handleClick = (item:{_id:number, text:string, prompt:string}) =>{
+        console.log("HERE --->", prePromptLoading)
+        if(prePromptLoading) return
         handleButtonClick(item)
     }
     const handleRefresh = async () => {
+        console.log("HERE --->", prePromptLoading)
+        if(prePromptLoading) return
         await refreshPresetPrompts()
     }
 
@@ -23,7 +27,7 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
                 key={index}
                 className={`btn-normal mt-1 w-2/5 md:w-full mx-2 px-2 border truncate ${prePromptLoading?"animate-pulse bg-gray-300":""}`} 
                 onClick={() => handleClick(item)}
-                disabled={loading}
+                disabled={prePromptLoading}
             >
                 {prePromptLoading?"": item.text}
             </button>
