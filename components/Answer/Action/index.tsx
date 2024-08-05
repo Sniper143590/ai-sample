@@ -16,18 +16,17 @@ const Action = ({response}:ActionPropType) => {
         "flex-shrink-0  m-2 w-auto ml-3 px-2 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 truncate";
 
     return (
-        <>
+        <div className="flex flex-row flex-wrap justify-end absolute right-0 top-full w-4/5 !mt-0">
             
             {
                 actions.map((item, index)=>(
-                    <div className="flex absolute right-0 top-2 relative">
                         <button key={index} className={styleButton} onClick={()=>handleActionClick(item.prompt)} data-tooltip={item.prompt}>{item.prompt}</button>
-                    </div>
+                   
                 ))
                 
             }
             
-        </>
+        </div>
     );
 };
 

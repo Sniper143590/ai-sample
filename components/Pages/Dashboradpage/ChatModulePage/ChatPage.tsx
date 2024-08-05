@@ -5,7 +5,8 @@ import Message from "@/components/Message";
 import Question from "@/components/Question";
 import Answer from "@/components/Answer";
 import { useChat } from "@/providers/ChatModuleProvider";
-import { wrap } from "module";
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 
 const ChatPage = () => {
@@ -26,6 +27,12 @@ const ChatPage = () => {
         }
         return `<pre><code className='language-${name}>${content}</code></pre>`
     }
+    function replaceWithBold(text:string):string {
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    }
+    function wrapWithNumber(text:string):string {
+        return text.replace(/\*\*(.*?)\*\*/g, '$1')
+    }
     const formatText = (text: string) => {
         let html = "<ol style='display:flex; flex-direction:column;gap:0.5rem;'>"
         let lines = text.split("\n")
@@ -37,21 +44,24 @@ const ChatPage = () => {
             if(line.startsWith('#')) {
                 if(line){
                     let headingLevel = line.split('#').length-1;
-                    htmlCode= `<li><strong><h${headingLevel}>${line.replace(/\*\*(.*?)\*\*/g, '$1').trim().substring(headingLevel).trim()}</h${headingLevel}></strong><li>`;
+                    htmlCode= `<br><li><strong><h${headingLevel}>${line.replace(/\*\*(.*?)\*\*/g, '$1').trim().substring(headingLevel).trim()}</h${headingLevel}></strong><li>`;
                 }
-            } else if (line.trim()===""){
-                htmlCode= "<br>"
-            } else if (line.startsWith('-')){
-                line ="<li style='margin-left:1.5rem;list-style-type: disc;'>" + line.slice(1) + "</li>"
+            } else if(line.startsWith('---')){
+                htmlCode = "<hr>"
+            } 
+            else if (line.trim()===""){
+                htmlCode= ""
+            } else if (line.trim().startsWith('-')){
+                line ="<li style='margin-left:1.5rem;list-style-type: disc;'>" + line.slice(line.indexOf("-")+1) + "</li>"
                 htmlCode= line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             } else if(line.startsWith('  -')){
                 line ="<li style='margin-left:2.5rem;list-style-type: disc;'>" + line.slice(3) + "</li>"
-                htmlCode= line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                htmlCode= line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
             } 
             else if(startsWithNumber(line)){
                 console.log("Synthesizers")
-                line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                htmlCode="<li>"+line+"</li>"
+                
+                htmlCode="<li><strong>"+wrapWithNumber(line)+"</strong></li>"
             } else if(line.startsWith("  ```")){
                 codeCount ++;
                 // let blocks = ''
@@ -67,7 +77,7 @@ const ChatPage = () => {
             }
             else {
                 // line.replace(/```([\s\S]*?)```/g, "<code>$1</code>");
-                htmlCode= ""+line
+                htmlCode= "<li>"+(line.trim().replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>'))+"</li>"
             }
 
             html +=wrapCode(htmlCode)
@@ -105,7 +115,10 @@ const ChatPage = () => {
                     <div key={index}>
                         <Question content={item.query} time={item.time} />
                         {results[index]?(
-                            <Answer response={results[index]}  isLast={index===(queries.length-1)}><div key={index} dangerouslySetInnerHTML={{ __html: formatText(results[index]) }}/></Answer>
+                            <Answer response={results[index]}  isLast={index===(queries.length-1)}>
+                                {/* <div key={index} dangerouslySetInnerHTML={{ __html: formatText(results[index]) }}/> */}
+                                <Markdown remarkPlugins={[remarkGfm]}>{results[index]}</Markdown>
+                            </Answer>
                         ):
                         (
                             <Answer loading isLast={index===(queries.length-1)}/>

@@ -14,7 +14,9 @@ import { usePathname } from "next/navigation";
 
 const useChatModule = () => {
     const [query, setQuery] = useState("")
+    const [result, setResult] = useState("")
     const pathname =  usePathname()
+    const [isProgress, setIsProgress] = useState(false)
     const [loaded, setLoaded] = useState(false)
     const [prePromptLoading, setPrePromptLoading] = useState(false)
     const [queries, setQueries] = useState<{query:string, time:string}[]>([])
@@ -73,6 +75,9 @@ const useChatModule = () => {
         fetchChatModules()
     }, [pathname]);
     
+    useEffect(() => {
+        console.log(result)
+    }, [result])
     function getCurrentTime(): string {
         const now = new Date();
         const year = now.getFullYear();
@@ -398,28 +403,20 @@ const useChatModule = () => {
             // console.log(query)
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
-
+            const numberOfQueries = queries.length;
             try{
-                setLoading(true)
+                
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
-                const result = await startOperation(item?item.prompt:query, chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession);
-                setResults(prev=>[...prev, result.message])
-                // setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:result.message}])
-                let preprompts = result.preprompts
-                const updatedPrePrompts = preprompts.map((item:string, index:number)=>
-                    {
-                        return { _id:index, text: item, prompt: item };
-                    }
-                );
-                setPrePrompts(updatedPrePrompts)
+                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setPrePromptLoading,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession);
                 setLoaded(true)
             } catch {
+                setLoading(false)
+
                 // setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
                 setResults(prev=>[...prev, "Backend Error"])
                 setLoaded(true)
             }
-            setLoading(false)
             setQuery("")
     }
 
@@ -529,6 +526,8 @@ const useChatModule = () => {
         conversations,
         setConversations,
         setResults,
+        isProgress,
+        setIsProgress,
     }
 }
 

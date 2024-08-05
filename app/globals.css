@@ -165,25 +165,86 @@ body {
   }
 }
 
+.h1-style h1 {
+    font-size: 2.5rem; /* Adjust as needed */
+}
+
 .h2-style h2 {
-    font-size: 1.4rem; /* Adjust as needed */
+    font-size: 2rem; /* Adjust as needed */
 }
 
 .h3-style h3 {
-    font-size: 1.2rem; /* Adjust as needed */
+    font-size: 1.75rem; /* Adjust as needed */
+    font-weight: bold;
+    margin-top: 1rem;
 }
 
 .h4-style h4 {
-    font-size: 1rem; /* Adjust as needed */
+    font-size: 1.5rem; /* Adjust as needed */
+    /* font-weight: bold; */
+    margin-top: 2rem!important;
 }
 
-code {
-    background-color: #eee;
+.h5-style h5 {
+    font-size: 1.25rem; /* Adjust as needed */
+    /* font-weight: bold; */
+}
+
+.h6-style h6 {
+    font-size: 1rem; /* Adjust as needed */
+}
+pre {
+    background-color: #0a0101;
     border-radius: 3px;
+    width: 100%;
+    padding: 20px 10px 10px 20px;
+    padding-top: 10px!important;
+    /* white-space: pre-wrap; */
+}
+pre code {
+    width: 100%;
     font-family: courier, monospace;
-    padding: 0 3px;
+    margin: 10px 10px 10px 10px;
+    white-space: pre-wrap;
+    color: rgb(209, 209, 209);
   }
-  
+
+ol {
+    list-style-type: decimal; /* Use decimal numbers */
+    padding-left: 1rem;
+    margin-top: 1rem;
+}
+
+ul {
+    list-style-type: disc; /* Use discs */
+    padding-left: 1.4rem;
+}
+
+ol li ul li {
+    list-style-type: disc; /* Or any other list-style-type */
+    margin-left: 1.5rem;
+
+  }
+ol li ul {
+    margin-bottom: 1rem;
+}
+
+ol li ul li ul li {
+    margin-bottom: auto;
+    list-style-type: circle;
+}
+
+ol li ul li ul{
+    margin-bottom: auto;
+}
+
+ul li ul li {
+    list-style-type: circle;
+}
+
+li {
+    margin-top: 0.4rem!important;
+}
 
 [data-placeholder]::after {
     content: " ";

@@ -7,7 +7,7 @@ interface PrePromptButtonsProps {
 }
 
 const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
-    const {prePrompts, loading, prePromptLoading, refreshPresetPrompts , loaded} = useChat()
+    const {prePrompts, loading, isProgress, prePromptLoading, refreshPresetPrompts , loaded} = useChat()
     const handleClick = (item:{_id:number, text:string, prompt:string}) =>{
         handleButtonClick(item)
     }
