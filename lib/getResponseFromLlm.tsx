@@ -81,7 +81,6 @@ const getResponseFromLlm = (): {
 
                 }
               } else {  
-                setLoading(false)
                 setIsProgress(true)
                 message += chunk;
                 // console.log(chunk)
