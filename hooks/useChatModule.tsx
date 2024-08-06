@@ -29,7 +29,7 @@ const useChatModule = () => {
     const [name, setName] = useState<string>("");
     const [avatar, setAvatar] = useState<File | null>(null);
     const [avatarUrl, setAvatarUrl] = useState("");
-    const [isBottom, setIsBottom] = useState(true);
+    const [isBottom, setIsBottom] = useState(false);
     const [llm, setLlm] = useState("");
     const [role, setRole] = useState("");
     const [prePrompts, setPrePrompts] = useState<PresetButton[]>([])
@@ -416,7 +416,6 @@ const useChatModule = () => {
             setAbortController(new AbortController())
             console.log(abortController)
             try{
-                
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
                 setIsProgress(true)

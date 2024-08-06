@@ -12,17 +12,21 @@ import remarkGfm from 'remark-gfm'
 const ChatPage = () => {
     const { isScrolled, isBottom, setIsBottom, setIsScrolled, queries, results, getResponseFunc, chatModule } = useChat()
     const chatContainerRef = useRef<HTMLDivElement>(null);
+    let clientHeight:number, scrollHeight:number; 
     useEffect(() => {
 
         // Check if manual scrolling is active
-        if (isScrolled) {
-            console.log("changed____isBottom")
-            setIsBottom(false)
-            return; // Stop execution if manually scrolled
-        }
+        
           // Function to scroll to the bottom of the chat container
           const scrollToAlignTop = () => {
+            if (isScrolled) {
+                console.log("changed____isBottom")
+                setIsBottom(false)
+                return; // Stop execution if manually scrolled
+            }
             if (chatContainerRef.current) {
+                clientHeight = chatContainerRef.current.clientHeight;
+                scrollHeight = chatContainerRef.current.scrollHeight;
               const lastQuestionElement = chatContainerRef.current.querySelector(
                 ".question-container" // Assuming you have a class for Question elements
               ) as HTMLElement;
@@ -40,7 +44,7 @@ const ChatPage = () => {
           };
           setTimeout(()=>{
             scrollToAlignTop()
-          }, 500)
+          }, 200)
       },[queries, results]); // Empty dependency array so it runs only once on mount
 
       const onWheelHandle = () => {
@@ -55,27 +59,26 @@ const ChatPage = () => {
 
       const handleScroll = () => {
         if (chatContainerRef.current) { // Check if the ref is available
-          const chatContainer = chatContainerRef.current;
-          const threshold = 200;
-          const isAtBottom =
-            chatContainer.scrollTop + chatContainer.clientHeight + threshold >
-            chatContainer.scrollHeight;
-        //   console.log("Scroll Top -->", chatContainer.scrollTop)
-        //   console.log("chatContainer.clientHeight -->", chatContainer.clientHeight)
-        //   console.log("chatContainer.scrollHeight -->",chatContainer.scrollHeight)
-          const throttleTimeout = setTimeout(() => {
-            if (isAtBottom) {
-              setIsBottom(true);
-            //   console.log("Reached");
-            } else {
-              if (isBottom) {
-                setIsBottom(false);
-              }
-            //   console.log("Unreached");
-            }
-          }, 1000); // Set a delay of 100 milliseconds (adjust as needed)
-      
-          return () => clearTimeout(throttleTimeout); // Clear timeout on cleanup
+            const chatContainer = chatContainerRef.current;
+            const threshold = 200;
+            let isAtBottom = chatContainer.scrollTop + chatContainer.clientHeight + threshold > chatContainer.scrollHeight;
+
+              console.log("Scroll Top -->", chatContainer.scrollTop + chatContainer.clientHeight + threshold - chatContainer.scrollHeight)
+            //   console.log("chatContainer.clientHeight -->", chatContainer.clientHeight)
+            //   console.log("chatContainer.scrollHeight -->",chatContainer.scrollHeight)
+            const throttleTimeout = setTimeout(() => {
+                if (isAtBottom) {
+                setIsBottom(true);
+                //   console.log("Reached");
+                } else {
+                if (isBottom) {
+                    setIsBottom(false);
+                }
+                //   console.log("Unreached");
+                }
+            }, 100); // Set a delay of 100 milliseconds (adjust as needed)
+        
+            return () => clearTimeout(throttleTimeout); // Clear timeout on cleanup
         }
       }
 
