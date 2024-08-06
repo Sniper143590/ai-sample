@@ -49,12 +49,7 @@ const useChatModule = () => {
             setLoading(true)
             const pathSegments = pathname.split('/');
             const lastSegment = pathSegments[pathSegments.length - 1];
-            // Check if cached data exists and is not expired
-            // const cachedData = localStorage.getItem('chatModules');
-            // if (cachedData) {
-            //     const parsedData = JSON.parse(cachedData);
-            //     setChatModules(parsedData.data);
-            // }
+            
             setLoaded(false)
     
             const result = await getChatModules();
@@ -62,6 +57,8 @@ const useChatModule = () => {
             // localStorage.setItem('chatModules', JSON.stringify({ data: result, timestamp: new Date().getTime() }));
             setChatModules(result);
             setIsScrolled(false);
+            setResults([])
+            setQueries([])
             const chatModuleWithId = result.find(module => module._id === lastSegment);
             if (chatModuleWithId){
                 setChatSession(uuidv4())
@@ -268,6 +265,10 @@ const useChatModule = () => {
         setPresetButtons([])
     }
 
+    useEffect(()=>{
+        console.log("Changed")
+    }, [isProgress])
+
     const updateChatModuleWithId =  async (_id:string) => {
         if (!isAddListInputValid()) return false
         setLoading(true)
@@ -419,14 +420,11 @@ const useChatModule = () => {
             try{
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
-                setIsProgress(true)
-                setLoading(true)
-                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setPrePromptLoading,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController);
+                
+                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController);
                 setLoaded(true)
-                setIsProgress(false)
                 // setLoading(false)
             } catch {
-                setLoading(false)
                 // setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
                 setResults(prev=>[...prev, "Backend Error"])
                 setLoaded(true)

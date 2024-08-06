@@ -13,17 +13,16 @@ const Action = ({response}:ActionPropType) => {
     }
 
     const styleButton: string =
-        "flex-shrink-0  m-2 w-auto ml-3 px-2 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 truncate";
+        "flex-shrink-0 m-1 w-auto ml-1 px-2 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 truncate";
 
     return (
-        <div className="flex flex-row flex-wrap justify-end absolute right-0 top-full w-4/5 !mt-0">
+        <div className="flex flex-row flex-wrap justify-end w-4/5 ml-auto !mt-0">
             
             {
                 actions.map((item, index)=>(
                         <button key={index} className={styleButton} onClick={()=>handleActionClick(item.prompt)} data-tooltip={item.prompt}>{item.prompt}</button>
                    
                 ))
-                
             }
             
         </div>
