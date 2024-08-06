@@ -16,7 +16,7 @@ const ChatPage = () => {
     const handleScroll = () => {
         if (chatContainerRef.current) { // Check if the ref is available
             const chatContainer = chatContainerRef.current;
-            const threshold = 200;
+            const threshold = 100;
             let isAtBottom = chatContainer.scrollTop + chatContainer.clientHeight + threshold > chatContainer.scrollHeight;
             //   console.log("chatContainer.clientHeight -->", chatContainer.clientHeight)
             //   console.log("chatContainer.scrollHeight -->",chatContainer.scrollHeight)
