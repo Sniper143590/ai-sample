@@ -29,7 +29,7 @@ const useChatModule = () => {
     const [name, setName] = useState<string>("");
     const [avatar, setAvatar] = useState<File | null>(null);
     const [avatarUrl, setAvatarUrl] = useState("");
-    const [isBottom, setIsBottom] = useState(false);
+    const [isBottom, setIsBottom] = useState(true);
     const [llm, setLlm] = useState("");
     const [role, setRole] = useState("");
     const [prePrompts, setPrePrompts] = useState<PresetButton[]>([])
@@ -72,7 +72,7 @@ const useChatModule = () => {
                 setPrePrompts(chatModuleWithId.preset_buttons)
                 setActions(chatModuleWithId.actions)
                 setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
-                setIsBottom(false)
+                setIsBottom(true)
 
                 // console.log(chatModuleWithId.preset_buttons)
             }
@@ -113,7 +113,7 @@ const useChatModule = () => {
             setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
             setIsScrolled(false)
-            setIsBottom(false)
+            setIsBottom(true)
             // setPrePrompts(chatModuleWithId.preset_buttons)
         }
     }
