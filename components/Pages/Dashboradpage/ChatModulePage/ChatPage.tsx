@@ -10,36 +10,30 @@ import remarkGfm from 'remark-gfm'
 
 
 const ChatPage = () => {
-    const { isScrolled, isBottom, setIsBottom, setIsScrolled, queries, results, getResponseFunc, chatModule } = useChat()
+    const { isScrolled, loading, isBottom, setIsBottom, setIsScrolled, queries, results, getResponseFunc, chatModule } = useChat()
     const chatContainerRef = useRef<HTMLDivElement>(null);
     let clientHeight:number, scrollHeight:number; 
     const handleScroll = () => {
         if (chatContainerRef.current) { // Check if the ref is available
             const chatContainer = chatContainerRef.current;
-            const threshold = 100;
+            const threshold = 400;
             let isAtBottom = chatContainer.scrollTop + chatContainer.clientHeight + threshold > chatContainer.scrollHeight;
-            //   console.log("chatContainer.clientHeight -->", chatContainer.clientHeight)
-            //   console.log("chatContainer.scrollHeight -->",chatContainer.scrollHeight)
             const throttleTimeout = setTimeout(() => {
                 if (isAtBottom) {
                 setIsBottom(true);
-                //   console.log("Reached");
                 } else {
                 if (isBottom) {
                     setIsBottom(false);
                 }
-                //   console.log("Unreached");
                 }
-            }); // Set a delay of 100 milliseconds (adjust as needed)
+            });
         
-            return () => clearTimeout(throttleTimeout); // Clear timeout on cleanup
+            return () => clearTimeout(throttleTimeout); 
         }
       }
     useEffect(() => {
 
-        // Check if manual scrolling is active
         handleScroll()
-          // Function to scroll to the bottom of the chat container
           const scrollToAlignTop = () => {
             if (isScrolled) {
                 console.log("changed____isBottom")
@@ -82,18 +76,19 @@ const ChatPage = () => {
 
     return (
         <>
-            <Chat title={chatModule.name} chatContainerRef={chatContainerRef} onWheel = {onWheelHandle} onScroll={handleScroll}>
+            <Chat title={chatModule.name} chatContainerRef={chatContainerRef} onWheel = {onWheelHandle} onScroll={handleScroll} handleSendButtonClick={getResponseFunc}
+                onClickScrollDown={scrollDown}>
                 {queries.map((item, index) => (
                     <div key={index}>
                         <Question content={item.query} time={item.time} isLast={index===(queries.length-1)}/>
                         {results[index]?(
-                            <Answer response={results[index]}  isLast={index===(queries.length-1)}>
+                            <Answer response={results[index]} isLast={index===(queries.length-1)}>
                                 {/* <div key={index} dangerouslySetInnerHTML={{ __html: formatText(results[index]) }}/> */}
                                 <Markdown remarkPlugins={[remarkGfm]}>{results[index]}</Markdown>
                             </Answer>
                         ):
                         (
-                            <Answer loading isLast={index===(queries.length-1)}/>
+                            <Answer loading={loading} isLast={index===(queries.length-1)}/>
                         )}
                     </div>
                 ))}
@@ -101,7 +96,6 @@ const ChatPage = () => {
             <Message
                 placeholder={chatModule.placeholder_text}
                 handleSendButtonClick={getResponseFunc}
-                onClickScrollDown={scrollDown}
             />
         </>
     )

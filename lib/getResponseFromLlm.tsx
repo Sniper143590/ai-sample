@@ -31,15 +31,14 @@ const getResponseFromLlm = (): {
       const queryString = queryParams.toString();
       setLoading(true)
       setIsProgress(true)
-        console.log("Signal ->", abortController?.signal)
-      fetch(`${BACKEND_URL}/api/query1?${queryString}`, {
+      
+      await fetch(`${BACKEND_URL}/api/query1?${queryString}`, {
         signal:abortController?.signal,
         method: 'GET',
         headers
       }).then(response => {
         const stream = response.body;
         if (stream) {
-
           const reader = stream.getReader();
           let message = "";
           let initLength = numberOfQueries-1;
@@ -53,9 +52,8 @@ const getResponseFromLlm = (): {
 
               // Process the data chunk (value)
               if (done) {
-                setLoading(false)
                 setIsProgress(false)
-                console.log("Done-------->")
+                setLoading(false); 
                 break;
               }
       
@@ -63,8 +61,6 @@ const getResponseFromLlm = (): {
       
               // Assuming your server sends "preprompts" followed by the actual message
               if (chunk.startsWith("preprompts:")) {
-                setLoading(false)
-                setIsProgress(false)
                 console.log("Got preprompts!!!!!")
                 const parts = chunk.split('preprompts:');
 
@@ -75,13 +71,11 @@ const getResponseFromLlm = (): {
                           return { _id:index, text: item, prompt: item };
                       }
                   );
-                  console.log("--------->", updatedPrePrompts)
                 setPrePrompts(updatedPrePrompts)
                 
 
                 }
               } else {  
-                setIsProgress(true)
                 message += chunk;
                 // console.log(chunk)
                 setResults((prevResults) => {
@@ -107,11 +101,13 @@ const getResponseFromLlm = (): {
           readData();
         }
       }).catch(error=> {
-
         console.log(error)
+      }).finally (()=>{
+        console.log("Finalyy")
       })
 
     } catch (error: any) {
+      console.log("Catch")
       setLoading(false)
       setIsProgress(false)
 

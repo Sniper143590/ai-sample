@@ -50,9 +50,9 @@ const ChatModuleLayout = ({
                 <title>Pro Audio Files AI</title>
             </Head>
             <div
-                className={`pr-6 bg-n-7 md:bg-n-1 dark:md:bg-n-6 md:overflow-hidden ${
+                className={`pr-6 sm:pr-1 bg-n-7 md:bg-n-1 dark:md:bg-n-6 md:overflow-hidden ${
                     visibleSidebar
-                        ? "pl-24 "
+                        ? "pl-24 sm:pl-16"
                         : smallSidebar
                         ? "pl-24 "
                         : "pl-80 xl:pl-24 "
@@ -65,11 +65,7 @@ const ChatModuleLayout = ({
                     smallSidebar={smallSidebar}
                 />
                 <div
-                    className={`flex py-6 md:py-0 ${
-                        hideRightSidebar
-                            ? "min-h-screen min-h-screen-ios"
-                            : "h-screen h-screen-ios"
-                    }`}
+                    className={`flex py-6 md:py-0 h-screen h-screen-ios`}
                 >
                     <div
                         className={`relative flex grow max-w-full bg-n-1 rounded-[1.25rem] md:rounded-none dark:bg-n-6`}
@@ -77,19 +73,6 @@ const ChatModuleLayout = ({
                         <div
                             className={`relative flex flex-col grow max-w-full`}
                         >
-                            {!hideRightSidebar && (
-                                <Burger
-                                    className={`
-                                ${!visibleSidebar && "md:hidden"}
-                            `}
-                                    visibleRightSidebar={visibleRightSidebar}
-                                    onClick={() =>
-                                        setVisibleRightSidebar(
-                                            !visibleRightSidebar
-                                        )
-                                    }
-                                />
-                            )}
                             {children}
                         </div>
                     </div>
