@@ -13,57 +13,11 @@ const ChatPage = () => {
     const { isScrolled, isBottom, setIsBottom, setIsScrolled, queries, results, getResponseFunc, chatModule } = useChat()
     const chatContainerRef = useRef<HTMLDivElement>(null);
     let clientHeight:number, scrollHeight:number; 
-    useEffect(() => {
-
-        // Check if manual scrolling is active
-        
-          // Function to scroll to the bottom of the chat container
-          const scrollToAlignTop = () => {
-            if (isScrolled) {
-                console.log("changed____isBottom")
-                setIsBottom(false)
-                return; // Stop execution if manually scrolled
-            }
-            if (chatContainerRef.current) {
-                clientHeight = chatContainerRef.current.clientHeight;
-                scrollHeight = chatContainerRef.current.scrollHeight;
-              const lastQuestionElement = chatContainerRef.current.querySelector(
-                ".question-container" // Assuming you have a class for Question elements
-              ) as HTMLElement;
-      
-              if (lastQuestionElement) {
-                
-                // Calculate the distance to the top of the last question element
-                const distanceToTop =
-                  lastQuestionElement.offsetTop - chatContainerRef.current.offsetTop;
-                 
-                  // Update the scroll position 
-                  chatContainerRef.current.scrollTop = distanceToTop;
-              }
-            }
-          };
-          setTimeout(()=>{
-            scrollToAlignTop()
-          }, 200)
-      },[queries, results]); // Empty dependency array so it runs only once on mount
-
-      const onWheelHandle = () => {
-        setIsScrolled(true)
-      }
-
-      const scrollDown = () => {
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-      }
-
-      const handleScroll = () => {
+    const handleScroll = () => {
         if (chatContainerRef.current) { // Check if the ref is available
             const chatContainer = chatContainerRef.current;
             const threshold = 200;
             let isAtBottom = chatContainer.scrollTop + chatContainer.clientHeight + threshold > chatContainer.scrollHeight;
-
-              console.log("Scroll Top -->", chatContainer.scrollTop + chatContainer.clientHeight + threshold - chatContainer.scrollHeight)
             //   console.log("chatContainer.clientHeight -->", chatContainer.clientHeight)
             //   console.log("chatContainer.scrollHeight -->",chatContainer.scrollHeight)
             const throttleTimeout = setTimeout(() => {
@@ -76,9 +30,53 @@ const ChatPage = () => {
                 }
                 //   console.log("Unreached");
                 }
-            }, 100); // Set a delay of 100 milliseconds (adjust as needed)
+            }); // Set a delay of 100 milliseconds (adjust as needed)
         
             return () => clearTimeout(throttleTimeout); // Clear timeout on cleanup
+        }
+      }
+    useEffect(() => {
+
+        // Check if manual scrolling is active
+        handleScroll()
+          // Function to scroll to the bottom of the chat container
+          const scrollToAlignTop = () => {
+            if (isScrolled) {
+                console.log("changed____isBottom")
+                setIsBottom(false)
+            } else {
+                if (chatContainerRef.current) {
+                    clientHeight = chatContainerRef.current.clientHeight;
+                    scrollHeight = chatContainerRef.current.scrollHeight;
+                  const lastQuestionElement = chatContainerRef.current.querySelector(
+                    ".question-container" // Assuming you have a class for Question elements
+                  ) as HTMLElement;
+          
+                  if (lastQuestionElement) {
+                    
+                    // Calculate the distance to the top of the last question element
+                    const distanceToTop =
+                      lastQuestionElement.offsetTop - chatContainerRef.current.offsetTop;
+                     
+                      // Update the scroll position 
+                      chatContainerRef.current.scrollTop = distanceToTop;
+                  }
+                }
+            }
+           
+          };
+          setTimeout(()=>{
+            scrollToAlignTop()
+          })
+      },[queries, results]); // Empty dependency array so it runs only once on mount
+
+      const onWheelHandle = () => {
+        setIsScrolled(true)
+      }
+
+      const scrollDown = () => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
       }
 

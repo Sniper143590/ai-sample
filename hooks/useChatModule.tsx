@@ -72,7 +72,7 @@ const useChatModule = () => {
                 setPrePrompts(chatModuleWithId.preset_buttons)
                 setActions(chatModuleWithId.actions)
                 setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
-                setIsBottom(true)
+                setIsBottom(false)
 
                 // console.log(chatModuleWithId.preset_buttons)
             }
@@ -113,7 +113,7 @@ const useChatModule = () => {
             setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
             setIsScrolled(false)
-            setIsBottom(true)
+            setIsBottom(false)
             // setPrePrompts(chatModuleWithId.preset_buttons)
         }
     }
@@ -410,6 +410,7 @@ const useChatModule = () => {
     const getResponseFunc = async (item?:PresetButton) => {
             // console.log(query)
             setIsScrolled(false)
+            setIsBottom(false)
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
             const numberOfQueries = queries.length;
