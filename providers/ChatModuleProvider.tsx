@@ -61,8 +61,8 @@ const ChatContext = createContext<{
     setIsProgress:React.Dispatch<React.SetStateAction<boolean>>;
     isScrolled:boolean;
     setIsScrolled:React.Dispatch<React.SetStateAction<boolean>>;
-    currentScrollY:number;
-    setCurrentScrollY:React.Dispatch<React.SetStateAction<number>>;
+    isBottom:boolean;
+    setIsBottom:React.Dispatch<React.SetStateAction<boolean>>;
 } | null>(null)
 
 type ChatModuleProviderProps = {

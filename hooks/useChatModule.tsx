@@ -29,7 +29,7 @@ const useChatModule = () => {
     const [name, setName] = useState<string>("");
     const [avatar, setAvatar] = useState<File | null>(null);
     const [avatarUrl, setAvatarUrl] = useState("");
-    const [currentScrollY, setCurrentScrollY] = useState(-1);
+    const [isBottom, setIsBottom] = useState(true);
     const [llm, setLlm] = useState("");
     const [role, setRole] = useState("");
     const [prePrompts, setPrePrompts] = useState<PresetButton[]>([])
@@ -72,6 +72,8 @@ const useChatModule = () => {
                 setPrePrompts(chatModuleWithId.preset_buttons)
                 setActions(chatModuleWithId.actions)
                 setPresetButtonPrompt(chatModuleWithId.presetButtonPrompt)
+                setIsBottom(true)
+
                 // console.log(chatModuleWithId.preset_buttons)
             }
             setLoading(false)
@@ -111,7 +113,7 @@ const useChatModule = () => {
             setPresetButtons(chatModuleWithId.preset_buttons)
             setRole(chatModuleWithId.prompt_context)
             setIsScrolled(false)
-            setCurrentScrollY(-1)
+            setIsBottom(true)
             // setPrePrompts(chatModuleWithId.preset_buttons)
         }
     }
@@ -408,7 +410,6 @@ const useChatModule = () => {
     const getResponseFunc = async (item?:PresetButton) => {
             // console.log(query)
             setIsScrolled(false)
-            setCurrentScrollY(-1)
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
             const numberOfQueries = queries.length;
@@ -544,8 +545,8 @@ const useChatModule = () => {
         setIsProgress,
         isScrolled,
         setIsScrolled,
-        currentScrollY,
-        setCurrentScrollY,
+        isBottom,
+        setIsBottom,
     }
 }
 

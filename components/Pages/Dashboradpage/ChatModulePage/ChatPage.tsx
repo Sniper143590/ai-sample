@@ -10,17 +10,16 @@ import remarkGfm from 'remark-gfm'
 
 
 const ChatPage = () => {
-    const { isScrolled, setIsScrolled, queries, results, getResponseFunc, chatModule } = useChat()
+    const { isScrolled, isBottom, setIsBottom, setIsScrolled, queries, results, getResponseFunc, chatModule } = useChat()
     const chatContainerRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
-        console.log(isScrolled)
 
         // Check if manual scrolling is active
         if (isScrolled) {
-          return; // Stop execution if manually scrolled
+            console.log("changed____isBottom")
+            setIsBottom(false)
+            return; // Stop execution if manually scrolled
         }
-        
           // Function to scroll to the bottom of the chat container
           const scrollToAlignTop = () => {
             if (chatContainerRef.current) {
@@ -39,17 +38,50 @@ const ChatPage = () => {
               }
             }
           };
-        scrollToAlignTop()
+          setTimeout(()=>{
+            scrollToAlignTop()
+          }, 500)
       },[queries, results]); // Empty dependency array so it runs only once on mount
 
-      const onScrollHandle = () => {
+      const onWheelHandle = () => {
         setIsScrolled(true)
-        console.log("Wheel------")
+      }
+
+      const scrollDown = () => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+      }
+
+      const handleScroll = () => {
+        if (chatContainerRef.current) { // Check if the ref is available
+          const chatContainer = chatContainerRef.current;
+          const threshold = 200;
+          const isAtBottom =
+            chatContainer.scrollTop + chatContainer.clientHeight + threshold >
+            chatContainer.scrollHeight;
+        //   console.log("Scroll Top -->", chatContainer.scrollTop)
+        //   console.log("chatContainer.clientHeight -->", chatContainer.clientHeight)
+        //   console.log("chatContainer.scrollHeight -->",chatContainer.scrollHeight)
+          const throttleTimeout = setTimeout(() => {
+            if (isAtBottom) {
+              setIsBottom(true);
+            //   console.log("Reached");
+            } else {
+              if (isBottom) {
+                setIsBottom(false);
+              }
+            //   console.log("Unreached");
+            }
+          }, 1000); // Set a delay of 100 milliseconds (adjust as needed)
+      
+          return () => clearTimeout(throttleTimeout); // Clear timeout on cleanup
+        }
       }
 
     return (
         <>
-            <Chat title={chatModule.name} chatContainerRef={chatContainerRef} onScroll = {onScrollHandle}>
+            <Chat title={chatModule.name} chatContainerRef={chatContainerRef} onWheel = {onWheelHandle} onScroll={handleScroll}>
                 {queries.map((item, index) => (
                     <div key={index}>
                         <Question content={item.query} time={item.time} isLast={index===(queries.length-1)}/>
@@ -68,6 +100,7 @@ const ChatPage = () => {
             <Message
                 placeholder={chatModule.placeholder_text}
                 handleSendButtonClick={getResponseFunc}
+                onClickScrollDown={scrollDown}
             />
         </>
     )
