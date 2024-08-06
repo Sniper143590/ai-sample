@@ -20,7 +20,7 @@ const PrePromptButtons = ({ handleButtonClick}:PrePromptButtonsProps) => {
     }
 
     return (
-        <div className={`flex flex-wrap items-center justify-center mb-3 md:px-5 px-20 w-full  `}> 
+        <div className={`absolute bottom-full right-0 left-0 flex flex-wrap items-center justify-center mb-3 md:px-5 px-20 w-full  `}> 
         
             {!loading && prePrompts && prePrompts.map((item, index) => (
             <button 
