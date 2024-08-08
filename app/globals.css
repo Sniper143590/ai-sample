@@ -167,22 +167,26 @@ body {
 
 .h1-style h1 {
     font-size: 2.5rem; /* Adjust as needed */
+    line-height: 1.5;
 }
 
 .h2-style h2 {
     font-size: 2rem; /* Adjust as needed */
+    line-height: 1.5;
 }
 
 .h3-style h3 {
     font-size: 1.75rem; /* Adjust as needed */
     font-weight: bold;
     margin-top: 1rem;
+    line-height: 1.5;
 }
 
 .h4-style h4 {
     font-size: 1.5rem; /* Adjust as needed */
     /* font-weight: bold; */
     margin-top: 2rem!important;
+    line-height: 1.2;
 }
 
 .h5-style h5 {

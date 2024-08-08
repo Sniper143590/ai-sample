@@ -166,7 +166,7 @@ const useAuthFlow = () => {
                     setAvatar(url)
                     const resultOfAvatar = await changePhotoURL(url, userData.uid)
                     if (resultOfAvatar){
-                      console.log(url)
+                      // console.log(url)
                       setUserData((prev:{})=>({...prev, photoURL:url}))
                     }
                 }
@@ -205,12 +205,12 @@ const useAuthFlow = () => {
   
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
-      console.log("done")
+      // console.log("done")
       if (user) {
         setLoading(true)
         await createUserFromCredential(user)
         const userData = await getUserData(user.email)
-        console.log("Here >>>>", userData)
+        // console.log("Here >>>>", userData)
         if(userData){
           setUserEmail(userData[0]?.email || "")
           setUserData(userData[0])

@@ -2,14 +2,15 @@ import { BACKEND_URL } from "@/constants/backend"
 import { PresetButton } from "@/constants/types";
 
 const getResponseFromLlm = (): {
-  startOperation: (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string,abortController:AbortController|null) => void;
-  cancelOperation: (abortController:AbortController|null) => void;
+  startOperation: (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string,abortController:AbortController|null, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
+  cancelOperation: (abortController:AbortController|null, setResults: React.Dispatch<React.SetStateAction<string[]>>, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
 } => {
 
 
-  let num;
+  let num:number;
+  let initLength:number;
 
-  const startOperation = async (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, abortController:AbortController|null) => {
+  const startOperation = async ( query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, abortController:AbortController|null, isReceived:boolean,  setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
     try {
 
       const headers = {
@@ -26,6 +27,8 @@ const getResponseFromLlm = (): {
           chatSession: chatSession,
           // signal: signal,
         }
+        initLength = numberOfQueries-1;
+        num = numberOfQueries-1;
 
       const queryParams = new URLSearchParams(params);
       const queryString = queryParams.toString();
@@ -37,65 +40,86 @@ const getResponseFromLlm = (): {
         method: 'GET',
         headers
       }).then(response => {
+        setIsReceived(false)
+        console.log(response)
         const stream = response.body;
+        
         if (stream) {
           const reader = stream.getReader();
           let message = "";
-          let initLength = numberOfQueries-1;
-          num = numberOfQueries-1;
+          
           // Read and process data chunks
           const readData = async () => {
             // setIsProgress(true)
+            try { // Add a try/catch block to handle AbortError
+              while (true) {
+                console.log(reader)
+                if(reader){
+                  const { value, done } = await reader.read();
+                if (done) {
+                  setIsProgress(false)
+                  setLoading(false); 
 
-            while (true) {
-              const { value, done } = await reader.read();
-
-              // Process the data chunk (value)
-              if (done) {
+                  break;
+                }
+                if (abortController?.signal.aborted){
+                  console.log("Aborted!")
+                  setIsProgress(false);
+                  setLoading(false)
+                  reader.releaseLock();   
+                  break;
+                }
+                const chunk = new TextDecoder().decode(value);
+                if (chunk) {
+                  setIsReceived(true)
+                }
+                if(chunk.startsWith('with_error')){
+                  setIsProgress(false);
+                  setLoading(false);
+                  break;
+                }
+                if (chunk.startsWith("preprompts:")) {
+                  console.log("Got preprompts!!!!!")
+                  const parts = chunk.split('preprompts:');
+                  if (parts.length > 1) {
+                    const parsedPreprompts = JSON.parse(parts[1]);
+                    const updatedPrePrompts = parsedPreprompts.map((item:string, index:number)=>
+                        {
+                            return { _id:index, text: item, prompt: item };
+                        }
+                    );
+                    setPrePrompts(updatedPrePrompts)
+                  }
+                } else {  
+                  
+                  message += chunk;
+                  if (initLength < numberOfQueries){
+                    initLength++;
+                    setResults((prevResults) => [...prevResults, message])
+                  } else {
+                    if(!isReceived){
+                      return
+                    }
+                    setResults((prevResults) => [...prevResults.slice(0, -1), message])
+                  }
+                }
+                }
+                
+              }
+            } catch (error:any) {
+              
+              // If AbortError, log and break the loop
+              if (error.name === "AbortError") {
+                console.log("Stream reading aborted");
                 setIsProgress(false)
                 setLoading(false); 
-                break;
+              } else {
+                console.error("An error occurred during stream reading:", error);
+                throw error;
               }
-      
-              const chunk = new TextDecoder().decode(value);
-      
-              // Assuming your server sends "preprompts" followed by the actual message
-              if (chunk.startsWith("preprompts:")) {
-                console.log("Got preprompts!!!!!")
-                const parts = chunk.split('preprompts:');
-
-                if (parts.length > 1) {
-                  const parsedPreprompts = JSON.parse(parts[1]);
-                  const updatedPrePrompts = parsedPreprompts.map((item:string, index:number)=>
-                      {
-                          return { _id:index, text: item, prompt: item };
-                      }
-                  );
-                setPrePrompts(updatedPrePrompts)
-                
-
-                }
-              } else {  
-                message += chunk;
-                // console.log(chunk)
-                setResults((prevResults) => {
-                  // console.log(prevResults.length)
-                  if (initLength < numberOfQueries) {
-                    initLength++;
-                    // If prevResults is empty, add the new message as a new item
-                    return [...prevResults, message];
-                    
-                  } else {
-                    // If prevResults is not empty, replace the last item with the message
-                    return [...prevResults.slice(0, -1), message]; 
-                  }
-                });
-                
-              }
+            } finally {
+              console.log("Finally")
             }
-
-            // Release the reader
-            reader.releaseLock();
           };
 
           readData();
@@ -122,13 +146,29 @@ const getResponseFromLlm = (): {
     }
   };
 
-  const cancelOperation = (abortController:AbortController|null) => {
+  const cancelOperation = (abortController:AbortController|null,setResults: React.Dispatch<React.SetStateAction<string[]>>, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
     // if (cancelTokenSourceRef.current) {
     console.log(abortController)
+    setResults((prevResults) => {
+      console.log("Init Length ----->",initLength)
+      console.log("current Number ----->",num)
+      if (isReceived) {
+        return [...prevResults.slice(0, -1), "Paused"]; 
+        
+      } else {
+        return [...prevResults, "Paused"];
+      }
+    });
+    setIsReceived(false)
     if(abortController){
+      
     console.log("Cancelled##");
     abortController.abort()
 
+    
+      setLoading(false)
+      setIsProgress(false)
+      
     }
     //     cancelTokenSourceRef.current.cancel("Operation cancelled");
     //     cancelTokenSourceRef.current = axios.CancelToken.source();
