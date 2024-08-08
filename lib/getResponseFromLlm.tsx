@@ -66,7 +66,7 @@ const getResponseFromLlm = (): {
                   console.log("Aborted!")
                   setIsProgress(false);
                   setLoading(false)
-                  reader.releaseLock();   
+                  // reader.releaseLock();   
                   break;
                 }
                 const chunk = new TextDecoder().decode(value);
@@ -106,6 +106,7 @@ const getResponseFromLlm = (): {
                 }
                 
               }
+              reader.releaseLock();   
             } catch (error:any) {
               
               // If AbortError, log and break the loop
