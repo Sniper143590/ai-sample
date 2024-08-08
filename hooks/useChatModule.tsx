@@ -20,6 +20,8 @@ const useChatModule = () => {
     const pathname =  usePathname()
     const [isProgress, setIsProgress] = useState(false)
     const [loaded, setLoaded] = useState(false)
+    // const [ reader, setReader ] = useState<ReadableStreamDefaultReader<Uint8Array>|undefined>()
+    const [isReceived, setIsReceived] = useState(false)
     const [prePromptLoading, setPrePromptLoading] = useState(false)
     const [queries, setQueries] = useState<{query:string, time:string}[]>([])
     const [conversations, setConversations] = useState<{query:string, answer:string}[]>([])
@@ -416,12 +418,12 @@ const useChatModule = () => {
             setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
             const numberOfQueries = queries.length;
             setAbortController(new AbortController())
-            console.log(abortController)
+            console.log(abortController?.signal)
             try{
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
-                
-                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController);
+                setIsReceived(false)
+                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController, isReceived, setIsReceived);
                 setLoaded(true)
                 // setLoading(false)
             } catch {
@@ -433,8 +435,8 @@ const useChatModule = () => {
     }
 
     const cancelGeneration = () => {
-        console.log(abortController)
-         cancelOperation(abortController)
+        console.log(abortController?.signal)
+         cancelOperation(abortController, setResults, setLoading, setIsProgress, isReceived, setIsReceived)
     }
 
     const refreshPresetPrompts = async () => {

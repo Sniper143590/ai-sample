@@ -19,13 +19,13 @@ const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
          cancelGeneration()
     }
     return (
-        <div className={`max-w-[50rem] h-fit ${isLast?"":""}`}>
+        <div className={`max-w-[50rem] mb-5`}>
             <div className="flex flex-col">
                 <div className="relative  pt-15 px-6 pb-16 space-y-4 bg-n-2 rounded-[1.25rem] md:p-5 md:pb-14 dark:bg-n-7 h2-style h3-style h4-style h5-style h6-style h1-style">
                     {loading ? <Loading /> : (children)} 
                 </div>
-                <div className="w-full h-fit">
-                <div className="relative flex items-end pl-6 h-fit">
+                <div className="w-full">
+                <div className="relative flex items-end pl-6">
                     <div
                         className={`absolute top-0 -translate-y-1/2 shrink-0 w-16 h-16 mr-auto rounded-2xl overflow-hidden ${
                             !loading &&
@@ -39,7 +39,7 @@ const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
                             alt="Avatar"
                         />
                     </div>
-                    {isProgress? (
+                    {isProgress&&isLast? (
                         <button className="absolute right-0 top-2 group flex items-center ml-3 px-2 py-0.5 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 dark:text-n-3 dark:hover:text-primary-1"
                             onClick={handlePauseGenerating}>
                             <Icon
