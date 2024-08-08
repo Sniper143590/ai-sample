@@ -2,15 +2,14 @@ import { BACKEND_URL } from "@/constants/backend"
 import { PresetButton } from "@/constants/types";
 
 const getResponseFromLlm = (): {
-  startOperation: (query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string,abortController:AbortController|null, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
-  cancelOperation: (abortController:AbortController|null, setResults: React.Dispatch<React.SetStateAction<string[]>>, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
+  startOperation: (isAborted:boolean, setIsAborted: React.Dispatch<React.SetStateAction<boolean>>, query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string,abortController:AbortController|null, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
+  cancelOperation: (isAborted:boolean, setIsAborted: React.Dispatch<React.SetStateAction<boolean>>, abortController:AbortController|null, setResults: React.Dispatch<React.SetStateAction<string[]>>, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
 } => {
-
 
   let num:number;
   let initLength:number;
 
-  const startOperation = async ( query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, abortController:AbortController|null, isReceived:boolean,  setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
+  const startOperation = async (isAborted:boolean, setIsAborted: React.Dispatch<React.SetStateAction<boolean>>, query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, abortController:AbortController|null, isReceived:boolean,  setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
     try {
 
       const headers = {
@@ -45,6 +44,7 @@ const getResponseFromLlm = (): {
         const stream = response.body;
         
         if (stream) {
+          
           const reader = stream.getReader();
           let message = "";
           
@@ -59,7 +59,6 @@ const getResponseFromLlm = (): {
                   if (done) {
                     setIsProgress(false)
                     setLoading(false); 
-
                     break;
                   }
                   if (abortController?.signal.aborted){
@@ -80,6 +79,7 @@ const getResponseFromLlm = (): {
                   }
                   if (chunk.startsWith("preprompts:")) {
                     console.log("Got preprompts!!!!!")
+                    
                     const parts = chunk.split('preprompts:');
                     if (parts.length > 1) {
                       const parsedPreprompts = JSON.parse(parts[1]);
@@ -91,7 +91,6 @@ const getResponseFromLlm = (): {
                       setPrePrompts(updatedPrePrompts)
                     }
                   } else {  
-                    
                     message += chunk;
                     if (initLength < numberOfQueries){
                       initLength++;
@@ -144,7 +143,7 @@ const getResponseFromLlm = (): {
     }
   };
 
-  const cancelOperation = (abortController:AbortController|null,setResults: React.Dispatch<React.SetStateAction<string[]>>, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
+  const cancelOperation = (isAborted:boolean, setIsAborted: React.Dispatch<React.SetStateAction<boolean>>, abortController:AbortController|null,setResults: React.Dispatch<React.SetStateAction<string[]>>, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
     // if (cancelTokenSourceRef.current) {
     console.log(abortController)
     setResults((prevResults) => {
@@ -162,8 +161,6 @@ const getResponseFromLlm = (): {
       
     console.log("Cancelled##");
     abortController.abort()
-
-    
       setLoading(false)
       setIsProgress(false)
       

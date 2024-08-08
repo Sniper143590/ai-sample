@@ -20,6 +20,7 @@ const useChatModule = () => {
     const pathname =  usePathname()
     const [isProgress, setIsProgress] = useState(false)
     const [loaded, setLoaded] = useState(false)
+    const [isAborted, setIsAborted] = useState(false)
     // const [ reader, setReader ] = useState<ReadableStreamDefaultReader<Uint8Array>|undefined>()
     const [isReceived, setIsReceived] = useState(false)
     const [prePromptLoading, setPrePromptLoading] = useState(false)
@@ -423,7 +424,7 @@ const useChatModule = () => {
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
                 setIsReceived(false)
-                await startOperation(item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController, isReceived, setIsReceived);
+                await startOperation(isAborted, setIsAborted, item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController, isReceived, setIsReceived);
                 setLoaded(true)
                 // setLoading(false)
             } catch {
@@ -435,7 +436,7 @@ const useChatModule = () => {
     }
 
     const cancelGeneration = () => {
-         cancelOperation(abortController, setResults, setLoading, setIsProgress, isReceived, setIsReceived)
+         cancelOperation(isAborted, setIsAborted, abortController, setResults, setLoading, setIsProgress, isReceived, setIsReceived)
     }
 
     const refreshPresetPrompts = async () => {
