@@ -56,53 +56,54 @@ const getResponseFromLlm = (): {
                 // console.log(reader)
                 if(reader){
                   const { value, done } = await reader.read();
-                if (done) {
-                  setIsProgress(false)
-                  setLoading(false); 
+                  if (done) {
+                    setIsProgress(false)
+                    setLoading(false); 
 
-                  break;
-                }
-                if (abortController?.signal.aborted){
-                  console.log("Aborted!")
-                  setIsProgress(false);
-                  setLoading(false)
-                  // reader.releaseLock();   
-                  // break;
-                }
-                const chunk = new TextDecoder().decode(value);
-                if (chunk) {
-                  setIsReceived(true)
-                }
-                if(chunk.startsWith('with_error')){
-                  setIsProgress(false);
-                  setLoading(false);
-                  break;
-                }
-                if (chunk.startsWith("preprompts:")) {
-                  console.log("Got preprompts!!!!!")
-                  const parts = chunk.split('preprompts:');
-                  if (parts.length > 1) {
-                    const parsedPreprompts = JSON.parse(parts[1]);
-                    const updatedPrePrompts = parsedPreprompts.map((item:string, index:number)=>
-                        {
-                            return { _id:index, text: item, prompt: item };
-                        }
-                    );
-                    setPrePrompts(updatedPrePrompts)
+                    break;
                   }
-                } else {  
-                  
-                  message += chunk;
-                  if (initLength < numberOfQueries){
-                    initLength++;
-                    setResults((prevResults) => [...prevResults, message])
-                  } else {
-                    if(!isReceived){
-                      return
+                  if (abortController?.signal.aborted){
+                    console.log("Aborted!")
+                    setIsProgress(false);
+                    setLoading(false)
+                    reader.releaseLock();   
+                    // break;
+                  }
+                  const chunk = new TextDecoder().decode(value);
+                  if (chunk) {
+                    setIsReceived(true)
+                  }
+                  if(chunk.startsWith('with_error')){
+                    setIsProgress(false);
+                    setLoading(false);
+                    break;
+                  }
+                  if (chunk.startsWith("preprompts:")) {
+                    console.log("Got preprompts!!!!!")
+                    const parts = chunk.split('preprompts:');
+                    if (parts.length > 1) {
+                      const parsedPreprompts = JSON.parse(parts[1]);
+                      const updatedPrePrompts = parsedPreprompts.map((item:string, index:number)=>
+                          {
+                              return { _id:index, text: item, prompt: item };
+                          }
+                      );
+                      setPrePrompts(updatedPrePrompts)
                     }
-                    setResults((prevResults) => [...prevResults.slice(0, -1), message])
+                  } else {  
+                    
+                    message += chunk;
+                    if (initLength < numberOfQueries){
+                      initLength++;
+                      setResults((prevResults) => [...prevResults, message])
+                    } else {
+                      console.log("Must be isReceived True here ->", isReceived)
+                      if(!isReceived){
+                        return
+                      }
+                      setResults((prevResults) => [...prevResults.slice(0, -1), message])
+                    }
                   }
-                }
                 }
                 
               }
