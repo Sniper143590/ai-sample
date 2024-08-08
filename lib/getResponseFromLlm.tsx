@@ -41,7 +41,7 @@ const getResponseFromLlm = (): {
         headers
       }).then(response => {
         setIsReceived(false)
-        console.log(response)
+        // console.log(response)
         const stream = response.body;
         
         if (stream) {
@@ -53,7 +53,7 @@ const getResponseFromLlm = (): {
             // setIsProgress(true)
             try { // Add a try/catch block to handle AbortError
               while (true) {
-                console.log(reader)
+                // console.log(reader)
                 if(reader){
                   const { value, done } = await reader.read();
                 if (done) {
@@ -67,7 +67,7 @@ const getResponseFromLlm = (): {
                   setIsProgress(false);
                   setLoading(false)
                   // reader.releaseLock();   
-                  break;
+                  // break;
                 }
                 const chunk = new TextDecoder().decode(value);
                 if (chunk) {
@@ -125,8 +125,6 @@ const getResponseFromLlm = (): {
         }
       }).catch(error=> {
         console.log(error)
-      }).finally (()=>{
-        console.log("Finalyy")
       })
 
     } catch (error: any) {
