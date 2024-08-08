@@ -98,9 +98,9 @@ const getResponseFromLlm = (): {
                       setResults((prevResults) => [...prevResults, message])
                     } else {
                       console.log("Must be isReceived True here ->", isReceived)
-                      if(!isReceived){
-                        return
-                      }
+                      // if(!isReceived){
+                      //   return
+                      // }
                       setResults((prevResults) => [...prevResults.slice(0, -1), message])
                     }
                   }

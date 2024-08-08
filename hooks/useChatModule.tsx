@@ -418,7 +418,7 @@ const useChatModule = () => {
             setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
             const numberOfQueries = queries.length;
             setAbortController(new AbortController())
-            console.log(abortController?.signal)
+            
             try{
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
@@ -435,7 +435,6 @@ const useChatModule = () => {
     }
 
     const cancelGeneration = () => {
-        console.log(abortController?.signal)
          cancelOperation(abortController, setResults, setLoading, setIsProgress, isReceived, setIsReceived)
     }
 
