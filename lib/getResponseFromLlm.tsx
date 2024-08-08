@@ -118,9 +118,7 @@ const getResponseFromLlm = (): {
                 console.error("An error occurred during stream reading:", error);
                 throw error;
               }
-            } finally {
-              console.log("Finally")
-            }
+            } 
           };
 
           readData();
