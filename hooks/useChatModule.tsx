@@ -423,7 +423,7 @@ const useChatModule = () => {
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
                 setIsReceived(false)
-                await startOperation( item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, isReceived, setIsReceived);
+                await startOperation(prePromptLoading, setPrePromptLoading, item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, isReceived, setIsReceived);
                 setLoaded(true)
                 // setLoading(false)
                 console.log(results)

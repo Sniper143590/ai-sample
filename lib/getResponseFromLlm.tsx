@@ -8,14 +8,14 @@ let isAborted = false;
 let abortController:AbortController|null;
 
 const getResponseFromLlm = (): {
-  startOperation: ( query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
+  startOperation: (prePromptLoading:boolean, setPrePromptLoading:React.Dispatch<React.SetStateAction<boolean>>, query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
   cancelOperation: ( setResults: React.Dispatch<React.SetStateAction<string[]>>, setLoading:React.Dispatch<React.SetStateAction<boolean>>, setIsProgress:React.Dispatch<React.SetStateAction<boolean>>, isReceived:boolean, setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => void;
 } => {
 
   let num:number;
   let initLength:number;
 
-  const startOperation = async ( query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, isReceived:boolean,  setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
+  const startOperation = async (prePromptLoading:boolean, setPrePromptLoading:React.Dispatch<React.SetStateAction<boolean>>, query: string, setResults: React.Dispatch<React.SetStateAction<string[]>>, setPrePrompts:React.Dispatch<React.SetStateAction<PresetButton[]>>, numberOfQueries:number, setLoading:React.Dispatch<React.SetStateAction<boolean>>,  setIsProgress:React.Dispatch<React.SetStateAction<boolean>>,  llm: string, promptContext: string, lastThreeConversations: { query: string, answer: string }[], presetButtonPrompt: string, chatSession: string, isReceived:boolean,  setIsReceived:React.Dispatch<React.SetStateAction<boolean>>) => {
     try {
 
 
@@ -41,6 +41,7 @@ const getResponseFromLlm = (): {
       const queryString = queryParams.toString();
       setLoading(true)
       setIsProgress(true)
+      setPrePromptLoading(true)
       
       const response = await fetch(`${BACKEND_URL}/api/query1?${queryString}`, {
         signal:abortController?.signal,
@@ -61,7 +62,7 @@ const getResponseFromLlm = (): {
             try { // Add a try/catch block to handle AbortError
               while (true) {
                 // console.log(reader)
-                console.log(isAborted)
+                // console.log(isAborted)
                 if(reader){
                   const { value, done } = await reader.read();
                   if (done) {
@@ -86,7 +87,7 @@ const getResponseFromLlm = (): {
                   }
                   if (chunk.startsWith("preprompts:")) {
                     if(isAborted) break;
-                    console.log("Got preprompts!!!!!")
+                    // console.log("Got preprompts!!!!!")
                     
                     const parts = chunk.split('preprompts:');
                     if (parts.length > 1) {
@@ -98,20 +99,27 @@ const getResponseFromLlm = (): {
                       );
                       setPrePrompts(updatedPrePrompts)
                     }
+                    setIsProgress(false);
+                    setLoading(false);
+                    setPrePromptLoading(false)
+
                   } else {  
                     if(isAborted) break;
-                    message += chunk;
-                    if (initLength < numberOfQueries){
-                      initLength++;
-                      setResults((prevResults) => [...prevResults, message])
+                    if(chunk.startsWith('end_with')){
+                      setLoading(false)
+                      setIsProgress(false)
+                      setPrePromptLoading(true)
                     } else {
-                      if(isAborted) break;
-                      // console.log("Must be isReceived True here ->", isReceived)
-                      // if(!isReceived){
-                      //   return
-                      // }
-                      setResults((prevResults) => [...prevResults.slice(0, -1), message])
+                      message += chunk;
+                      if (initLength < numberOfQueries){
+                        initLength++;
+                        setResults((prevResults) => [...prevResults, message])
+                      } else {
+                        if(isAborted) break;
+                        setResults((prevResults) => [...prevResults.slice(0, -1), message])
+                      }
                     }
+                   
                   }
                 } else {
                   break;
