@@ -58,8 +58,7 @@ const useChatModule = () => {
             // localStorage.setItem('chatModules', JSON.stringify({ data: result, timestamp: new Date().getTime() }));
             setChatModules(result);
             setIsScrolled(false);
-            setResults([])
-            setQueries([])
+           
             const chatModuleWithId = result.find(module => module._id === lastSegment);
             if (chatModuleWithId){
                 setChatSession(uuidv4())
@@ -75,7 +74,11 @@ const useChatModule = () => {
                 // console.log(chatModuleWithId.preset_buttons)
             }
             setLoading(false)
+            cancelGeneration()
+            setResults([])
+            setQueries([])
         };
+
         fetchChatModules()
     }, [pathname]);
     
