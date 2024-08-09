@@ -140,6 +140,7 @@ const getResponseFromLlm = (): {
       console.log("Catch", error)
       setLoading(false)
       setIsProgress(false)
+      setResults((prev)=> [...prev, 'Paused'])
 
       if (error.name === "AbortError") {
         console.log("Aborted")
