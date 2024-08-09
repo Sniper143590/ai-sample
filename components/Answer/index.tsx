@@ -39,14 +39,12 @@ const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
                             alt="Avatar"
                         />
                     </div>
-                    {!isProgress &&(  
+                    {(!isProgress || !isLast ) &&(  
                         <Action response={response}/>
                     )}
                 </div>
                 </div>
             </div>
-            
-            
         </div>
     );
 };
