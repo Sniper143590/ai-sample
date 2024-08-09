@@ -423,7 +423,7 @@ const useChatModule = () => {
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
                 setIsReceived(false)
-                await startOperation(prePromptLoading, setPrePromptLoading, item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, isReceived, setIsReceived);
+                await startOperation(setPrePromptLoading, item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession);
                 setLoaded(true)
                 // setLoading(false)
                 console.log(results)
@@ -436,7 +436,7 @@ const useChatModule = () => {
     }
 
     const cancelGeneration = () => {
-         cancelOperation( setResults, setLoading, setIsProgress, isReceived, setIsReceived)
+         cancelOperation(setPrePromptLoading, setLoading, setIsProgress)
     }
 
     const refreshPresetPrompts = async () => {
