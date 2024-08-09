@@ -15,12 +15,10 @@ import { usePathname } from "next/navigation";
 const useChatModule = () => {
     const [query, setQuery] = useState("")
     const [result, setResult] = useState("")
-    const [abortController, setAbortController] = useState<AbortController | null>(null);
     const [isScrolled, setIsScrolled] = useState(false)
     const pathname =  usePathname()
     const [isProgress, setIsProgress] = useState(false)
     const [loaded, setLoaded] = useState(false)
-    const [isAborted, setIsAborted] = useState(false)
     // const [ reader, setReader ] = useState<ReadableStreamDefaultReader<Uint8Array>|undefined>()
     const [isReceived, setIsReceived] = useState(false)
     const [prePromptLoading, setPrePromptLoading] = useState(false)
@@ -418,15 +416,14 @@ const useChatModule = () => {
             setQueries(prev=>[...prev, {query:item?item.text:query, time:getCurrentTime()}])
             setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:""}])
             const numberOfQueries = queries.length;
-            setAbortController(new AbortController())
-            
             try{
                 setQuery("")
                 const lastThreeConversations = conversations.slice(-3);
                 setIsReceived(false)
-                await startOperation(isAborted, setIsAborted, item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, abortController, isReceived, setIsReceived);
+                await startOperation( item?item.prompt:query, setResults, setPrePrompts,  numberOfQueries, setLoading, setIsProgress,  chatModule.llm_name.toLowerCase(), chatModule.prompt_context, lastThreeConversations, presetButtonPrompt, chatSession, isReceived, setIsReceived);
                 setLoaded(true)
                 // setLoading(false)
+                console.log(results)
             } catch {
                 // setConversations(prev=>[...prev, {query:item?item.prompt:query, answer:"Network Error"}])
                 setResults(prev=>[...prev, "Backend Error"])
@@ -436,7 +433,7 @@ const useChatModule = () => {
     }
 
     const cancelGeneration = () => {
-         cancelOperation(isAborted, setIsAborted, abortController, setResults, setLoading, setIsProgress, isReceived, setIsReceived)
+         cancelOperation( setResults, setLoading, setIsProgress, isReceived, setIsReceived)
     }
 
     const refreshPresetPrompts = async () => {

@@ -39,16 +39,7 @@ const Answer = ({ children, loading, time, response, isLast }: AnswerProps) => {
                             alt="Avatar"
                         />
                     </div>
-                    {isProgress&&isLast? (
-                        <button className="absolute right-0 top-2 group flex items-center ml-3 px-2 py-0.5 bg-n-3 rounded-md caption1 txt-n-6 transition-colors hover:text-primary-1 dark:bg-n-7 dark:text-n-3 dark:hover:text-primary-1"
-                            onClick={handlePauseGenerating}>
-                            <Icon
-                                className="w-4 h-4 mr-2 transition-colors group-hover:fill-primary-1 dark:fill-n-3"
-                                name="pause-circle"
-                            />
-                            Pause generating
-                        </button>
-                    ): (  
+                    {!isProgress &&(  
                         <Action response={response}/>
                     )}
                 </div>
