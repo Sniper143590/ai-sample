@@ -326,6 +326,11 @@ const useChatModule = () => {
                     chatModule._id === updatedChatModule._id ? updatedChatModule : chatModule
                 )
             );
+            const pathSegments = pathname.split('/');
+            const lastSegment = pathSegments[pathSegments.length - 1];
+            if(chatModule._id===lastSegment){
+                setChatModule(updatedChatModule)
+            }
             if(!loaded&&moduleIndex===_id) {
                 setPrePrompts(presetButtons)
             }
